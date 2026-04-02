@@ -2,90 +2,252 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Double Trouble</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8c96e;
-  --cream: #f5f0e8;
-  --red: #c0392b;
-  --dark: #0d1a12;
-  --green-deep: #1a3d27;
-  --card-w: 108px;
-  --card-h: 152px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--cream); overflow: hidden; }
-.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 20px; position: absolute; inset: 0; overflow-y: auto; }
-.screen.active { display: flex; }
-.logo-wrap { text-align: center; margin-bottom: 10px; position: relative; z-index: 1; }
-.logo-wrap h1 { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 55%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.logo-wrap .tagline { font-size: 10px; letter-spacing: 5px; color: rgba(201,168,76,.45); text-transform: uppercase; margin-top: 4px; }
-.lcard { background: rgba(255,255,255,.04); border: 1px solid rgba(201,168,76,.2); border-radius: 18px; padding: 18px 20px; width: 100%; max-width: 340px; position: relative; z-index: 1; }
-.lcard h3 { font-family: 'Playfair Display', serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-.name-input { width: 100%; background: rgba(0,0,0,.4); border: 1.5px solid rgba(201,168,76,.25); border-radius: 10px; padding: 11px 13px; color: var(--cream); font-size: 15px; outline: none; }
-.name-input:focus { border-color: var(--gold); }
-.name-input::placeholder { color: rgba(255,255,255,.22); }
-.btn-big { width: 100%; padding: 15px; border-radius: 13px; border: none; font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: transform .15s, filter .15s; }
-.btn-big:active { transform: scale(.97); }
-.btn-big.gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); box-shadow: 0 6px 20px rgba(201,168,76,.32); }
-.btn-big.gold:hover { filter: brightness(1.1); }
-.btn-g { background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold)); background-size: 200%; color: var(--dark); border: none; border-radius: 10px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 11px 16px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(201,168,76,.28); transition: transform .15s, filter .15s; }
-.btn-g:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-g:active { transform: scale(.97); }
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(5px); }
-.overlay.show { opacity: 1; pointer-events: all; }
-.mbox { background: linear-gradient(160deg, #1a3a28, #0d1f17); border: 1.5px solid rgba(201,168,76,.32); border-radius: 20px; padding: 28px 24px; width: 90%; max-width: 330px; position: relative; transform: scale(.9); transition: transform .3s; box-shadow: 0 28px 70px rgba(0,0,0,.6); }
-.overlay.show .mbox { transform: scale(1); }
-.mbox h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 20px; margin-bottom: 12px; letter-spacing: 1px; }
-.mbox p { color: rgba(245,240,232,.8); font-size: 13px; line-height: 1.7; }
-.mcl { position: absolute; top: 13px; right: 14px; background: none; border: none; color: var(--gold); font-size: 19px; cursor: pointer; opacity: .55; }
-.mcl:hover { opacity: 1; }
+body { font-family: Arial; text-align:center; background:#0f172a; color:white; }
+button { padding:10px 16px; margin:6px; border-radius:10px; border:none; cursor:pointer; }
+.hidden { display:none; }
+.card { display:inline-block; padding:20px; margin:10px; background:white; color:black; border-radius:12px; font-size:24px; }
+.topbar { position:fixed; top:10px; right:10px; }
+.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center; }
+.modal-content { background:#1e293b; padding:20px; border-radius:12px; max-width:400px; }
+.big { font-size:28px; margin-top:20px; }
 </style>
 </head>
 <body>
-<div class="screen active" id="lobbyScreen">
-  <div class="logo-wrap">
-    <h1>Double Trouble</h1>
-    <div class="tagline">Kaartspel</div>
-  </div>
-  <div class="lcard">
-    <h3>Jouw naam</h3>
-    <input class="name-input" id="nameInput" placeholder="Voer je naam in…" maxlength="16">
-  </div>
-  <div class="lcard">
-    <h3>Solo spelen</h3>
-    <button class="btn-big gold" onclick="startSolo()">Speel alleen</button>
+
+<div class="topbar">
+  <button onclick="openSettings()">⚙️</button>
+</div>
+
+<h1>Double Trouble</h1>
+
+<div id="setup">
+  <h2>Spelers toevoegen</h2>
+  <input id="playerName" placeholder="Naam">
+  <button onclick="addPlayer()">Toevoegen</button>
+  <div id="playerList"></div>
+  <button onclick="startGame()">Start spel</button>
+</div>
+
+<div id="game" class="hidden">
+  <h2 id="currentPlayer"></h2>
+  <div id="cards"></div>
+  <div id="score"></div>
+  <button onclick="drawCard()">Trek kaart</button>
+  <button onclick="stopTurn()">Stop beurt</button>
+</div>
+
+<div id="roundEnd" class="hidden">
+  <h2>Ronde klaar</h2>
+  <div id="roundScores"></div>
+  <button onclick="nextRound()">Volgende ronde</button>
+</div>
+
+<div id="gameEnd" class="hidden">
+  <h2>Spel afgelopen</h2>
+  <div id="winner"></div>
+  <button onclick="location.reload()">Opnieuw spelen</button>
+</div>
+
+<div id="settingsModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Instellingen</h2>
+    <button onclick="toggleFullscreen()">Fullscreen</button>
+    <button onclick="showInfo()">Info</button>
+    <button onclick="closeSettings()">Sluiten</button>
   </div>
 </div>
-<div class="screen" id="gameScreen">
-  <div class="g-inner">
-    <div class="topbar">
-      <div class="g-title">Double Trouble</div>
-      <button class="icon-btn" onclick="showInfo()">⚙️</button>
-    </div>
+
+<div id="infoModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Info</h2>
+    <p>Blijf kaarten trekken of stop. Dubbele kaarten tellen niet mee. Ronde eindigt als iedereen stopt of niet meer kan. Spel stopt als iemand > 200 punten heeft.</p>
+    <button onclick="closeInfo()">Sluiten</button>
   </div>
 </div>
-<div class="overlay" id="infoModal">
-  <div class="mbox">
-    <button class="mcl" onclick="hideInfo()">✕</button>
-    <h2>Info & Instellingen</h2>
-    <p>Blijf kaarten trekken of stop. Dubbele kaarten tellen niet mee.</p>
-    <p>Ronde eindigt als iedereen stopt of niet meer kan spelen.</p>
-    <p>Spel stopt als iemand meer dan 200 punten heeft.</p>
-    <button class="btn-big gold" onclick="toggleFullscreen()">Volledig scherm</button>
-  </div>
-</div>
+
 <script>
-function showInfo() { document.getElementById('infoModal').classList.add('show'); }
-function hideInfo() { document.getElementById('infoModal').classList.remove('show'); }
+let players = [];
+let scores = {};
+let roundScores = {};
+let current = 0;
+let currentCards = {};
+let stopped = {};
+let deck = [];
+let discard = [];
+let maxScore = 200;
+
+function createDeck() {
+  deck = [];
+  for(let i=0;i<=12;i++) {
+    for(let j=0;j<4;j++) deck.push(i);
+  }
+  shuffle(deck);
+}
+
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+}
+
+function drawFromDeck() {
+  if(deck.length === 0) {
+    deck = [...discard];
+    discard = [];
+    shuffle(deck);
+  }
+  return deck.pop();
+}
+
+function addPlayer() {
+  const name = document.getElementById('playerName').value;
+  if(!name) return;
+  players.push(name);
+  scores[name] = 0;
+  roundScores[name] = 0;
+  currentCards[name] = currentCards[name] || [];
+  stopped[name] = false;
+  document.getElementById('playerName').value = '';
+  renderPlayers();
+}
+
+function renderPlayers() {
+  document.getElementById('playerList').innerText = players.join(', ');
+}
+
+function startGame() {
+  createDeck();
+  document.getElementById('setup').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+  showPlayer();
+}
+
+function showPlayer() {
+  const p = players[current];
+  document.getElementById('currentPlayer').innerText = p;
+  renderCards(p);
+  updateScore();
+}
+
+function drawCard() {
+  const p = players[current];
+  if(stopped[p]) return;
+  const card = drawFromDeck();
+  currentCards[p].push(card);
+  renderCards(p);
+}
+
+function renderCards(p) {
+  const container = document.getElementById('cards');
+  container.innerHTML = '';
+  currentCards[p].forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerText = c;
+    container.appendChild(el);
+  });
+}
+
+function stopTurn() {
+  const p = players[current];
+  if(stopped[p]) return;
+
+  const counts = {};
+  currentCards[p].forEach(c => counts[c] = (counts[c]||0)+1);
+
+  let sum = 0;
+  for(let c in counts) {
+    if(counts[c] === 1) sum += parseInt(c);
+  }
+
+  roundScores[p] = sum;
+  scores[p] += sum;
+  stopped[p] = true;
+
+  discard.push(...currentCards[p]);
+
+  nextPlayerAuto();
+}
+
+function nextPlayerAuto() {
+  setTimeout(() => {
+    if(checkRoundEnd()) return;
+    do {
+      current = (current + 1) % players.length;
+    } while(stopped[players[current]]);
+    showPlayer();
+  }, 2000);
+}
+
+function checkRoundEnd() {
+  const allStopped = players.every(p => stopped[p]);
+  if(!allStopped) return false;
+
+  document.getElementById('game').classList.add('hidden');
+  document.getElementById('roundEnd').classList.remove('hidden');
+
+  let text = '';
+  players.forEach(p => {
+    text += p + ': +' + roundScores[p] + ' (totaal: ' + scores[p] + ')\n';
+  });
+  document.getElementById('roundScores').innerText = text;
+
+  const loser = players.find(p => scores[p] > maxScore);
+  if(loser) {
+    document.getElementById('roundEnd').classList.add('hidden');
+    document.getElementById('gameEnd').classList.remove('hidden');
+    document.getElementById('winner').innerText = loser + ' verliest!';
+  }
+
+  return true;
+}
+
+function nextRound() {
+  document.getElementById('roundEnd').classList.add('hidden');
+  document.getElementById('game').classList.remove('hidden');
+
+  players.forEach(p => {
+    stopped[p] = false;
+    roundScores[p] = 0;
+    // BELANGRIJK: kaarten blijven behouden (geen reset)
+  });
+
+  current = 0;
+  showPlayer();
+}
+
+function updateScore() {
+  let text = '';
+  players.forEach(p => {
+    text += p + ': ' + scores[p] + ' | ';
+  });
+  document.getElementById('score').innerText = text;
+}
+
+function openSettings() {
+  document.getElementById('settingsModal').classList.remove('hidden');
+}
+function closeSettings() {
+  document.getElementById('settingsModal').classList.add('hidden');
+}
+function showInfo() {
+  document.getElementById('infoModal').classList.remove('hidden');
+}
+function closeInfo() {
+  document.getElementById('infoModal').classList.add('hidden');
+}
 function toggleFullscreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else if (document.exitFullscreen) document.exitFullscreen();
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
 }
 </script>
+
 </body>
 </html>
