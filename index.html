@@ -63,11 +63,24 @@ button, input { font: inherit; }
 .sbox { flex: 1; min-width: 92px; max-width: 110px; background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.2); border-radius: 11px; padding: 7px 8px; text-align: center; }
 .sbox .sl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.45); }
 .sbox .sv { font-family: 'Playfair Display', serif; font-size: 25px; color: var(--gold-light); line-height: 1.1; }
-.turn-card { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px 14px; text-align: center; }
+
+/* TURN CARD \u2014 active player highlight */
+.turn-card { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px 14px; text-align: center; transition: border-color .4s, box-shadow .4s, background .4s; }
+.turn-card.player-0 { border-color: rgba(100,210,255,.45); box-shadow: 0 0 22px rgba(100,210,255,.14); background: rgba(30,80,120,.22); }
+.turn-card.player-1 { border-color: rgba(130,220,130,.45); box-shadow: 0 0 22px rgba(130,220,130,.14); background: rgba(20,90,40,.22); }
+.turn-card.player-2 { border-color: rgba(255,180,80,.45); box-shadow: 0 0 22px rgba(255,180,80,.14); background: rgba(100,50,10,.22); }
+.turn-card.player-3 { border-color: rgba(220,120,220,.45); box-shadow: 0 0 22px rgba(220,120,220,.14); background: rgba(80,20,80,.22); }
+.turn-card.player-4 { border-color: rgba(255,120,120,.45); box-shadow: 0 0 22px rgba(255,120,120,.14); background: rgba(100,10,10,.22); }
+.turn-card.player-5 { border-color: rgba(80,220,200,.45); box-shadow: 0 0 22px rgba(80,220,200,.14); background: rgba(10,70,70,.22); }
+
 .turn-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 4px; }
 .turn-name { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold-light); line-height: 1.05; margin-bottom: 4px; }
 .turn-sub { font-size: 12px; color: rgba(255,255,255,.72); }
 .round-pill { display: inline-block; margin-top: 6px; background: rgba(201,168,76,.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,.25); border-radius: 999px; padding: 3px 10px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+
+/* Countdown badge */
+.countdown-badge { display: inline-block; margin-top: 6px; margin-left: 5px; background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 3px 10px; font-size: 10px; letter-spacing: 1px; }
+
 .risk-wrap { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 7px 11px; }
 .risk-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .risk-top span:first-child { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); }
@@ -94,17 +107,35 @@ button, input { font: inherit; }
 .cc.bot { transform: rotate(180deg); }
 .c-center { font-size: 50px; line-height: 1; }
 .rc { color: var(--red); } .bc { color: #1a1a2e; }
+
+/* Player chips with colors */
 .player-panel { width: 100%; max-width: 420px; }
 .pnl-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; }
 .pnl-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
-.pchip { background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 5px 11px; display: flex; align-items: center; gap: 6px; font-size: 11px; }
-.pchip.me { border-color: rgba(201,168,76,.35); }
-.pchip.active { box-shadow: 0 0 0 1px rgba(232,201,110,.35), 0 0 18px rgba(232,201,110,.1); }
+.pchip { background: rgba(0,0,0,.3); border: 1.5px solid rgba(255,255,255,.08); border-radius: 20px; padding: 5px 11px; display: flex; align-items: center; gap: 6px; font-size: 11px; transition: border-color .3s, box-shadow .3s, background .3s; }
+.pchip.active { border-color: rgba(232,201,110,.55); box-shadow: 0 0 0 2px rgba(232,201,110,.2), 0 0 20px rgba(232,201,110,.18); background: rgba(201,168,76,.12); }
+/* Player color classes for active chip */
+.pchip.active.color-0 { border-color: rgba(100,210,255,.7); box-shadow: 0 0 0 2px rgba(100,210,255,.25), 0 0 18px rgba(100,210,255,.2); background: rgba(30,80,120,.25); }
+.pchip.active.color-1 { border-color: rgba(130,220,130,.7); box-shadow: 0 0 0 2px rgba(130,220,130,.25), 0 0 18px rgba(130,220,130,.2); background: rgba(20,90,40,.25); }
+.pchip.active.color-2 { border-color: rgba(255,180,80,.7); box-shadow: 0 0 0 2px rgba(255,180,80,.25), 0 0 18px rgba(255,180,80,.2); background: rgba(100,50,10,.25); }
+.pchip.active.color-3 { border-color: rgba(220,120,220,.7); box-shadow: 0 0 0 2px rgba(220,120,220,.25), 0 0 18px rgba(220,120,220,.2); background: rgba(80,20,80,.25); }
+.pchip.active.color-4 { border-color: rgba(255,120,120,.7); box-shadow: 0 0 0 2px rgba(255,120,120,.25), 0 0 18px rgba(255,120,120,.2); background: rgba(100,10,10,.25); }
+.pchip.active.color-5 { border-color: rgba(80,220,200,.7); box-shadow: 0 0 0 2px rgba(80,220,200,.25), 0 0 18px rgba(80,220,200,.2); background: rgba(10,70,70,.25); }
 .pchip.out { opacity: .3; text-decoration: line-through; }
 .pchip.done { opacity: .55; }
 .pscore { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold-light); }
 .pname { color: rgba(255,255,255,.65); }
 .ptag { font-size: 9px; color: var(--gold); opacity: .65; }
+
+/* Color dot per player */
+.pcolor-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-0 { background: rgb(100,210,255); }
+.dot-1 { background: rgb(130,220,130); }
+.dot-2 { background: rgb(255,180,80); }
+.dot-3 { background: rgb(220,120,220); }
+.dot-4 { background: rgb(255,120,120); }
+.dot-5 { background: rgb(80,220,200); }
+
 .player-cards { width: 100%; max-width: 420px; }
 .cards-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; }
 .hist-track { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; min-height: 38px; padding: 7px; background: rgba(0,0,0,.2); border-radius: 10px; border: 1px solid rgba(255,255,255,.04); }
@@ -139,6 +170,12 @@ button, input { font: inherit; }
 .setting-btn { width: 100%; margin-top: 8px; border: none; border-radius: 12px; padding: 12px 14px; background: rgba(255,255,255,.06); color: var(--cream); cursor: pointer; }
 .setting-btn:hover { background: rgba(255,255,255,.09); }
 
+/* Double modal */
+.double-icon { font-size: 52px; text-align: center; margin-bottom: 8px; }
+.double-card-display { display: flex; align-items: center; justify-content: center; margin: 12px 0; gap: 14px; }
+.dcard { width: 56px; height: 78px; background: linear-gradient(160deg, #fde8e8, #f5c6c6); border-radius: 8px; border: 2px solid rgba(192,57,43,.65); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--red); box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+.double-arrow { font-size: 22px; color: rgba(255,255,255,.35); }
+
 /* WINNER */
 #winnerScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; }
 .trophy { font-size: 60px; animation: bounce .8s ease infinite alternate; }
@@ -147,699 +184,18 @@ button, input { font: inherit; }
 .win-name { font-family: 'Playfair Display', serif; font-size: 44px; color: white; text-align: center; line-height: 1; }
 .win-score { font-size: 13px; color: rgba(201,168,76,.55); letter-spacing: 3px; text-transform: uppercase; text-align: center; }
 .fscores { background: rgba(0,0,0,.28); border: 1px solid rgba(201,168,76,.18); border-radius: 13px; padding: 14px 18px; width: 100%; max-width: 280px; }
-.fsrow { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+.fsrow { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
 .fsrow:last-child { border-bottom: none; }
-.fsn { font-size: 13px; color: rgba(255,255,255,.75); }
+.fsn { font-size: 13px; color: rgba(255,255,255,.75); display: flex; align-items: center; gap: 6px; }
 .fsp { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); }
+.fsrow.winner-row .fsn { color: white; font-weight: 600; }
+.fsrow.winner-row .fsp { color: var(--gold); }
 
 /* ROUND OVER SCREEN */
-#roundScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; }
+#roundScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; padding: 30px 20px; }
 .round-icon { font-size: 58px; }
 .round-title { font-family: 'Playfair Display', serif; font-size: 30px; letter-spacing: 2px; color: var(--gold-light); text-align: center; }
 .round-text { font-size: 13px; color: rgba(245,240,232,.82); text-align: center; max-width: 320px; line-height: 1.6; }
 
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: rgba(201,168,76,.2); border-radius: 3px; }
-@media (max-height: 620px) {
-  :root { --card-w: 88px; --card-h: 124px; }
-  .c-center { font-size: 40px; }
-  .turn-name { font-size: 24px; }
-}
-</style>
-</head>
-<body>
-
-<div class="screen active" id="lobbyScreen">
-  <div class="logo-wrap">
-    <h1>Double Trouble</h1>
-    <div class="tagline">Kaartspel</div>
-  </div>
-
-  <div class="lcard">
-    <h3>Spelers toevoegen</h3>
-    <div class="player-input-wrap">
-      <input class="name-input" id="playerInput" placeholder="Naam speler…" maxlength="18" />
-      <button class="btn-g" onclick="addPlayer()">Voeg toe</button>
-    </div>
-    <div class="small-hint">Voeg spelers toe in de volgorde waarin zij straks aan de beurt zijn.</div>
-    <div class="plist" id="playerList"></div>
-  </div>
-
-  <div class="lcard">
-    <h3>Start spel</h3>
-    <button class="btn-big gold" onclick="startGame()">Nieuw spel</button>
-  </div>
-  
-  <div class="lcard" id="resumeCard" style="display: none; margin-top: 10px;">
-    <h3>Spel Hervatten</h3>
-    <button class="btn-big outline" onclick="resumeGame()">Hervat vorig spel</button>
-  </div>
-</div>
-
-<div class="screen" id="gameScreen">
-  <div class="g-inner">
-    <div class="topbar">
-      <div class="g-title">Double Trouble</div>
-      <button class="icon-btn" onclick="openSettings()">⚙</button>
-    </div>
-
-    <div class="score-row">
-      <div class="sbox"><div class="sl">Punten</div><div class="sv" id="scoreVal">0</div></div>
-      <div class="sbox"><div class="sl">Deck</div><div class="sv" id="deckVal">78</div></div>
-      <div class="sbox"><div class="sl">Kaarten</div><div class="sv" id="cardsVal">0</div></div>
-    </div>
-
-    <div class="turn-card">
-      <div class="turn-label">Aan de beurt</div>
-      <div class="turn-name" id="currentPlayerName">—</div>
-      <div class="turn-sub" id="turnSub">Kies: kaarten pakken of stoppen</div>
-      <div class="round-pill" id="roundPill">Ronde 1</div>
-    </div>
-
-    <div class="risk-wrap" id="riskWrap">
-      <div class="risk-top">
-        <span>Kans op double</span>
-        <span class="risk-pct" id="riskPct">—</span>
-      </div>
-      <div class="risk-track"><div class="risk-fill" id="riskFill" style="width:0%;background:#2d8a58;"></div></div>
-    </div>
-
-    <div class="card-stage">
-      <div>
-        <div class="deck-pile">
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="dbadge" id="deckBadge">78 over</div>
-        </div>
-        <div class="draw-hint">Deck</div>
-      </div>
-
-      <div class="flip-wrap">
-        <div class="flip-card" id="flipCard">
-          <div class="fcf"><div class="cbi">♠</div></div>
-          <div class="fcb" id="cardFace"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="player-panel">
-      <div class="pnl-lbl">Spelers</div>
-      <div class="pnl-row" id="playersRow"></div>
-    </div>
-
-    <div class="player-cards">
-      <div class="cards-lbl">Kaarten van huidige speler</div>
-      <div class="hist-track" id="history"></div>
-    </div>
-
-    <div class="draw-actions">
-      <button class="draw-btn" id="drawBtn" onclick="drawCard()">Kaart pakken</button>
-      <button class="draw-btn secondary" id="stopBtn" onclick="stopTurn()">Stoppen</button>
-    </div>
-  </div>
-</div>
-
-<div class="screen" id="roundScreen">
-  <div class="round-icon">🎴</div>
-  <div class="round-title" id="roundTitle">Ronde klaar</div>
-  <div class="round-text" id="roundText">De volgende ronde kan starten.</div>
-  <button class="btn-big gold" id="roundBtn" style="max-width:260px;" onclick="nextRound()">Volgende ronde</button>
-</div>
-
-<div class="screen" id="winnerScreen">
-  <div class="trophy">🏆</div>
-  <div class="win-title">Winnaar</div>
-  <div class="win-name" id="winnerName">—</div>
-  <div class="win-score" id="winnerScore"></div>
-  <div class="fscores" id="finalScores"></div>
-  <button class="btn-big gold" style="max-width:240px;margin-top:4px;" onclick="backToLobby()">Opnieuw spelen</button>
-</div>
-
-<div class="overlay" id="settingsModal" onclick="closeOvl(event,'settingsModal')">
-  <div class="mbox">
-    <button class="mcl" onclick="hide('settingsModal')">✕</button>
-    <h2>Instellingen</h2>
-    <button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
-    <button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
-    <div class="setting-row">
-      <label for="maxScoreInput">Max score voor eindspel</label>
-      <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
-    </div>
-    <div class="setting-row">
-      <label for="riskToggle">Toon kansenbalk</label>
-      <input type="checkbox" id="riskToggle" checked />
-    </div>
-    <button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
-  </div>
-</div>
-
-<div class="overlay" id="infoModal" onclick="closeOvl(event,'infoModal')">
-  <div class="mbox">
-    <button class="mcl" onclick="hide('infoModal')">✕</button>
-    <h2>Spelregels</h2>
-    <p>Iedere speler speelt om de beurt. In je beurt kun je kaarten pakken of stoppen.</p>
-    <ul>
-      <li>Het deck bevat <span class="rhl">78 kaarten</span>: 1× kaart 1, 2× kaart 2, … 12× kaart 12.</li>
-      <li>Pak je een kaart die je al had in deze ronde? <span class="rhl">💥 Double!</span> Dan val je uit voor deze ronde.</li>
-      <li>Als je stopt, bank je je punten voor deze ronde.</li>
-      <li>Na 4 seconden gaat de beurt automatisch naar de volgende speler.</li>
-      <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
-      <li>De hele game stopt pas als iemand boven de ingestelde max score komt aan het einde van een ronde.</li>
-      <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
-    </ul>
-  </div>
-</div>
-
-<script>
-function mulberry32(seed) {
-  return function() {
-    seed |= 0;
-    seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-
-function buildDeck(rng) {
-  let d = [];
-  for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) d.push(n);
-  for (let i = d.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [d[i], d[j]] = [d[j], d[i]];
-  }
-  return d;
-}
-
-function calcRisk(myCards, deckRemaining) {
-  if (!deckRemaining.length) return 0;
-  let danger = 0;
-  for (const c of deckRemaining) if (myCards.includes(c)) danger++;
-  return danger / deckRemaining.length;
-}
-
-const $ = id => document.getElementById(id);
-const SUITS = ['♠','♣','♥','♦'];
-const RED = new Set(['♥','♦']);
-
-let S = {
-  players: [],
-  deck: [],
-  currentIndex: 0,
-  round: 1,
-  roundActive: false,
-  busy: false,
-  gameOver: false,
-  maxScore: 200,
-  showRisk: true,
-  autoTimer: null,
-  roundTimer: null,
-};
-
-// Caching / Local Storage Functions
-function saveGame() {
-  localStorage.setItem('dt_save', JSON.stringify(S));
-}
-
-function loadGame() {
-  try {
-    const saved = localStorage.getItem('dt_save');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed && parsed.players && parsed.players.length > 0) {
-        return parsed;
-      }
-    }
-  } catch (e) {}
-  return null;
-}
-
-function clearSavedGame() {
-  localStorage.removeItem('dt_save');
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  $(id).classList.add('active');
-}
-function showInfo() { $('infoModal').classList.add('show'); }
-function openSettings() { $('settingsModal').classList.add('show'); }
-function hide(id) { $(id).classList.remove('show'); }
-function closeOvl(e, id) { if (e.target === $(id)) hide(id); }
-
-function loadSettings() {
-  try {
-    const raw = localStorage.getItem('dt_settings');
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    if (typeof d.maxScore === 'number') S.maxScore = d.maxScore;
-    if (typeof d.showRisk === 'boolean') S.showRisk = d.showRisk;
-  } catch (e) {}
-}
-function saveSettings() {
-  localStorage.setItem('dt_settings', JSON.stringify({ maxScore: S.maxScore, showRisk: S.showRisk }));
-}
-function applySettingsToUI() {
-  if($('maxScoreInput')) $('maxScoreInput').value = S.maxScore;
-  if($('riskToggle')) $('riskToggle').checked = S.showRisk;
-  if($('riskWrap')) $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
-}
-
-function getPlayerName() { return $('playerInput').value.trim(); }
-function addPlayer() {
-  const name = getPlayerName();
-  if (!name) return;
-  S.players.push({ name, bankedScore: 0, roundScore: 0, cards: [], stopped: false, out: false });
-  $('playerInput').value = '';
-  renderLobbyPlayers();
-}
-$('playerInput').addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
-function removePlayer(idx) { if (S.players.length <= 1) return; S.players.splice(idx, 1); renderLobbyPlayers(); }
-function renderLobbyPlayers() {
-  const el = $('playerList');
-  el.innerHTML = '';
-  
-  const savedState = loadGame();
-  if (savedState && !savedState.gameOver) {
-    $('resumeCard').style.display = 'block';
-  } else {
-    $('resumeCard').style.display = 'none';
-  }
-
-  if (!S.players.length) {
-    const empty = document.createElement('div');
-    empty.className = 'pitem';
-    empty.textContent = 'Nog geen spelers toegevoegd.';
-    el.appendChild(empty);
-    return;
-  }
-  S.players.forEach((p, idx) => {
-    const item = document.createElement('div');
-    item.className = 'pitem';
-    item.innerHTML = `<div class="pitem-left"><div class="pdot"></div><div class="pname-trim">${p.name}</div></div><button class="pdel" title="Verwijderen">×</button>`;
-    item.querySelector('.pdel').onclick = () => removePlayer(idx);
-    el.appendChild(item);
-  });
-}
-
-function shuffleDeck(deck) {
-  const rng = mulberry32(Date.now() % 1000000000);
-  for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
-  }
-  return deck;
-}
-
-function fullFreshDeckExcludingCurrentHands() {
-  const fresh = [];
-  for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) fresh.push(n);
-  const counts = {};
-  for (const p of S.players) for (const c of p.cards) counts[c] = (counts[c] || 0) + 1;
-  for (const key of Object.keys(counts)) {
-    const num = parseInt(key, 10);
-    let toRemove = counts[key];
-    for (let i = fresh.length - 1; i >= 0 && toRemove > 0; i--) {
-      if (fresh[i] === num) {
-        fresh.splice(i, 1);
-        toRemove--;
-      }
-    }
-  }
-  return shuffleDeck(fresh);
-}
-function buildNextDeckIfNeeded() { if (S.deck.length === 0) S.deck = fullFreshDeckExcludingCurrentHands(); }
-
-function startGame() {
-  if (S.players.length < 1) { alert('Voeg eerst minstens één speler toe.'); return; }
-  loadSettings();
-  S.maxScore = parseInt($('maxScoreInput')?.value || S.maxScore, 10) || 200;
-  S.showRisk = $('riskToggle') ? $('riskToggle').checked : true;
-  saveSettings();
-  applySettingsToUI();
-  S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
-  S.round = 1;
-  S.gameOver = false;
-  S.roundActive = false;
-  S.currentIndex = 0;
-  S.players = S.players.map(p => ({ name: p.name, bankedScore: 0, roundScore: 0, cards: [], stopped: false, out: false }));
-  showScreen('gameScreen');
-  startRound();
-  saveGame();
-}
-
-function resumeGame() {
-  const savedState = loadGame();
-  if (savedState) {
-    S = savedState;
-    S.busy = false; // Reset busy state just in case it was saved mid-animation
-    S.autoTimer = null;
-    S.roundTimer = null;
-    loadSettings();
-    applySettingsToUI();
-
-    if (S.gameOver) {
-      endGame();
-    } else if (!S.roundActive) {
-      showRoundScreen(`Ronde klaar`, `Klik op Volgende ronde om door te gaan.`, 'Volgende ronde');
-    } else {
-      showScreen('gameScreen');
-      renderGame();
-      const p = currentPlayer();
-      if (p && (p.out || p.stopped)) {
-        scheduleNextTurn();
-      }
-    }
-  }
-}
-
-function resetRoundState() {
-  S.players.forEach(p => {
-    p.roundScore = 0;
-    p.cards = [];
-    p.stopped = false;
-    p.out = false;
-  });
-  S.currentIndex = 0;
-  while (S.currentIndex < S.players.length && (S.players[S.currentIndex].stopped || S.players[S.currentIndex].out)) S.currentIndex++;
-  if (S.currentIndex >= S.players.length) S.currentIndex = 0;
-}
-
-function startRound() {
-  if (S.gameOver) return;
-  if (!S.deck.length) S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
-  resetRoundState();
-  S.roundActive = true;
-  clearTimers();
-  renderGame();
-}
-
-function clearTimers() {
-  if (S.autoTimer) { clearTimeout(S.autoTimer); S.autoTimer = null; }
-  if (S.roundTimer) { clearTimeout(S.roundTimer); S.roundTimer = null; }
-}
-
-function currentPlayer() { return S.players[S.currentIndex]; }
-function activePlayers() { return S.players.filter(p => !p.stopped && !p.out); }
-function nextActiveIndex(fromIndex) {
-  if (!S.players.length) return -1;
-  for (let step = 1; step <= S.players.length; step++) {
-    const idx = (fromIndex + step) % S.players.length;
-    const p = S.players[idx];
-    if (!p.stopped && !p.out) return idx;
-  }
-  return -1;
-}
-
-function renderCardFace(card) {
-  const suit = SUITS[Math.floor(Math.random() * 4)];
-  const isRed = RED.has(suit);
-  const cc = isRed ? 'rc' : 'bc';
-  $('cardFace').innerHTML = `
-    <div class="cc ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-    <div class="c-center ${cc}">${suit}</div>
-    <div class="cc bot ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-  `;
-}
-function displayScore(p) { return p.bankedScore + p.roundScore; }
-
-function renderGame() {
-  const p = currentPlayer();
-  if (!p) return;
-  $('scoreVal').textContent = displayScore(p);
-  $('deckVal').textContent = S.deck.length;
-  $('cardsVal').textContent = p.cards.length;
-  $('deckBadge').textContent = S.deck.length + ' over';
-  $('roundPill').textContent = 'Ronde ' + S.round;
-  $('currentPlayerName').textContent = p.name;
-  $('turnSub').textContent = p.out ? 'Deze speler is uit voor deze ronde.' : p.stopped ? 'Deze speler heeft gestopt.' : 'Kies: kaarten pakken of stoppen';
-  
-  if (S.showRisk) {
-    $('riskWrap').style.display = 'block';
-    const risk = calcRisk(p.cards, S.deck);
-    const pct = Math.round(risk * 100);
-    $('riskPct').textContent = p.cards.length === 0 ? '—' : pct + '%';
-    const fill = $('riskFill');
-    fill.style.width = pct + '%';
-    fill.style.background = pct < 20 ? '#2d8a58' : pct < 45 ? '#c9a84c' : '#c0392b';
-  } else {
-    $('riskWrap').style.display = 'none';
-  }
-
-  const row = $('playersRow');
-  row.innerHTML = '';
-  S.players.forEach((pl, i) => {
-    const d = document.createElement('div');
-    d.className = 'pchip' + (i === S.currentIndex ? ' active' : '') + (pl.out ? ' out' : '') + (pl.stopped ? ' done' : '');
-    d.innerHTML = `<span class="pscore">${pl.bankedScore + pl.roundScore}</span><span class="pname">${pl.name}</span>${i === S.currentIndex ? '<span class="ptag">nu</span>' : ''}`;
-    row.appendChild(d);
-  });
-
-  $('history').innerHTML = '';
-  if (p.cards.length) {
-    p.cards.forEach(card => {
-      const el = document.createElement('div');
-      el.className = 'hchip';
-      el.textContent = card;
-      $('history').appendChild(el);
-    });
-  } else {
-    const empty = document.createElement('div');
-    empty.style.fontSize = '12px';
-    empty.style.color = 'rgba(255,255,255,.35)';
-    empty.textContent = 'Nog geen kaarten';
-    $('history').appendChild(empty);
-  }
-
-  const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped;
-  $('drawBtn').disabled = !canAct;
-  $('stopBtn').disabled = !canAct;
-}
-
-function ensureDeck() {
-  if (S.deck.length === 0) buildNextDeckIfNeeded();
-}
-
-function drawCard() {
-  // Voorkom dubbelklikken / spamming
-  if (S.busy || S.gameOver) return;
-  const p = currentPlayer();
-  if (!p || p.out || p.stopped) return;
-  
-  // Timer clearen zodat automatische zet niet afgaat terwijl je zelf klikt
-  clearTimers();
-  
-  ensureDeck();
-  if (!S.deck.length) { endRound(); return; }
-  
-  S.busy = true; // Blokkeer input
-  renderGame();
-  
-  const fc = $('flipCard');
-  fc.classList.remove('flipped');
-  setTimeout(() => {
-    const card = S.deck.shift();
-    const isDouble = p.cards.includes(card);
-    renderCardFace(card);
-    fc.classList.add('flipped');
-    setTimeout(() => {
-      if (isDouble) {
-        p.out = true;
-        p.roundScore = 0;
-        p.cards = [];
-      } else {
-        p.cards.push(card);
-        p.roundScore += card;
-      }
-      S.busy = false; // Input weer vrijgeven
-      renderGame();
-      saveGame();
-      if (checkRoundFinished()) return;
-      scheduleNextTurn();
-    }, 380);
-  }, 180);
-}
-
-function stopTurn() {
-  if (S.busy || S.gameOver) return;
-  const p = currentPlayer();
-  if (!p || p.out || p.stopped) return;
-  
-  // Timer clearen zodat automatische zet niet door actie heen loopt
-  clearTimers();
-
-  p.stopped = true;
-  S.busy = false;
-  renderGame();
-  saveGame();
-  if (checkRoundFinished()) return;
-  scheduleNextTurn();
-}
-
-function scheduleNextTurn() {
-  clearTimers();
-  // Timer langer gemaakt (van 2000 naar 4000)
-  S.autoTimer = setTimeout(() => { advanceTurn(); }, 4000);
-}
-
-function advanceTurn() {
-  if (S.gameOver) return;
-  const next = nextActiveIndex(S.currentIndex);
-  if (next === -1) { endRound(); return; }
-  S.currentIndex = next;
-  renderGame();
-  saveGame();
-}
-
-function checkRoundFinished() {
-  if (activePlayers().length === 0) {
-    endRound();
-    return true;
-  }
-  return false;
-}
-
-function bankRoundScores() {
-  for (const p of S.players) {
-    if (!p.out) p.bankedScore += p.roundScore;
-  }
-}
-
-function bestRoundPlayers() {
-  let best = -1;
-  for (const p of S.players) if (p.roundScore > best) best = p.roundScore;
-  return S.players.filter(p => p.roundScore === best);
-}
-
-function showRoundScreen(title, text, buttonLabel) {
-  $('roundTitle').textContent = title;
-  $('roundText').textContent = text;
-  $('roundBtn').textContent = buttonLabel;
-  showScreen('roundScreen');
-}
-
-function endRound() {
-  if (S.gameOver) return;
-  clearTimers();
-  S.roundActive = false;
-  S.busy = false;
-  bankRoundScores();
-  saveGame();
-  
-  const winners = bestRoundPlayers();
-  const winnerText = winners.length === 1 ? winners[0].name : 'Gelijkspel';
-  const winnerScore = winners[0] ? winners[0].roundScore : 0;
-  const overLimit = S.players.filter(p => p.bankedScore > S.maxScore);
-  
-  if (overLimit.length > 0) {
-    const overName = overLimit[0].name;
-    showScreen('roundScreen');
-    $('roundTitle').textContent = 'Einde spel';
-    $('roundText').textContent = `${overName} is boven de ${S.maxScore} punten gekomen. De winnaar is nu bekend.`;
-    $('roundBtn').textContent = 'Bekijk winnaar';
-    $('roundBtn').onclick = () => endGame();
-    return;
-  }
-  $('roundBtn').onclick = nextRound;
-  showRoundScreen(`Ronde ${S.round} klaar`, `${winnerText} wint deze ronde met ${winnerScore} punten. Klik op Volgende ronde om door te gaan.`, 'Volgende ronde');
-}
-
-function nextRound() {
-  $('roundBtn').onclick = nextRound;
-  S.round += 1;
-  showScreen('gameScreen');
-  startRound();
-  saveGame();
-}
-
-function endGame() {
-  if (S.gameOver) return;
-  S.gameOver = true;
-  clearTimers();
-  const sorted = [...S.players].sort((a, b) => b.bankedScore - a.bankedScore);
-  const bestScore = sorted[0]?.bankedScore ?? 0;
-  const winners = sorted.filter(p => p.bankedScore === bestScore);
-  
-  $('winnerName').textContent = winners.length === 1 ? winners[0].name : 'Gelijkspel';
-  $('winnerScore').textContent = bestScore + ' punten';
-  
-  const fs = $('finalScores');
-  fs.innerHTML = '';
-  sorted.forEach(p => {
-    const r = document.createElement('div');
-    r.className = 'fsrow';
-    r.innerHTML = `<span class="fsn">${p.name}${p.out ? ' 💥' : ''}${p.stopped ? ' ⏸' : ''}</span><span class="fsp">${p.bankedScore}</span>`;
-    fs.appendChild(r);
-  });
-  
-  showScreen('winnerScreen');
-  clearSavedGame(); // Game afgerond, verwijder cache data
-}
-
-function toggleFullscreen() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-  else document.exitFullscreen?.();
-}
-
-function resetGame() {
-  if (!confirm('Weet je zeker dat je het spel wilt resetten?')) return;
-  clearSavedGame();
-  backToLobby();
-}
-
-$('maxScoreInput').addEventListener('change', () => {
-  const n = parseInt($('maxScoreInput').value, 10);
-  S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200;
-  $('maxScoreInput').value = S.maxScore;
-  saveSettings();
-});
-
-$('riskToggle').addEventListener('change', () => {
-  S.showRisk = $('riskToggle').checked;
-  $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
-  saveSettings();
-  renderGame();
-});
-
-function backToLobby() {
-  clearTimers();
-  S = { players: [], deck: [], currentIndex: 0, round: 1, roundActive: false, busy: false, gameOver: false, maxScore: 200, showRisk: true, autoTimer: null, roundTimer: null };
-  loadSettings();
-  applySettingsToUI();
-  
-  $('playerList').innerHTML = '';
-  $('playerInput').value = '';
-  $('history').innerHTML = '';
-  $('playersRow').innerHTML = '';
-  $('cardFace').innerHTML = '';
-  $('flipCard').classList.remove('flipped');
-  $('currentPlayerName').textContent = '—';
-  $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
-  $('roundPill').textContent = 'Ronde 1';
-  $('scoreVal').textContent = '0';
-  $('deckVal').textContent = '78';
-  $('cardsVal').textContent = '0';
-  $('deckBadge').textContent = '78 over';
-  $('riskPct').textContent = '—';
-  $('riskFill').style.width = '0%';
-  $('riskFill').style.background = '#2d8a58';
-  $('drawBtn').disabled = false;
-  $('stopBtn').disabled = false;
-  
-  hide('settingsModal');
-  hide('infoModal');
-  hide('roundScreen');
-  showScreen('lobbyScreen');
-  renderLobbyPlayers();
-}
-
-// Initialisatie bij het laden van de pagina
-loadSettings();
-applySettingsToUI();
-$('roundBtn').onclick = nextRound;
-renderLobbyPlayers();
-</script>
-</body>
-</html>
-
+/* Round scores table */
+.round-scores { background: rgba(0,0,0,.28); border: 1px solid rgba(201,168,76,.18); border-radius: 13px; padding: 14px 18px; width: 100
