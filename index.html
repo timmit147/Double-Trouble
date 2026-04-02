@@ -259,7 +259,7 @@
     #gameScreen::after {
       content: '';
       position: fixed;
-      inset: 10px;
+      inset: 14px;
       border: 1.5px solid rgba(201,168,76,.15);
       border-radius: 22px;
       pointer-events: none;
@@ -274,7 +274,7 @@
       align-items: center;
       width: 100%;
       height: 100%;
-      padding: 20px 14px 16px;
+      padding: 24px 14px 16px;
       gap: 9px;
       overflow-y: auto;
     }
@@ -353,7 +353,7 @@
       line-height: 1.1;
     }
 
-    /* TURN CARD — active player highlight */
+    /* TURN CARD */
     .turn-card {
       width: 100%;
       max-width: 360px;
@@ -435,7 +435,6 @@
       text-transform: uppercase;
     }
 
-    /* Countdown badge */
     .countdown-badge {
       display: inline-block;
       margin-top: 6px;
@@ -588,6 +587,7 @@
       padding: 9px;
       color: #1a1a2e;
       font-family: 'Playfair Display', serif;
+      overflow: hidden;
     }
 
     .cc {
@@ -612,7 +612,41 @@
     .rc { color: var(--red); }
     .bc { color: #1a1a2e; }
 
-    /* Player chips with colors */
+    .special-face {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .special-top {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: .65;
+    }
+
+    .special-main {
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .special-bottom {
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: .8;
+    }
+
+    .special-x2 .special-main { color: var(--red); }
+    .special-sc .special-main { color: var(--gold); }
+
+    /* Player chips */
     .player-panel { width: 100%; max-width: 420px; }
 
     .pnl-lbl {
@@ -697,7 +731,6 @@
     .pname { color: rgba(255,255,255,.65); }
     .ptag { font-size: 9px; color: var(--gold); opacity: .65; }
 
-    /* Color dot per player */
     .pcolor-dot {
       width: 7px;
       height: 7px;
@@ -755,9 +788,21 @@
 
     .hchip.rc { color: var(--red); }
 
-    .hchip.dup {
+    .hchip.bonus {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #1a1a2e;
+    }
+
+    .hchip.x2 {
       border-color: rgba(192,57,43,.65);
       background: linear-gradient(160deg, #fde8e8, #f5c6c6);
+    }
+
+    .hchip.sc {
+      border-color: rgba(201,168,76,.7);
+      background: linear-gradient(160deg, #fff6d6, #f5e4a2);
     }
 
     @keyframes chipIn {
@@ -910,7 +955,7 @@
     }
 
     .setting-row input[type="number"] {
-      width: 92px;
+      width: 104px;
       background: rgba(0,0,0,.35);
       border: 1px solid rgba(201,168,76,.24);
       color: var(--cream);
@@ -971,6 +1016,13 @@
     .double-arrow {
       font-size: 22px;
       color: rgba(255,255,255,.35);
+    }
+
+    .double-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
     }
 
     /* WINNER */
@@ -1072,7 +1124,6 @@
       line-height: 1.6;
     }
 
-    /* Round scores table */
     .round-scores {
       background: rgba(0,0,0,.28);
       border: 1px solid rgba(201,168,76,.18);
@@ -1255,14 +1306,17 @@
     <button class="btn-big gold" style="max-width:240px;margin-top:4px;" onclick="backToLobby()">Opnieuw spelen</button>
   </div>
 
-  <!-- Double alert modal -->
   <div class="overlay" id="doubleModal">
     <div class="mbox" style="text-align:center;">
       <div class="double-icon">💥</div>
-      <h2 style="text-align:center;">Double!</h2>
+      <h2 style="text-align:center;" id="doubleTitle">Double!</h2>
       <p id="doubleModalText" style="text-align:center;"></p>
       <div class="double-card-display" id="doubleCardDisplay"></div>
-      <button class="btn-big gold" style="margin-top:14px;" id="doubleOkBtn">OK, begrepen</button>
+      <div class="double-actions">
+        <button class="btn-big gold" id="useSecondChanceBtn" style="display:none;">Tweede kans gebruiken</button>
+        <button class="btn-big outline" id="giveUpBtn" style="display:none;">Opgeven</button>
+        <button class="btn-big gold" id="doubleOkBtn" style="display:none;">OK, begrepen</button>
+      </div>
     </div>
   </div>
 
@@ -1272,18 +1326,37 @@
       <h2>Instellingen</h2>
       <button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
       <button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
+
       <div class="setting-row">
         <label for="maxScoreInput">Max score voor eindspel</label>
         <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
       </div>
+
+      <div class="setting-row">
+        <label for="turnDelayInput">Wachttijd volgende speler (sec)</label>
+        <input type="number" id="turnDelayInput" min="1" max="10" step="1" value="2" />
+      </div>
+
       <div class="setting-row">
         <label for="riskToggle">Toon kansenbalk</label>
         <input type="checkbox" id="riskToggle" checked />
       </div>
+
       <div class="setting-row">
         <label for="soundToggle">Geluidseffecten</label>
         <input type="checkbox" id="soundToggle" checked />
       </div>
+
+      <div class="setting-row">
+        <label for="x2Toggle">X2-kaart in deck</label>
+        <input type="checkbox" id="x2Toggle" checked />
+      </div>
+
+      <div class="setting-row">
+        <label for="secondChanceToggle">Tweede kans in deck</label>
+        <input type="checkbox" id="secondChanceToggle" checked />
+      </div>
+
       <button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
     </div>
   </div>
@@ -1295,9 +1368,11 @@
       <p>Iedere speler speelt om de beurt. In je beurt pak je precies één kaart of stop je. Daarna gaat het spel automatisch door naar de volgende speler.</p>
       <ul>
         <li>Het deck bevat <span class="rhl">78 kaarten</span>: 1× kaart 1, 2× kaart 2, … 12× kaart 12.</li>
-        <li>Pak je een kaart die je al had in deze ronde? <span class="rhl">💥 Double!</span> Dan val je uit voor deze ronde.</li>
+        <li>Als de <span class="rhl">X2-kaart</span> aan staat, verdubbelt elke X2-kaart al je punten van die ronde.</li>
+        <li>Als de <span class="rhl">Tweede kans-kaart</span> aan staat, kun je een double één keer per kaart opvangen.</li>
+        <li>Pak je een kaart die je al had in deze ronde? <span class="rhl">💥 Double!</span> Dan val je uit, tenzij je een tweede kans gebruikt.</li>
         <li>Als je stopt, bank je je punten voor deze ronde.</li>
-        <li>Na elke kaart of stop gaat de beurt na 3 seconden door.</li>
+        <li>Na elke kaart of stop gaat de beurt na de ingestelde wachttijd door.</li>
         <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
         <li>De hele game stopt zodra iemand aan het einde van een ronde <span class="rhl">de ingestelde max score haalt of overschrijdt</span>.</li>
         <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
@@ -1306,7 +1381,6 @@
   </div>
 
   <script>
-    // ── Player colours (6 slots, cycles) ──────────────────────────────────────
     const PLAYER_COLORS = [
       { cls: 'player-0', chipCls: 'color-0', dotCls: 'dot-0' },
       { cls: 'player-1', chipCls: 'color-1', dotCls: 'dot-1' },
@@ -1315,6 +1389,7 @@
       { cls: 'player-4', chipCls: 'color-4', dotCls: 'dot-4' },
       { cls: 'player-5', chipCls: 'color-5', dotCls: 'dot-5' },
     ];
+
     function colorOf(idx) { return PLAYER_COLORS[idx % PLAYER_COLORS.length]; }
 
     function mulberry32(seed) {
@@ -1327,26 +1402,11 @@
       };
     }
 
-    function buildDeck(rng) {
-      let d = [];
-      for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) d.push(n);
-      for (let i = d.length - 1; i > 0; i--) {
-        const j = Math.floor(rng() * (i + 1));
-        [d[i], d[j]] = [d[j], d[i]];
-      }
-      return d;
-    }
-
-    function calcRisk(myCards, deckRemaining) {
-      if (!deckRemaining.length) return 0;
-      let danger = 0;
-      for (const c of deckRemaining) if (myCards.includes(c)) danger++;
-      return danger / deckRemaining.length;
-    }
-
     const $ = id => document.getElementById(id);
     const SUITS = ['♠','♣','♥','♦'];
     const RED = new Set(['♥','♦']);
+    const X2_COUNT = 2;
+    const SECOND_CHANCE_COUNT = 3;
 
     let audioCtx = null;
 
@@ -1361,7 +1421,10 @@
       maxScore: 200,
       showRisk: true,
       soundEnabled: true,
-      pendingAfterTurn: null, // 'next' | 'round'
+      enableX2: true,
+      enableSecondChance: true,
+      turnDelaySec: 2,
+      pendingAfterTurn: null,
       turnDeadline: null,
       autoTimer: null,
       roundTimer: null,
@@ -1369,15 +1432,93 @@
       doubleTimer: null,
     };
 
-    // ── Sound ────────────────────────────────────────────────────────────────
+    function normalizeCard(raw) {
+      if (raw == null) return null;
+      if (typeof raw === 'number') return { kind: 'num', value: raw };
+      if (typeof raw === 'string') {
+        if (raw === 'x2') return { kind: 'x2' };
+        if (raw === 'secondChance' || raw === 'sc') return { kind: 'secondChance' };
+        const n = Number(raw);
+        if (Number.isFinite(n)) return { kind: 'num', value: n };
+        return null;
+      }
+      if (typeof raw === 'object') {
+        if (raw.kind === 'num') return { kind: 'num', value: Number(raw.value) };
+        if (raw.kind === 'x2') return { kind: 'x2' };
+        if (raw.kind === 'secondChance') return { kind: 'secondChance' };
+      }
+      return null;
+    }
+
+    function normalizePlayer(p) {
+      const cards = Array.isArray(p?.cards) ? p.cards.map(normalizeCard).filter(Boolean) : [];
+      return {
+        name: String(p?.name ?? ''),
+        bankedScore: Number(p?.bankedScore ?? 0),
+        roundScore: Number(p?.roundScore ?? 0),
+        roundScoreBase: Number(p?.roundScoreBase ?? p?.roundScore ?? 0),
+        multiplier: Number(p?.multiplier ?? 1),
+        cards,
+        stopped: !!p?.stopped,
+        out: !!p?.out,
+        secondChanceCount: Number(p?.secondChanceCount ?? cards.filter(c => c.kind === 'secondChance').length),
+      };
+    }
+
+    function normalizeState(data) {
+      const base = {
+        players: [],
+        deck: [],
+        currentIndex: 0,
+        round: 1,
+        roundActive: false,
+        busy: false,
+        gameOver: false,
+        maxScore: 200,
+        showRisk: true,
+        soundEnabled: true,
+        enableX2: true,
+        enableSecondChance: true,
+        turnDelaySec: 2,
+        pendingAfterTurn: null,
+        turnDeadline: null,
+        autoTimer: null,
+        roundTimer: null,
+        countdownInterval: null,
+        doubleTimer: null,
+      };
+
+      const s = { ...base, ...(data || {}) };
+      s.players = Array.isArray(data?.players) ? data.players.map(normalizePlayer) : [];
+      s.deck = Array.isArray(data?.deck) ? data.deck.map(normalizeCard).filter(Boolean) : [];
+      s.currentIndex = Number.isFinite(+s.currentIndex) ? +s.currentIndex : 0;
+      s.round = Number.isFinite(+s.round) ? +s.round : 1;
+      s.maxScore = Number.isFinite(+s.maxScore) ? +s.maxScore : 200;
+      s.turnDelaySec = Number.isFinite(+s.turnDelaySec) && +s.turnDelaySec >= 1 ? +s.turnDelaySec : 2;
+      s.showRisk = !!s.showRisk;
+      s.soundEnabled = !!s.soundEnabled;
+      s.enableX2 = data?.enableX2 !== false;
+      s.enableSecondChance = data?.enableSecondChance !== false;
+      s.roundActive = !!s.roundActive;
+      s.busy = !!s.busy;
+      s.gameOver = !!s.gameOver;
+      s.pendingAfterTurn = data?.pendingAfterTurn || null;
+      s.turnDeadline = Number.isFinite(+s.turnDeadline) ? +s.turnDeadline : null;
+      s.autoTimer = null;
+      s.roundTimer = null;
+      s.countdownInterval = null;
+      s.doubleTimer = null;
+      if (!s.players.length) s.currentIndex = 0;
+      if (s.currentIndex < 0 || s.currentIndex >= s.players.length) s.currentIndex = 0;
+      return s;
+    }
+
     function getAudioCtx() {
       if (!S.soundEnabled) return null;
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) return null;
       if (!audioCtx) audioCtx = new Ctx();
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume().catch(() => {});
-      }
+      if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
       return audioCtx;
     }
 
@@ -1422,16 +1563,15 @@
       }
     }
 
-    // ── Persistence ───────────────────────────────────────────────────────────
-    function saveGame() { localStorage.setItem('dt_save', JSON.stringify(S)); }
+    function saveGame() {
+      const { autoTimer, roundTimer, countdownInterval, doubleTimer, ...saveState } = S;
+      localStorage.setItem('dt_save', JSON.stringify(saveState));
+    }
 
     function loadGame() {
       try {
         const saved = localStorage.getItem('dt_save');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (parsed && parsed.players && parsed.players.length > 0) return parsed;
-        }
+        if (saved) return normalizeState(JSON.parse(saved));
       } catch (e) {}
       return null;
     }
@@ -1456,6 +1596,9 @@
         if (typeof d.maxScore === 'number') S.maxScore = d.maxScore;
         if (typeof d.showRisk === 'boolean') S.showRisk = d.showRisk;
         if (typeof d.soundEnabled === 'boolean') S.soundEnabled = d.soundEnabled;
+        if (typeof d.enableX2 === 'boolean') S.enableX2 = d.enableX2;
+        if (typeof d.enableSecondChance === 'boolean') S.enableSecondChance = d.enableSecondChance;
+        if (typeof d.turnDelaySec === 'number') S.turnDelaySec = d.turnDelaySec;
       } catch (e) {}
     }
 
@@ -1463,24 +1606,39 @@
       localStorage.setItem('dt_settings', JSON.stringify({
         maxScore: S.maxScore,
         showRisk: S.showRisk,
-        soundEnabled: S.soundEnabled
+        soundEnabled: S.soundEnabled,
+        enableX2: S.enableX2,
+        enableSecondChance: S.enableSecondChance,
+        turnDelaySec: S.turnDelaySec
       }));
     }
 
     function applySettingsToUI() {
       if ($('maxScoreInput')) $('maxScoreInput').value = S.maxScore;
+      if ($('turnDelayInput')) $('turnDelayInput').value = S.turnDelaySec;
       if ($('riskToggle')) $('riskToggle').checked = S.showRisk;
       if ($('soundToggle')) $('soundToggle').checked = S.soundEnabled;
+      if ($('x2Toggle')) $('x2Toggle').checked = S.enableX2;
+      if ($('secondChanceToggle')) $('secondChanceToggle').checked = S.enableSecondChance;
       if ($('riskWrap')) $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
     }
 
-    // ── Lobby ─────────────────────────────────────────────────────────────────
     function getPlayerName() { return $('playerInput').value.trim(); }
 
     function addPlayer() {
       const name = getPlayerName();
       if (!name) return;
-      S.players.push({ name, bankedScore: 0, roundScore: 0, cards: [], stopped: false, out: false });
+      S.players.push({
+        name,
+        bankedScore: 0,
+        roundScore: 0,
+        roundScoreBase: 0,
+        multiplier: 1,
+        cards: [],
+        stopped: false,
+        out: false,
+        secondChanceCount: 0
+      });
       $('playerInput').value = '';
       renderLobbyPlayers();
     }
@@ -1525,21 +1683,52 @@
       return deck;
     }
 
+    function buildDeck(rng) {
+      const d = [];
+      for (let n = 1; n <= 12; n++) {
+        for (let i = 0; i < n; i++) d.push({ kind: 'num', value: n });
+      }
+      if (S.enableX2) {
+        for (let i = 0; i < X2_COUNT; i++) d.push({ kind: 'x2' });
+      }
+      if (S.enableSecondChance) {
+        for (let i = 0; i < SECOND_CHANCE_COUNT; i++) d.push({ kind: 'secondChance' });
+      }
+      for (let i = d.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [d[i], d[j]] = [d[j], d[i]];
+      }
+      return d;
+    }
+
     function fullFreshDeckExcludingCurrentHands() {
       const fresh = [];
-      for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) fresh.push(n);
+      for (let n = 1; n <= 12; n++) {
+        for (let i = 0; i < n; i++) fresh.push({ kind: 'num', value: n });
+      }
+      if (S.enableX2) for (let i = 0; i < X2_COUNT; i++) fresh.push({ kind: 'x2' });
+      if (S.enableSecondChance) for (let i = 0; i < SECOND_CHANCE_COUNT; i++) fresh.push({ kind: 'secondChance' });
 
-      const counts = {};
-      for (const p of S.players) for (const c of p.cards) counts[c] = (counts[c] || 0) + 1;
+      const counts = { num: {}, x2: 0, secondChance: 0 };
+      for (const p of S.players) {
+        for (const c of p.cards) {
+          if (c.kind === 'num') counts.num[c.value] = (counts.num[c.value] || 0) + 1;
+          else if (c.kind === 'x2') counts.x2++;
+          else if (c.kind === 'secondChance') counts.secondChance++;
+        }
+      }
 
-      for (const key of Object.keys(counts)) {
-        const num = parseInt(key, 10);
-        let toRemove = counts[key];
-        for (let i = fresh.length - 1; i >= 0 && toRemove > 0; i--) {
-          if (fresh[i] === num) {
-            fresh.splice(i, 1);
-            toRemove--;
-          }
+      for (let i = fresh.length - 1; i >= 0; i--) {
+        const c = fresh[i];
+        if (c.kind === 'num' && counts.num[c.value] > 0) {
+          counts.num[c.value]--;
+          fresh.splice(i, 1);
+        } else if (c.kind === 'x2' && counts.x2 > 0) {
+          counts.x2--;
+          fresh.splice(i, 1);
+        } else if (c.kind === 'secondChance' && counts.secondChance > 0) {
+          counts.secondChance--;
+          fresh.splice(i, 1);
         }
       }
 
@@ -1555,10 +1744,15 @@
         alert('Voeg eerst minstens één speler toe.');
         return;
       }
+
       loadSettings();
       S.maxScore = parseInt($('maxScoreInput')?.value || S.maxScore, 10) || 200;
+      S.turnDelaySec = parseInt($('turnDelayInput')?.value || S.turnDelaySec, 10) || 2;
       S.showRisk = $('riskToggle') ? $('riskToggle').checked : true;
       S.soundEnabled = $('soundToggle') ? $('soundToggle').checked : true;
+      S.enableX2 = $('x2Toggle') ? $('x2Toggle').checked : true;
+      S.enableSecondChance = $('secondChanceToggle') ? $('secondChanceToggle').checked : true;
+
       saveSettings();
       applySettingsToUI();
 
@@ -1575,9 +1769,12 @@
         name: p.name,
         bankedScore: 0,
         roundScore: 0,
+        roundScoreBase: 0,
+        multiplier: 1,
         cards: [],
         stopped: false,
-        out: false
+        out: false,
+        secondChanceCount: 0
       }));
 
       showScreen('gameScreen');
@@ -1589,10 +1786,6 @@
       const savedState = loadGame();
       if (savedState) {
         S = savedState;
-        S.autoTimer = null;
-        S.roundTimer = null;
-        S.countdownInterval = null;
-        S.doubleTimer = null;
         loadSettings();
         applySettingsToUI();
 
@@ -1614,7 +1807,7 @@
           }
         } else if (S.roundActive) {
           const p = currentPlayer();
-          if (p && (p.out || p.stopped)) scheduleAfterTurn('next', 3000);
+          if (p && (p.out || p.stopped)) scheduleAfterTurn('next', S.turnDelaySec * 1000);
         } else {
           showRoundEndScreen();
         }
@@ -1624,9 +1817,12 @@
     function resetRoundState() {
       S.players.forEach(p => {
         p.roundScore = 0;
+        p.roundScoreBase = 0;
+        p.multiplier = 1;
         p.cards = [];
         p.stopped = false;
         p.out = false;
+        p.secondChanceCount = 0;
       });
       S.currentIndex = 0;
       while (S.currentIndex < S.players.length && (S.players[S.currentIndex].stopped || S.players[S.currentIndex].out)) S.currentIndex++;
@@ -1667,18 +1863,68 @@
       return -1;
     }
 
-    function renderCardFace(card) {
-      const suit = SUITS[Math.floor(Math.random() * 4)];
-      const isRed = RED.has(suit);
-      const cc = isRed ? 'rc' : 'bc';
-      $('cardFace').innerHTML = `
-        <div class="cc ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-        <div class="c-center ${cc}">${suit}</div>
-        <div class="cc bot ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-      `;
+    function cardLabel(card) {
+      if (!card) return '—';
+      if (card.kind === 'num') return String(card.value);
+      if (card.kind === 'x2') return 'x2';
+      if (card.kind === 'secondChance') return '↺';
+      return '?';
     }
 
-    function displayScore(p) { return p.bankedScore + p.roundScore; }
+    function cardIsNumber(card) { return card && card.kind === 'num'; }
+
+    function renderCardFace(card) {
+      if (!card) return;
+      if (card.kind === 'num') {
+        const suit = SUITS[Math.floor(Math.random() * 4)];
+        const isRed = RED.has(suit);
+        const cc = isRed ? 'rc' : 'bc';
+        $('cardFace').innerHTML = `
+          <div class="cc ${cc}"><div class="cn">${card.value}</div><div class="cs">${suit}</div></div>
+          <div class="c-center ${cc}">${suit}</div>
+          <div class="cc bot ${cc}"><div class="cn">${card.value}</div><div class="cs">${suit}</div></div>
+        `;
+      } else if (card.kind === 'x2') {
+        $('cardFace').innerHTML = `
+          <div class="special-face special-x2">
+            <div class="special-top">Bonus</div>
+            <div class="special-main">x2</div>
+            <div class="special-bottom">dubbel telt op</div>
+          </div>
+        `;
+      } else if (card.kind === 'secondChance') {
+        $('cardFace').innerHTML = `
+          <div class="special-face special-sc">
+            <div class="special-top">Bonus</div>
+            <div class="special-main">↺</div>
+            <div class="special-bottom">tweede kans</div>
+          </div>
+        `;
+      }
+    }
+
+    function roundPoints(p) {
+      return Math.max(0, p.roundScoreBase) * Math.max(1, p.multiplier);
+    }
+
+    function displayScore(p) {
+      return p.bankedScore + roundPoints(p);
+    }
+
+    function playerHasNumberCards(p) {
+      return p.cards.some(c => c.kind === 'num');
+    }
+
+    function calcRisk(p, deckRemaining) {
+      if (!deckRemaining.length) return 0;
+      const seen = new Set(p.cards.filter(c => c.kind === 'num').map(c => c.value));
+      if (!seen.size) return 0;
+      let danger = 0;
+      for (const c of deckRemaining) {
+        if (c.kind === 'num' && seen.has(c.value)) danger++;
+      }
+      return danger / deckRemaining.length;
+    }
 
     function renderGame() {
       const p = currentPlayer();
@@ -1696,9 +1942,7 @@
       } else if (p.stopped) {
         $('turnSub').textContent = 'Deze speler heeft gestopt.';
       } else if (S.busy) {
-        $('turnSub').textContent = S.pendingAfterTurn === 'round'
-          ? 'Ronde wordt afgerond...'
-          : 'Beurt afgerond. Volgende speler komt eraan.';
+        $('turnSub').textContent = 'Beurt afgerond. Volgende stap komt eraan.';
       } else {
         $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
       }
@@ -1708,9 +1952,9 @@
 
       if (S.showRisk) {
         $('riskWrap').style.display = 'block';
-        const risk = calcRisk(p.cards, S.deck);
+        const risk = calcRisk(p, S.deck);
         const pct = Math.round(risk * 100);
-        $('riskPct').textContent = p.cards.length === 0 ? '—' : pct + '%';
+        $('riskPct').textContent = !playerHasNumberCards(p) ? '—' : pct + '%';
         const fill = $('riskFill');
         fill.style.width = pct + '%';
         fill.style.background = pct < 20 ? '#2d8a58' : pct < 45 ? '#c9a84c' : '#c0392b';
@@ -1728,7 +1972,7 @@
           (isActive ? ' active ' + col.chipCls : '') +
           (pl.out ? ' out' : '') +
           (pl.stopped ? ' done' : '');
-        d.innerHTML = `<div class="pcolor-dot ${col.dotCls}"></div><span class="pscore">${pl.bankedScore + pl.roundScore}</span><span class="pname">${pl.name}</span>${isActive ? '<span class="ptag">▶</span>' : ''}`;
+        d.innerHTML = `<div class="pcolor-dot ${col.dotCls}"></div><span class="pscore">${pl.bankedScore + roundPoints(pl)}</span><span class="pname">${pl.name}</span>${isActive ? '<span class="ptag">▶</span>' : ''}`;
         row.appendChild(d);
       });
 
@@ -1737,7 +1981,10 @@
         p.cards.forEach(card => {
           const el = document.createElement('div');
           el.className = 'hchip';
-          el.textContent = card;
+          if (card.kind === 'x2') el.classList.add('bonus', 'x2');
+          if (card.kind === 'secondChance') el.classList.add('bonus', 'sc');
+          if (card.kind === 'num' && card.value >= 10) el.classList.add('rc');
+          el.textContent = cardLabel(card);
           $('history').appendChild(el);
         });
       } else {
@@ -1757,8 +2004,7 @@
       if (S.deck.length === 0) buildNextDeckIfNeeded();
     }
 
-    // ── After turn handling ──────────────────────────────────────────────────
-    function scheduleAfterTurn(mode = 'next', delay = 3000) {
+    function scheduleAfterTurn(mode = 'next', delay = S.turnDelaySec * 1000) {
       clearTimers();
       S.busy = true;
       S.pendingAfterTurn = mode;
@@ -1766,18 +2012,13 @@
 
       const badge = $('countdownBadge');
       let secs = Math.max(1, Math.ceil(delay / 1000));
-
-      badge.textContent = mode === 'round'
-        ? `Ronde eindigt over ${secs}s`
-        : `Volgende speler over ${secs}s`;
+      badge.textContent = mode === 'round' ? `Ronde eindigt over ${secs}s` : `Volgende speler over ${secs}s`;
       badge.style.display = 'inline-block';
 
       S.countdownInterval = setInterval(() => {
         secs--;
         if (secs > 0) {
-          badge.textContent = mode === 'round'
-            ? `Ronde eindigt over ${secs}s`
-            : `Volgende speler over ${secs}s`;
+          badge.textContent = mode === 'round' ? `Ronde eindigt over ${secs}s` : `Volgende speler over ${secs}s`;
         } else {
           clearInterval(S.countdownInterval);
           S.countdownInterval = null;
@@ -1795,39 +2036,104 @@
       renderGame();
     }
 
-    // ── Double modal ──────────────────────────────────────────────────────────
-    function showDoubleModal(playerName, card, onDone) {
-      $('doubleModalText').textContent = `${playerName} trok kaart ${card}, maar had die al! 💥 Alle punten van deze ronde zijn weg.`;
+    function hideDoubleModal() {
+      $('doubleModal').classList.remove('show');
+      if (S.doubleTimer) {
+        clearTimeout(S.doubleTimer);
+        S.doubleTimer = null;
+      }
+    }
 
-      const disp = $('doubleCardDisplay');
-      disp.innerHTML = `
-        <div class="dcard">${card}</div>
+    function showDoubleModalNoChoice(playerName, card, onFinish) {
+      $('doubleTitle').textContent = 'Double!';
+      $('doubleModalText').textContent = `${playerName} trok kaart ${cardLabel(card)}, maar had die al! 💥 Alle punten van deze ronde zijn weg.`;
+      $('doubleCardDisplay').innerHTML = `
+        <div class="dcard">${cardLabel(card)}</div>
         <div class="double-arrow">↔</div>
-        <div class="dcard">${card}</div>
+        <div class="dcard">${cardLabel(card)}</div>
       `;
+
+      $('useSecondChanceBtn').style.display = 'none';
+      $('giveUpBtn').style.display = 'none';
+      $('doubleOkBtn').style.display = 'block';
 
       const modal = $('doubleModal');
       modal.classList.add('show');
 
-      const proceed = () => {
-        if (S.doubleTimer) {
-          clearTimeout(S.doubleTimer);
-          S.doubleTimer = null;
-        }
-        modal.classList.remove('show');
-        onDone();
+      const done = () => {
+        hideDoubleModal();
+        onFinish();
       };
 
-      $('doubleOkBtn').onclick = proceed;
+      $('doubleOkBtn').onclick = done;
 
-      S.doubleTimer = setTimeout(() => {
-        modal.classList.remove('show');
-        S.doubleTimer = null;
-        onDone();
-      }, 3000);
+      S.pendingAfterTurn = 'next';
+      S.turnDeadline = Date.now() + (S.turnDelaySec * 1000);
+      saveGame();
+
+      S.doubleTimer = setTimeout(done, S.turnDelaySec * 1000);
     }
 
-    // ── Draw card ─────────────────────────────────────────────────────────────
+    function showDoubleModalWithSecondChance(playerName, card, onUseSecondChance, onGiveUp) {
+      $('doubleTitle').textContent = 'Double!';
+      $('doubleModalText').textContent = `${playerName} trok kaart ${cardLabel(card)}, maar had die al! Je hebt nog een tweede kans.`;
+      $('doubleCardDisplay').innerHTML = `
+        <div class="dcard">${cardLabel(card)}</div>
+        <div class="double-arrow">↔</div>
+        <div class="dcard">${cardLabel(card)}</div>
+      `;
+
+      $('useSecondChanceBtn').style.display = 'block';
+      $('giveUpBtn').style.display = 'block';
+      $('doubleOkBtn').style.display = 'none';
+
+      $('useSecondChanceBtn').onclick = () => {
+        hideDoubleModal();
+        onUseSecondChance();
+      };
+
+      $('giveUpBtn').onclick = () => {
+        hideDoubleModal();
+        onGiveUp();
+      };
+
+      $('doubleModal').classList.add('show');
+    }
+
+    function removeOneSecondChanceFromPlayer(p) {
+      const idx = p.cards.findIndex(c => c.kind === 'secondChance');
+      if (idx !== -1) p.cards.splice(idx, 1);
+      p.secondChanceCount = Math.max(0, p.secondChanceCount - 1);
+    }
+
+    function useSecondChanceAfterDouble(p) {
+      removeOneSecondChanceFromPlayer(p);
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+      renderGame();
+      saveGame();
+    }
+
+    function failAfterDouble(p) {
+      p.out = true;
+      p.roundScore = 0;
+      p.roundScoreBase = 0;
+      p.multiplier = 1;
+      p.cards = [];
+      p.secondChanceCount = 0;
+      S.busy = true;
+      renderGame();
+      saveGame();
+
+      playSound('double');
+
+      showDoubleModalNoChoice(p.name, { kind: 'num', value: p.lastCardValue || 0 }, () => {
+        if (checkRoundFinished()) return;
+        advanceTurn();
+      });
+    }
+
     function drawCard() {
       if (S.busy || S.gameOver) return;
       const p = currentPlayer();
@@ -1849,42 +2155,69 @@
 
       setTimeout(() => {
         const card = S.deck.shift();
-        const isDouble = p.cards.includes(card);
+        p.lastCardValue = card.kind === 'num' ? card.value : 0;
         renderCardFace(card);
         fc.classList.add('flipped');
 
         setTimeout(() => {
-          if (isDouble) {
-            const roundFinished = true; // after double this player leaves the round
-            p.out = true;
-            p.roundScore = 0;
-            p.cards = [];
-            renderGame();
-            saveGame();
-            playSound('double');
+          if (card.kind === 'num') {
+            const isDouble = p.cards.some(c => c.kind === 'num' && c.value === card.value);
 
-            showDoubleModal(p.name, card, () => {
-              if (checkRoundFinished()) return;
-              if (activePlayers().length === 0 || roundFinished) {
-                scheduleAfterTurn('round', 3000);
-              } else {
-                scheduleAfterTurn('next', 3000);
+            if (isDouble) {
+              if (S.enableSecondChance && p.secondChanceCount > 0) {
+                playSound('double');
+                showDoubleModalWithSecondChance(
+                  p.name,
+                  card,
+                  () => {
+                    useSecondChanceAfterDouble(p);
+                  },
+                  () => {
+                    failAfterDouble(p);
+                    if (checkRoundFinished()) return;
+                    advanceTurn();
+                  }
+                );
+                saveGame();
+                return;
               }
-            });
-          } else {
+
+              failAfterDouble(p);
+              if (checkRoundFinished()) return;
+              return;
+            }
+
             p.cards.push(card);
-            p.roundScore += card;
+            p.roundScoreBase += card.value;
+            S.busy = false;
             renderGame();
             saveGame();
             playSound('draw');
             if (checkRoundFinished()) return;
-            scheduleAfterTurn('next', 3000);
+            scheduleAfterTurn('next', S.turnDelaySec * 1000);
+          } else if (card.kind === 'x2') {
+            p.cards.push(card);
+            p.multiplier *= 2;
+            S.busy = false;
+            renderGame();
+            saveGame();
+            playSound('draw');
+            if (checkRoundFinished()) return;
+            scheduleAfterTurn('next', S.turnDelaySec * 1000);
+          } else if (card.kind === 'secondChance') {
+            p.cards.push(card);
+            p.secondChanceCount += 1;
+            S.busy = false;
+            renderGame();
+            saveGame();
+            playSound('draw');
+            if (checkRoundFinished()) return;
+            scheduleAfterTurn('next', S.turnDelaySec * 1000);
           }
         }, 380);
       }, 180);
     }
 
-    // ── Stop turn ─────────────────────────────────────────────────────────────
     function stopTurn() {
       if (S.busy || S.gameOver) return;
       const p = currentPlayer();
@@ -1892,16 +2225,13 @@
 
       clearTimers();
       p.stopped = true;
+      S.busy = false;
       renderGame();
       saveGame();
       playSound('stop');
 
-      if (checkRoundFinished()) {
-        scheduleAfterTurn('round', 3000);
-        return;
-      }
-
-      scheduleAfterTurn('next', 3000);
+      if (checkRoundFinished()) return;
+      scheduleAfterTurn('next', S.turnDelaySec * 1000);
     }
 
     function advanceTurn() {
@@ -1924,28 +2254,32 @@
 
     function checkRoundFinished() {
       if (activePlayers().length === 0) {
+        endRound();
         return true;
       }
       return false;
     }
 
     function bankRoundScores() {
-      for (const p of S.players) if (!p.out) p.bankedScore += p.roundScore;
+      for (const p of S.players) {
+        if (!p.out) p.bankedScore += roundPoints(p);
+      }
     }
 
     function bestRoundScore() {
       let best = -1;
-      for (const p of S.players) if (p.roundScore > best) best = p.roundScore;
+      for (const p of S.players) {
+        const score = roundPoints(p);
+        if (score > best) best = score;
+      }
       return best;
     }
 
-    // ── Round end screen with all player scores ───────────────────────────────
     function showRoundEndScreen() {
       const best = bestRoundScore();
-      const title = `Ronde ${S.round} klaar`;
-      $('roundTitle').textContent = title;
+      $('roundTitle').textContent = `Ronde ${S.round} klaar`;
 
-      const winners = S.players.filter(p => p.roundScore === best && best > 0);
+      const winners = S.players.filter(p => roundPoints(p) === best && best > 0);
       let subtitle = '';
       if (winners.length === 1) {
         subtitle = `${winners[0].name} won deze ronde met ${best} punten.`;
@@ -1961,12 +2295,12 @@
       const sorted = [...S.players].sort((a, b) => b.bankedScore - a.bankedScore);
 
       sorted.forEach(p => {
-        const isBest = p.roundScore === best && best > 0;
+        const isBest = roundPoints(p) === best && best > 0;
         const row = document.createElement('div');
         row.className = 'rsrow' + (isBest ? ' best-row' : '');
         row.innerHTML = `
           <span class="rsn">${p.name}</span>
-          <span class="rs-round">+${p.roundScore}</span>
+          <span class="rs-round">+${roundPoints(p)}</span>
           <span class="rs-total">${p.bankedScore}</span>
         `;
         container.appendChild(row);
@@ -2060,6 +2394,13 @@
       saveSettings();
     });
 
+    $('turnDelayInput').addEventListener('change', () => {
+      const n = parseInt($('turnDelayInput').value, 10);
+      S.turnDelaySec = Number.isFinite(n) && n >= 1 ? n : 2;
+      $('turnDelayInput').value = S.turnDelaySec;
+      saveSettings();
+    });
+
     $('riskToggle').addEventListener('change', () => {
       S.showRisk = $('riskToggle').checked;
       $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
@@ -2072,9 +2413,21 @@
       saveSettings();
     });
 
+    $('x2Toggle').addEventListener('change', () => {
+      S.enableX2 = $('x2Toggle').checked;
+      saveSettings();
+    });
+
+    $('secondChanceToggle').addEventListener('change', () => {
+      S.enableSecondChance = $('secondChanceToggle').checked;
+      saveSettings();
+    });
+
     function backToLobby() {
       clearTimers();
-      hide('doubleModal');
+      hideDoubleModal();
+      hide('settingsModal');
+      hide('infoModal');
 
       S = {
         players: [],
@@ -2087,6 +2440,9 @@
         maxScore: 200,
         showRisk: true,
         soundEnabled: true,
+        enableX2: true,
+        enableSecondChance: true,
+        turnDelaySec: 2,
         pendingAfterTurn: null,
         turnDeadline: null,
         autoTimer: null,
@@ -2117,13 +2473,10 @@
       $('drawBtn').disabled = false;
       $('stopBtn').disabled = false;
       $('turnCard').className = 'turn-card';
-      hide('settingsModal');
-      hide('infoModal');
       showScreen('lobbyScreen');
       renderLobbyPlayers();
     }
 
-    // ── Init ──────────────────────────────────────────────────────────────────
     loadSettings();
     applySettingsToUI();
     $('roundBtn').onclick = nextRound;
