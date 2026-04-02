@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Double Trouble</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #111;
+        color: white;
+    }
+    .card {
+        font-size: 80px;
+        margin: 40px;
+    }
+    .score {
+        font-size: 24px;
+    }
+    button {
+        padding: 20px 40px;
+        font-size: 20px;
+        border-radius: 10px;
+        border: none;
+        background: #00c853;
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<h1>Double Trouble</h1>
+
+<div class="card" id="card">?</div>
+<div class="score">Score: <span id="score">0</span></div>
+
+<button onclick="drawCard()">Draw Card</button>
+
+<script>
+let drawnCards = [];
+let score = 0;
+
+function drawCard() {
+    let card = Math.floor(Math.random() * 10) + 1; // 1-10
+
+    document.getElementById("card").innerText = card;
+
+    if (drawnCards.includes(card)) {
+        alert("💥 Double! You lose!");
+        drawnCards = [];
+        score = 0;
+    } else {
+        drawnCards.push(card);
+        score++;
+    }
+
+    document.getElementById("score").innerText = score;
+}
+</script>
+
+</body>
+</html>
