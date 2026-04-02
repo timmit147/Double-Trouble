@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="nl">
+<!DOCTYPE html><html lang="nl">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>Double Trouble</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
 :root {
   --gold: #c9a84c;
@@ -19,973 +15,28 @@
   --card-w: 108px;
   --card-h: 152px;
 }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--cream); overflow: hidden; }
+button, input { font: inherit; }.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 20px; position: absolute; inset: 0; overflow-y: auto; } .screen.active { display: flex; }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+/* LOBBY */ #lobbyScreen { background: radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%); gap: 10px; justify-content: flex-start; padding-top: 40px; padding-bottom: 30px; } #lobbyScreen::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(201,168,76,.03) 28px, rgba(201,168,76,.03) 30px); pointer-events: none; } .logo-wrap { text-align: center; margin-bottom: 10px; position: relative; z-index: 1; } .logo-wrap h1 { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 55%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; } .logo-wrap .tagline { font-size: 10px; letter-spacing: 5px; color: rgba(201,168,76,.45); text-transform: uppercase; margin-top: 4px; } .lcard { background: rgba(255,255,255,.04); border: 1px solid rgba(201,168,76,.2); border-radius: 18px; padding: 18px 20px; width: 100%; max-width: 360px; position: relative; z-index: 1; } .lcard h3 { font-family: 'Playfair Display', serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; } .player-input-wrap { display: flex; gap: 8px; align-items: stretch; } .name-input { width: 100%; background: rgba(0,0,0,.4); border: 1.5px solid rgba(201,168,76,.25); border-radius: 10px; padding: 11px 13px; color: var(--cream); font-size: 15px; outline: none; } .name-input:focus { border-color: var(--gold); } .name-input::placeholder { color: rgba(255,255,255,.22); } .row { display: flex; gap: 8px; align-items: stretch; } .btn-g { background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold)); background-size: 200%; color: var(--dark); border: none; border-radius: 10px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 11px 16px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(201,168,76,.28); transition: transform .15s, filter .15s; } .btn-g:hover { filter: brightness(1.1); transform: translateY(-1px); } .btn-g:active { transform: scale(.97); } .btn-big { width: 100%; padding: 15px; border-radius: 13px; border: none; font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: transform .15s, filter .15s; } .btn-big:active { transform: scale(.97); } .btn-big.gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); box-shadow: 0 6px 20px rgba(201,168,76,.32); } .btn-big.gold:hover { filter: brightness(1.1); } .btn-big.outline { background: transparent; border: 1.5px solid rgba(201,168,76,.35); color: var(--gold); margin-top: 8px; } .or-div { text-align: center; color: rgba(255,255,255,.18); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin: 8px 0; } .plist { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; } .pitem { background: rgba(255,255,255,.05); border: 1px solid rgba(201,168,76,.12); border-radius: 8px; padding: 8px 10px; font-size: 13px; display: flex; align-items: center; justify-content: space-between; gap: 7px; } .pitem-left { display: flex; align-items: center; gap: 7px; min-width: 0; } .pdot { width: 7px; height: 7px; border-radius: 50%; background: #2d8a58; flex-shrink: 0; } .pname-trim { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .pdel { border: none; background: rgba(255,255,255,.07); color: rgba(255,255,255,.7); width: 26px; height: 26px; border-radius: 8px; cursor: pointer; } .pdel:hover { background: rgba(192,57,43,.3); color: white; } .small-hint { font-size: 11px; color: rgba(255,255,255,.45); text-align: center; margin-top: 4px; }
 
-html, body {
-  height: 100%;
-  font-family: 'DM Sans', sans-serif;
-  background: var(--dark);
-  color: var(--cream);
-  overflow: hidden;
-}
+/* GAME */ #gameScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); justify-content: flex-start; padding: 0; } #gameScreen::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E"); pointer-events: none; } #gameScreen::after { content: ''; position: fixed; inset: 10px; border: 1.5px solid rgba(201,168,76,.15); border-radius: 22px; pointer-events: none; z-index: 0; } .g-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; padding: 12px 14px 16px; gap: 9px; overflow-y: auto; } .topbar { width: 100%; display: flex; align-items: center; justify-content: space-between; } .g-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(135deg, var(--gold), var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; } .icon-btn { width: 33px; height: 33px; border-radius: 50%; border: 1.5px solid rgba(201,168,76,.3); background: rgba(0,0,0,.4); color: var(--gold); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; font-family: 'Playfair Display', serif; } .icon-btn:hover { background: var(--gold); color: var(--dark); } .score-row { display: flex; gap: 8px; width: 100%; justify-content: center; flex-wrap: wrap; } .sbox { flex: 1; min-width: 92px; max-width: 110px; background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.2); border-radius: 11px; padding: 7px 8px; text-align: center; } .sbox .sl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.45); } .sbox .sv { font-family: 'Playfair Display', serif; font-size: 25px; color: var(--gold-light); line-height: 1.1; } .turn-card { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px 14px; text-align: center; } .turn-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 4px; } .turn-name { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold-light); line-height: 1.05; margin-bottom: 4px; } .turn-sub { font-size: 12px; color: rgba(255,255,255,.72); } .round-pill { display: inline-block; margin-top: 6px; background: rgba(201,168,76,.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,.25); border-radius: 999px; padding: 3px 10px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; } .risk-wrap { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 7px 11px; } .risk-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; } .risk-top span:first-child { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); } .risk-pct { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; } .risk-track { height: 6px; background: rgba(255,255,255,.07); border-radius: 4px; overflow: hidden; } .risk-fill { height: 100%; border-radius: 4px; transition: width .5s ease, background .5s ease; } .card-stage { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 2px; } .deck-pile { position: relative; width: var(--card-w); height: var(--card-h); flex-shrink: 0; } .pc { position: absolute; inset: 0; border-radius: 13px; background: linear-gradient(135deg, #1a4d2e, #0d2e1a); border: 1.5px solid rgba(201,168,76,.32); box-shadow: 0 4px 12px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; } .pc:nth-child(1) { transform: rotate(-3deg) translate(-2px,2px); } .pc:nth-child(2) { transform: rotate(-1deg) translate(-1px,1px); } .cbi { width: 80px; height: 118px; border: 1.5px solid rgba(201,168,76,.22); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: rgba(201,168,76,.18); } .dbadge { position: absolute; bottom: -10px; right: -10px; background: var(--gold); color: var(--dark); font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; border-radius: 20px; padding: 2px 7px; z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,.4); white-space: nowrap; } .draw-hint { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.35); text-align: center; margin-top: 4px; } .flip-wrap { width: var(--card-w); height: var(--card-h); perspective: 800px; } .flip-card { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,.2,.2,1); position: relative; } .flip-card.flipped { transform: rotateY(180deg); } .fcf, .fcb { position: absolute; inset: 0; border-radius: 13px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(201,168,76,.42); box-shadow: 0 8px 26px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08); } .fcf { background: linear-gradient(135deg, #1a4d2e, #0d2e1a); } .fcb { background: linear-gradient(160deg, #fdfaf3, #ede6d2); transform: rotateY(180deg); flex-direction: column; justify-content: space-between; padding: 9px; color: #1a1a2e; font-family: 'Playfair Display', serif; } .cc { display: flex; flex-direction: column; align-items: center; line-height: 1; } .cc .cn { font-size: 18px; font-weight: 700; } .cc .cs { font-size: 12px; margin-top: -1px; } .cc.bot { transform: rotate(180deg); } .c-center { font-size: 50px; line-height: 1; } .rc { color: var(--red); } .bc { color: #1a1a2e; } .player-panel { width: 100%; max-width: 420px; } .pnl-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; } .pnl-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; } .pchip { background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 5px 11px; display: flex; align-items: center; gap: 6px; font-size: 11px; } .pchip.me { border-color: rgba(201,168,76,.35); } .pchip.active { box-shadow: 0 0 0 1px rgba(232,201,110,.35), 0 0 18px rgba(232,201,110,.1); } .pchip.out { opacity: .3; text-decoration: line-through; } .pchip.done { opacity: .55; } .pscore { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold-light); } .pname { color: rgba(255,255,255,.65); } .ptag { font-size: 9px; color: var(--gold); opacity: .65; } .player-cards { width: 100%; max-width: 420px; } .cards-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; } .hist-track { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; min-height: 38px; padding: 7px; background: rgba(0,0,0,.2); border-radius: 10px; border: 1px solid rgba(255,255,255,.04); } .hchip { width: 31px; height: 38px; background: linear-gradient(160deg, #fdfaf3, #ede6d2); border-radius: 5px; border: 1.5px solid rgba(201,168,76,.3); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #1a1a2e; box-shadow: 0 2px 5px rgba(0,0,0,.28); animation: chipIn .3s cubic-bezier(.34,1.56,.64,1); flex-shrink: 0; } .hchip.rc { color: var(--red); } .hchip.dup { border-color: rgba(192,57,43,.65); background: linear-gradient(160deg, #fde8e8, #f5c6c6); } @keyframes chipIn { from { transform: translateY(-10px) scale(.7); opacity: 0; } to { transform: none; opacity: 1; } } .draw-actions { width: 100%; max-width: 360px; display: flex; gap: 10px; } .draw-btn { flex: 1; padding: 15px; border-radius: 13px; border: none; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%); background-size: 200%; color: var(--dark); font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px rgba(201,168,76,.32), inset 0 1px 0 rgba(255,255,255,.22); transition: transform .15s, filter .15s, opacity .15s; } .draw-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); } .draw-btn:active:not(:disabled) { transform: scale(.97); } .draw-btn:disabled { opacity: .3; cursor: not-allowed; } .draw-btn.secondary { background: transparent; border: 1.5px solid rgba(201,168,76,.3); color: var(--gold); box-shadow: none; } .small-center { text-align: center; }
 
-button, input {
-  font: inherit;
-}
+/* MODALS */ .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(5px); } .overlay.show { opacity: 1; pointer-events: all; } .mbox { background: linear-gradient(160deg, #1a3a28, #0d1f17); border: 1.5px solid rgba(201,168,76,.32); border-radius: 20px; padding: 28px 24px; width: 90%; max-width: 360px; position: relative; transform: scale(.9); transition: transform .3s; box-shadow: 0 28px 70px rgba(0,0,0,.6); } .overlay.show .mbox { transform: scale(1); } .mbox h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 20px; margin-bottom: 12px; letter-spacing: 1px; } .mbox p, .mbox li { color: rgba(245,240,232,.8); font-size: 13px; line-height: 1.7; } .mbox ul { padding-left: 16px; margin-top: 7px; } .mbox li { margin-bottom: 4px; } .mcl { position: absolute; top: 13px; right: 14px; background: none; border: none; color: var(--gold); font-size: 19px; cursor: pointer; opacity: .55; } .mcl:hover { opacity: 1; } .rhl { display: inline-block; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.22); border-radius: 4px; padding: 1px 6px; color: var(--gold-light); font-weight: 600; } .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.06); } .setting-row:first-of-type { border-top: none; padding-top: 0; } .setting-row label { font-size: 13px; color: rgba(245,240,232,.82); } .setting-row input[type="number"] { width: 92px; background: rgba(0,0,0,.35); border: 1px solid rgba(201,168,76,.24); color: var(--cream); border-radius: 10px; padding: 10px 12px; outline: none; } .setting-row input[type="checkbox"] { transform: scale(1.1); accent-color: var(--gold); } .setting-btn { width: 100%; margin-top: 8px; border: none; border-radius: 12px; padding: 12px 14px; background: rgba(255,255,255,.06); color: var(--cream); cursor: pointer; } .setting-btn:hover { background: rgba(255,255,255,.09); }
 
-.screen {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  position: absolute;
-  inset: 0;
-  overflow-y: auto;
-}
+/* WINNER */ #winnerScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; } .trophy { font-size: 60px; animation: bounce .8s ease infinite alternate; } @keyframes bounce { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-8px) rotate(3deg); } } .win-title { font-family: 'Playfair Display', serif; font-size: 30px; letter-spacing: 2px; color: var(--gold-light); text-align: center; } .win-name { font-family: 'Playfair Display', serif; font-size: 44px; color: white; text-align: center; line-height: 1; } .win-score { font-size: 13px; color: rgba(201,168,76,.55); letter-spacing: 3px; text-transform: uppercase; text-align: center; } .fscores { background: rgba(0,0,0,.28); border: 1px solid rgba(201,168,76,.18); border-radius: 13px; padding: 14px 18px; width: 100%; max-width: 280px; } .fsrow { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.04); } .fsrow:last-child { border-bottom: none; } .fsn { font-size: 13px; color: rgba(255,255,255,.75); } .fsp { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); }
 
-.screen.active {
-  display: flex;
-}
+::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-thumb { background: rgba(201,168,76,.2); border-radius: 3px; }
 
-/* LOBBY */
-#lobbyScreen {
-  background: radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%);
-  gap: 10px;
-  justify-content: flex-start;
-  padding-top: 40px;
-  padding-bottom: 30px;
-}
+@media (max-height: 620px) { :root { --card-w: 88px; --card-h: 124px; } .c-center { font-size: 40px; } .turn-name { font-size: 24px; } } </style>
 
-#lobbyScreen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 28px,
-    rgba(201,168,76,.03) 28px,
-    rgba(201,168,76,.03) 30px
-  );
-  pointer-events: none;
-}
-
-.logo-wrap {
-  text-align: center;
-  margin-bottom: 10px;
-  position: relative;
-  z-index: 1;
-}
-
-.logo-wrap h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 44px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 55%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-}
-
-.logo-wrap .tagline {
-  font-size: 10px;
-  letter-spacing: 5px;
-  color: rgba(201,168,76,.45);
-  text-transform: uppercase;
-  margin-top: 4px;
-}
-
-.lcard {
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(201,168,76,.2);
-  border-radius: 18px;
-  padding: 18px 20px;
-  width: 100%;
-  max-width: 360px;
-  position: relative;
-  z-index: 1;
-}
-
-.lcard h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 12px;
-}
-
-.name-input {
-  width: 100%;
-  background: rgba(0,0,0,.4);
-  border: 1.5px solid rgba(201,168,76,.25);
-  border-radius: 10px;
-  padding: 11px 13px;
-  color: var(--cream);
-  font-size: 15px;
-  outline: none;
-}
-
-.name-input:focus {
-  border-color: var(--gold);
-}
-
-.name-input::placeholder {
-  color: rgba(255,255,255,.22);
-}
-
-.row {
-  display: flex;
-  gap: 8px;
-  align-items: stretch;
-}
-
-.btn-g {
-  background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-  background-size: 200%;
-  color: var(--dark);
-  border: none;
-  border-radius: 10px;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 11px 16px;
-  cursor: pointer;
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(201,168,76,.28);
-  transition: transform .15s, filter .15s;
-}
-
-.btn-g:hover {
-  filter: brightness(1.1);
-  transform: translateY(-1px);
-}
-
-.btn-g:active {
-  transform: scale(.97);
-}
-
-.btn-big {
-  width: 100%;
-  padding: 15px;
-  border-radius: 13px;
-  border: none;
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform .15s, filter .15s;
-}
-
-.btn-big:active {
-  transform: scale(.97);
-}
-
-.btn-big.gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: var(--dark);
-  box-shadow: 0 6px 20px rgba(201,168,76,.32);
-}
-
-.btn-big.gold:hover {
-  filter: brightness(1.1);
-}
-
-.btn-big.outline {
-  background: transparent;
-  border: 1.5px solid rgba(201,168,76,.35);
-  color: var(--gold);
-  margin-top: 8px;
-}
-
-.or-div {
-  text-align: center;
-  color: rgba(255,255,255,.18);
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin: 8px 0;
-}
-
-.player-input-wrap {
-  display: flex;
-  gap: 8px;
-  align-items: stretch;
-}
-
-.player-input-wrap input {
-  flex: 1;
-}
-
-.plist {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.pitem {
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(201,168,76,.12);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 7px;
-}
-
-.pitem-left {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  min-width: 0;
-}
-
-.pdot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #2d8a58;
-  flex-shrink: 0;
-}
-
-.pname-trim {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.pdel {
-  border: none;
-  background: rgba(255,255,255,.07);
-  color: rgba(255,255,255,.7);
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.pdel:hover {
-  background: rgba(192,57,43,.3);
-  color: white;
-}
-
-/* GAME */
-#gameScreen {
-  background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);
-  justify-content: flex-start;
-  padding: 0;
-}
-
-#gameScreen::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-#gameScreen::after {
-  content: '';
-  position: fixed;
-  inset: 10px;
-  border: 1.5px solid rgba(201,168,76,.15);
-  border-radius: 22px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.g-inner {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 12px 14px 16px;
-  gap: 9px;
-  overflow-y: auto;
-}
-
-.topbar {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.g-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 19px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.icon-btn {
-  width: 33px;
-  height: 33px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(201,168,76,.3);
-  background: rgba(0,0,0,.4);
-  color: var(--gold);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .2s;
-  font-family: 'Playfair Display', serif;
-}
-
-.icon-btn:hover {
-  background: var(--gold);
-  color: var(--dark);
-}
-
-.score-row {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.sbox {
-  flex: 1;
-  min-width: 92px;
-  max-width: 110px;
-  background: rgba(0,0,0,.3);
-  border: 1px solid rgba(201,168,76,.2);
-  border-radius: 11px;
-  padding: 7px 8px;
-  text-align: center;
-}
-
-.sbox .sl {
-  font-size: 8px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(201,168,76,.45);
-}
-
-.sbox .sv {
-  font-family: 'Playfair Display', serif;
-  font-size: 25px;
-  color: var(--gold-light);
-  line-height: 1.1;
-}
-
-.turn-card {
-  width: 100%;
-  max-width: 360px;
-  background: rgba(0,0,0,.22);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 14px;
-  padding: 12px 14px;
-  text-align: center;
-}
-
-.turn-label {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.35);
-  margin-bottom: 4px;
-}
-
-.turn-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 30px;
-  color: var(--gold-light);
-  line-height: 1.05;
-  margin-bottom: 4px;
-}
-
-.turn-sub {
-  font-size: 12px;
-  color: rgba(255,255,255,.72);
-}
-
-.risk-wrap {
-  width: 100%;
-  max-width: 360px;
-  background: rgba(0,0,0,.22);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 10px;
-  padding: 7px 11px;
-}
-
-.risk-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-.risk-top span:first-child {
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.35);
-}
-
-.risk-pct {
-  font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.risk-track {
-  height: 6px;
-  background: rgba(255,255,255,.07);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.risk-fill {
-  height: 100%;
-  border-radius: 4px;
-  transition: width .5s ease, background .5s ease;
-}
-
-.card-stage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  margin-top: 2px;
-}
-
-.deck-pile {
-  position: relative;
-  width: var(--card-w);
-  height: var(--card-h);
-  flex-shrink: 0;
-}
-
-.pc {
-  position: absolute;
-  inset: 0;
-  border-radius: 13px;
-  background: linear-gradient(135deg, #1a4d2e, #0d2e1a);
-  border: 1.5px solid rgba(201,168,76,.32);
-  box-shadow: 0 4px 12px rgba(0,0,0,.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pc:nth-child(1) { transform: rotate(-3deg) translate(-2px,2px); }
-.pc:nth-child(2) { transform: rotate(-1deg) translate(-1px,1px); }
-
-.cbi {
-  width: 80px;
-  height: 118px;
-  border: 1.5px solid rgba(201,168,76,.22);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  color: rgba(201,168,76,.18);
-}
-
-.dbadge {
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  background: var(--gold);
-  color: var(--dark);
-  font-family: 'Playfair Display', serif;
-  font-size: 10px;
-  font-weight: 700;
-  border-radius: 20px;
-  padding: 2px 7px;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(0,0,0,.4);
-  white-space: nowrap;
-}
-
-.draw-hint {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(201,168,76,.35);
-  text-align: center;
-  margin-top: 4px;
-}
-
-.flip-wrap {
-  width: var(--card-w);
-  height: var(--card-h);
-  perspective: 800px;
-}
-
-.flip-card {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform .55s cubic-bezier(.4,.2,.2,1);
-  position: relative;
-}
-
-.flip-card.flipped {
-  transform: rotateY(180deg);
-}
-
-.fcf, .fcb {
-  position: absolute;
-  inset: 0;
-  border-radius: 13px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid rgba(201,168,76,.42);
-  box-shadow: 0 8px 26px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
-}
-
-.fcf {
-  background: linear-gradient(135deg, #1a4d2e, #0d2e1a);
-}
-
-.fcb {
-  background: linear-gradient(160deg, #fdfaf3, #ede6d2);
-  transform: rotateY(180deg);
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 9px;
-  color: #1a1a2e;
-  font-family: 'Playfair Display', serif;
-}
-
-.cc {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1;
-}
-
-.cc .cn {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.cc .cs {
-  font-size: 12px;
-  margin-top: -1px;
-}
-
-.cc.bot {
-  transform: rotate(180deg);
-}
-
-.c-center {
-  font-size: 50px;
-  line-height: 1;
-}
-
-.rc { color: var(--red); }
-.bc { color: #1a1a2e; }
-
-.last-action {
-  width: 100%;
-  max-width: 360px;
-  background: rgba(0,0,0,.18);
-  border: 1px solid rgba(255,255,255,.05);
-  border-radius: 12px;
-  padding: 10px 12px;
-  text-align: center;
-  font-size: 13px;
-  color: rgba(255,255,255,.8);
-  min-height: 42px;
-}
-
-.player-panel {
-  width: 100%;
-  max-width: 420px;
-}
-
-.pnl-lbl {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(201,168,76,.32);
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.pnl-row {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.pchip {
-  background: rgba(0,0,0,.3);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 20px;
-  padding: 5px 11px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-}
-
-.pchip.me {
-  border-color: rgba(201,168,76,.35);
-}
-
-.pchip.active {
-  box-shadow: 0 0 0 1px rgba(232,201,110,.35), 0 0 18px rgba(232,201,110,.1);
-}
-
-.pchip.out {
-  opacity: .3;
-  text-decoration: line-through;
-}
-
-.pchip.done {
-  opacity: .55;
-}
-
-.pscore {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px;
-  color: var(--gold-light);
-}
-
-.pname {
-  color: rgba(255,255,255,.65);
-}
-
-.ptag {
-  font-size: 9px;
-  color: var(--gold);
-  opacity: .65;
-}
-
-.player-cards {
-  width: 100%;
-  max-width: 420px;
-}
-
-.cards-lbl {
-  font-size: 9px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(201,168,76,.32);
-  text-align: center;
-  margin-bottom: 5px;
-}
-
-.hist-track {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-height: 38px;
-  padding: 7px;
-  background: rgba(0,0,0,.2);
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,.04);
-}
-
-.hchip {
-  width: 31px;
-  height: 38px;
-  background: linear-gradient(160deg, #fdfaf3, #ede6d2);
-  border-radius: 5px;
-  border: 1.5px solid rgba(201,168,76,.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a2e;
-  box-shadow: 0 2px 5px rgba(0,0,0,.28);
-  animation: chipIn .3s cubic-bezier(.34,1.56,.64,1);
-  flex-shrink: 0;
-}
-
-.hchip.rc {
-  color: var(--red);
-}
-
-.hchip.dup {
-  border-color: rgba(192,57,43,.65);
-  background: linear-gradient(160deg, #fde8e8, #f5c6c6);
-}
-
-@keyframes chipIn {
-  from { transform: translateY(-10px) scale(.7); opacity: 0; }
-  to { transform: none; opacity: 1; }
-}
-
-.draw-actions {
-  width: 100%;
-  max-width: 360px;
-  display: flex;
-  gap: 10px;
-}
-
-.draw-btn {
-  flex: 1;
-  padding: 15px;
-  border-radius: 13px;
-  border: none;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-  background-size: 200%;
-  color: var(--dark);
-  font-family: 'Playfair Display', serif;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(201,168,76,.32), inset 0 1px 0 rgba(255,255,255,.22);
-  transition: transform .15s, filter .15s, opacity .15s;
-}
-
-.draw-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  filter: brightness(1.08);
-}
-
-.draw-btn:active:not(:disabled) {
-  transform: scale(.97);
-}
-
-.draw-btn:disabled {
-  opacity: .3;
-  cursor: not-allowed;
-}
-
-.draw-btn.secondary {
-  background: transparent;
-  border: 1.5px solid rgba(201,168,76,.3);
-  color: var(--gold);
-  box-shadow: none;
-}
-
-.small-hint {
-  font-size: 11px;
-  color: rgba(255,255,255,.45);
-  text-align: center;
-  margin-top: 4px;
-}
-
-/* OVERLAYS */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.75);
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s;
-  backdrop-filter: blur(5px);
-}
-
-.overlay.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.mbox {
-  background: linear-gradient(160deg, #1a3a28, #0d1f17);
-  border: 1.5px solid rgba(201,168,76,.32);
-  border-radius: 20px;
-  padding: 28px 24px;
-  width: 90%;
-  max-width: 330px;
-  position: relative;
-  transform: scale(.9);
-  transition: transform .3s;
-  box-shadow: 0 28px 70px rgba(0,0,0,.6);
-}
-
-.overlay.show .mbox {
-  transform: scale(1);
-}
-
-.mbox h2 {
-  font-family: 'Playfair Display', serif;
-  color: var(--gold);
-  font-size: 20px;
-  margin-bottom: 12px;
-  letter-spacing: 1px;
-}
-
-.mbox p, .mbox li {
-  color: rgba(245,240,232,.8);
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.mbox ul {
-  padding-left: 16px;
-  margin-top: 7px;
-}
-
-.mbox li {
-  margin-bottom: 4px;
-}
-
-.mcl {
-  position: absolute;
-  top: 13px;
-  right: 14px;
-  background: none;
-  border: none;
-  color: var(--gold);
-  font-size: 19px;
-  cursor: pointer;
-  opacity: .55;
-}
-
-.mcl:hover {
-  opacity: 1;
-}
-
-.rhl {
-  display: inline-block;
-  background: rgba(201,168,76,.1);
-  border: 1px solid rgba(201,168,76,.22);
-  border-radius: 4px;
-  padding: 1px 6px;
-  color: var(--gold-light);
-  font-weight: 600;
-}
-
-/* WINNER */
-#winnerScreen {
-  background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);
-  gap: 14px;
-}
-
-.trophy {
-  font-size: 60px;
-  animation: bounce .8s ease infinite alternate;
-}
-
-@keyframes bounce {
-  from { transform: translateY(0) rotate(-3deg); }
-  to { transform: translateY(-8px) rotate(3deg); }
-}
-
-.win-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 30px;
-  letter-spacing: 2px;
-  color: var(--gold-light);
-  text-align: center;
-}
-
-.win-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 44px;
-  color: white;
-  text-align: center;
-  line-height: 1;
-}
-
-.win-score {
-  font-size: 13px;
-  color: rgba(201,168,76,.55);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.fscores {
-  background: rgba(0,0,0,.28);
-  border: 1px solid rgba(201,168,76,.18);
-  border-radius: 13px;
-  padding: 14px 18px;
-  width: 100%;
-  max-width: 280px;
-}
-
-.fsrow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 0;
-  border-bottom: 1px solid rgba(255,255,255,.04);
-}
-
-.fsrow:last-child {
-  border-bottom: none;
-}
-
-.fsn {
-  font-size: 13px;
-  color: rgba(255,255,255,.75);
-}
-
-.fsp {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  color: var(--gold-light);
-}
-
-::-webkit-scrollbar {
-  width: 3px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(201,168,76,.2);
-  border-radius: 3px;
-}
-
-@media (max-height: 620px) {
-  :root { --card-w: 88px; --card-h: 124px; }
-  .c-center { font-size: 40px; }
-  .turn-name { font-size: 24px; }
-}
-</style>
 </head>
-<body>
-
-<!-- LOBBY -->
-<div class="screen active" id="lobbyScreen">
+<body><!-- LOBBY --><div class="screen active" id="lobbyScreen">
   <div class="logo-wrap">
     <h1>Double Trouble</h1>
     <div class="tagline">Kaartspel</div>
-  </div>
-
-  <div class="lcard">
+  </div>  <div class="lcard">
     <h3>Spelers toevoegen</h3>
     <div class="player-input-wrap">
       <input class="name-input" id="playerInput" placeholder="Naam speler…" maxlength="18" />
@@ -993,111 +44,115 @@ button, input {
     </div>
     <div class="small-hint">Voeg spelers toe in de volgorde waarin zij straks aan de beurt zijn.</div>
     <div class="plist" id="playerList"></div>
-  </div>
-
-  <div class="lcard">
+  </div>  <div class="lcard">
     <h3>Start spel</h3>
     <button class="btn-big gold" onclick="startGame()">Speel</button>
-    <button class="btn-big outline" onclick="fillDemoPlayers()">Voorbeeldspelers</button>
   </div>
-</div>
-
-<!-- GAME -->
-<div class="screen" id="gameScreen">
+</div><!-- GAME --><div class="screen" id="gameScreen">
   <div class="g-inner">
     <div class="topbar">
       <div class="g-title">Double Trouble</div>
-      <button class="icon-btn" onclick="showInfo()">i</button>
+      <button class="icon-btn" onclick="openSettings()">⚙</button>
+    </div><div class="score-row">
+  <div class="sbox"><div class="sl">Punten</div><div class="sv" id="scoreVal">0</div></div>
+  <div class="sbox"><div class="sl">Deck</div><div class="sv" id="deckVal">78</div></div>
+  <div class="sbox"><div class="sl">Kaarten</div><div class="sv" id="cardsVal">0</div></div>
+</div>
+
+<div class="turn-card">
+  <div class="turn-label">Aan de beurt</div>
+  <div class="turn-name" id="currentPlayerName">—</div>
+  <div class="turn-sub" id="turnSub">Kies: kaarten pakken of stoppen</div>
+  <div class="round-pill" id="roundPill">Ronde 1</div>
+</div>
+
+<div class="risk-wrap" id="riskWrap">
+  <div class="risk-top">
+    <span>Kans op double</span>
+    <span class="risk-pct" id="riskPct">—</span>
+  </div>
+  <div class="risk-track"><div class="risk-fill" id="riskFill" style="width:0%;background:#2d8a58;"></div></div>
+</div>
+
+<div class="card-stage">
+  <div>
+    <div class="deck-pile">
+      <div class="pc"><div class="cbi">♠</div></div>
+      <div class="pc"><div class="cbi">♠</div></div>
+      <div class="pc"><div class="cbi">♠</div></div>
+      <div class="dbadge" id="deckBadge">78 over</div>
     </div>
+    <div class="draw-hint">Deck</div>
+  </div>
 
-    <div class="score-row">
-      <div class="sbox"><div class="sl">Punten</div><div class="sv" id="scoreVal">0</div></div>
-      <div class="sbox"><div class="sl">Deck</div><div class="sv" id="deckVal">78</div></div>
-      <div class="sbox"><div class="sl">Kaarten</div><div class="sv" id="cardsVal">0</div></div>
-    </div>
-
-    <div class="turn-card">
-      <div class="turn-label">Aan de beurt</div>
-      <div class="turn-name" id="currentPlayerName">—</div>
-      <div class="turn-sub" id="turnSub">Kies: kaart pakken of stoppen</div>
-    </div>
-
-    <div class="risk-wrap">
-      <div class="risk-top">
-        <span>Kans op double</span>
-        <span class="risk-pct" id="riskPct">—</span>
-      </div>
-      <div class="risk-track">
-        <div class="risk-fill" id="riskFill" style="width:0%;background:#2d8a58;"></div>
-      </div>
-    </div>
-
-    <div class="card-stage">
-      <div>
-        <div class="deck-pile">
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="pc"><div class="cbi">♠</div></div>
-          <div class="dbadge" id="deckBadge">78 over</div>
-        </div>
-        <div class="draw-hint">Deck</div>
-      </div>
-
-      <div class="flip-wrap">
-        <div class="flip-card" id="flipCard">
-          <div class="fcf"><div class="cbi">♠</div></div>
-          <div class="fcb" id="cardFace"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="last-action" id="lastAction">Nog geen actie.</div>
-
-    <div class="player-panel">
-      <div class="pnl-lbl">Spelers</div>
-      <div class="pnl-row" id="playersRow"></div>
-    </div>
-
-    <div class="player-cards">
-      <div class="cards-lbl" id="cardsLabel">Kaarten van huidige speler</div>
-      <div class="hist-track" id="history"></div>
-    </div>
-
-    <div class="draw-actions">
-      <button class="draw-btn" id="drawBtn" onclick="drawCard()">Kaart pakken</button>
-      <button class="draw-btn secondary" id="stopBtn" onclick="stopTurn()">Stoppen</button>
+  <div class="flip-wrap">
+    <div class="flip-card" id="flipCard">
+      <div class="fcf"><div class="cbi">♠</div></div>
+      <div class="fcb" id="cardFace"></div>
     </div>
   </div>
 </div>
 
-<!-- WINNER -->
-<div class="screen" id="winnerScreen">
+<div class="player-panel">
+  <div class="pnl-lbl">Spelers</div>
+  <div class="pnl-row" id="playersRow"></div>
+</div>
+
+<div class="player-cards">
+  <div class="cards-lbl">Kaarten van huidige speler</div>
+  <div class="hist-track" id="history"></div>
+</div>
+
+<div class="draw-actions">
+  <button class="draw-btn" id="drawBtn" onclick="drawCard()">Kaart pakken</button>
+  <button class="draw-btn secondary" id="stopBtn" onclick="stopTurn()">Stoppen</button>
+</div>
+
+<button class="draw-btn" id="nextBtn" onclick="nextPlayer()" style="max-width:360px;">Volgende speler</button>
+
+  </div>
+</div><!-- WINNER --><div class="screen" id="winnerScreen">
   <div class="trophy">🏆</div>
   <div class="win-title">Winnaar</div>
   <div class="win-name" id="winnerName">—</div>
   <div class="win-score" id="winnerScore"></div>
   <div class="fscores" id="finalScores"></div>
   <button class="btn-big gold" style="max-width:240px;margin-top:4px;" onclick="backToLobby()">Opnieuw spelen</button>
+</div><!-- SETTINGS --><div class="overlay" id="settingsModal" onclick="closeOvl(event,'settingsModal')">
+  <div class="mbox">
+    <button class="mcl" onclick="hide('settingsModal')">✕</button>
+    <h2>Instellingen</h2><button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
+<button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
+
+<div class="setting-row">
+  <label for="maxScoreInput">Max score voor eindronde</label>
+  <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
 </div>
 
-<!-- INFO -->
-<div class="overlay" id="infoModal" onclick="closeOvl(event,'infoModal')">
+<div class="setting-row">
+  <label for="riskToggle">Toon kansenbalk</label>
+  <input type="checkbox" id="riskToggle" checked />
+</div>
+
+<button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
+
+  </div>
+</div><!-- INFO --><div class="overlay" id="infoModal" onclick="closeOvl(event,'infoModal')">
   <div class="mbox">
     <button class="mcl" onclick="hide('infoModal')">✕</button>
     <h2>Spelregels</h2>
-    <p>Elke speler krijgt om de beurt één keuze:</p>
+    <p>Iedere speler speelt om de beurt. In je beurt kun je kaarten pakken of stoppen.</p>
     <ul>
-      <li><span class="rhl">Kaart pakken</span> = de waarde van de kaart komt bij je score.</li>
-      <li>Pak je een kaart die je al hebt gehad? <span class="rhl">💥 Double!</span> Dan val je uit en je score wordt 0.</li>
-      <li><span class="rhl">Stoppen</span> = je houdt je punten en slaat je beurt over.</li>
-      <li>Daarna gaat de beurt direct door naar de volgende actieve speler.</li>
-      <li>Het spel eindigt als iedereen gestopt of uit is, of als het deck leeg is.</li>
+      <li>Het deck bevat <span class="rhl">78 kaarten</span>: 1× kaart 1, 2× kaart 2, … 12× kaart 12.</li>
+      <li>Pak je een kaart die je al had? <span class="rhl">💥 Double!</span> Dan val je uit en je score wordt 0.</li>
+      <li>Als je stopt, bewaar je je punten en mag je later niet meer meedoen.</li>
+      <li>Pas als je op <span class="rhl">Volgende speler</span> drukt, gaat de beurt door.</li>
+      <li>Na elke ronde wordt gekeken of iemand boven de ingestelde max score zit.</li>
+      <li>Het spel eindigt ook als iedereen gestopt is, uitvalt of het deck leeg is.</li>
     </ul>
   </div>
-</div>
-
-<script>
-/* RNG */
+</div><script>
+/* Seeded RNG */
 function mulberry32(seed) {
   return function() {
     seed |= 0;
@@ -1108,12 +163,10 @@ function mulberry32(seed) {
   };
 }
 
-/* Deck: 1x1, 2x2, ... 12x12 = 78 */
+/* Deck: N copies of card N, N = 1..12 */
 function buildDeck(rng) {
   let d = [];
-  for (let n = 1; n <= 12; n++) {
-    for (let i = 0; i < n; i++) d.push(n);
-  }
+  for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) d.push(n);
   for (let i = d.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     [d[i], d[j]] = [d[j], d[i]];
@@ -1121,13 +174,11 @@ function buildDeck(rng) {
   return d;
 }
 
-/* Risk calculation */
+/* Risk */
 function calcRisk(myCards, deckRemaining) {
   if (!deckRemaining.length) return 0;
   let danger = 0;
-  for (const c of deckRemaining) {
-    if (myCards.includes(c)) danger++;
-  }
+  for (const c of deckRemaining) if (myCards.includes(c)) danger++;
   return danger / deckRemaining.length;
 }
 
@@ -1137,8 +188,11 @@ let S = {
   players: [],
   currentIndex: 0,
   busy: false,
-  seed: null,
-  gameOver: false
+  gameOver: false,
+  round: 1,
+  maxScore: 200,
+  showRisk: true,
+  lastTurnChangedRound: false,
 };
 
 const $ = id => document.getElementById(id);
@@ -1150,16 +204,32 @@ function showScreen(id) {
   $(id).classList.add('active');
 }
 
-function showInfo() {
-  $('infoModal').classList.add('show');
+function showInfo() { $('infoModal').classList.add('show'); }
+function openSettings() { $('settingsModal').classList.add('show'); }
+function hide(id) { $(id).classList.remove('show'); }
+function closeOvl(e, id) { if (e.target === $(id)) hide(id); }
+
+function saveSettings() {
+  localStorage.setItem('dt_settings', JSON.stringify({
+    maxScore: S.maxScore,
+    showRisk: S.showRisk
+  }));
 }
 
-function hide(id) {
-  $(id).classList.remove('show');
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem('dt_settings');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (typeof data.maxScore === 'number') S.maxScore = data.maxScore;
+    if (typeof data.showRisk === 'boolean') S.showRisk = data.showRisk;
+  } catch(e) {}
 }
 
-function closeOvl(e, id) {
-  if (e.target === $(id)) hide(id);
+function applySettingsToUI() {
+  $('maxScoreInput').value = S.maxScore;
+  $('riskToggle').checked = S.showRisk;
+  $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
 }
 
 /* Lobby */
@@ -1170,7 +240,6 @@ function getPlayerName() {
 function addPlayer() {
   const name = getPlayerName();
   if (!name) return;
-
   S.players.push({
     name,
     cards: [],
@@ -1178,12 +247,11 @@ function addPlayer() {
     out: false,
     stopped: false
   });
-
   $('playerInput').value = '';
   renderLobbyPlayers();
 }
 
-$('playerInput').addEventListener('keydown', (e) => {
+$('playerInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') addPlayer();
 });
 
@@ -1207,7 +275,6 @@ function renderLobbyPlayers() {
   S.players.forEach((p, idx) => {
     const item = document.createElement('div');
     item.className = 'pitem';
-
     item.innerHTML = `
       <div class="pitem-left">
         <div class="pdot"></div>
@@ -1215,19 +282,9 @@ function renderLobbyPlayers() {
       </div>
       <button class="pdel" title="Verwijderen">×</button>
     `;
-
     item.querySelector('.pdel').onclick = () => removePlayer(idx);
     el.appendChild(item);
   });
-}
-
-function fillDemoPlayers() {
-  S.players = [
-    { name: 'Tim', cards: [], score: 0, out: false, stopped: false },
-    { name: 'Sanne', cards: [], score: 0, out: false, stopped: false },
-    { name: 'Joris', cards: [], score: 0, out: false, stopped: false }
-  ];
-  renderLobbyPlayers();
 }
 
 function startGame() {
@@ -1236,10 +293,13 @@ function startGame() {
     return;
   }
 
-  S.seed = Math.floor(Date.now() % 1000000000);
-  const rng = mulberry32(S.seed);
-  S.deck = buildDeck(rng);
+  loadSettings();
+  S.maxScore = parseInt($('maxScoreInput')?.value || S.maxScore, 10) || 200;
+  S.showRisk = $('riskToggle') ? $('riskToggle').checked : true;
+  saveSettings();
 
+  const rng = mulberry32(Date.now() % 1000000000);
+  S.deck = buildDeck(rng);
   S.players = S.players.map(p => ({
     name: p.name,
     cards: [],
@@ -1251,16 +311,14 @@ function startGame() {
   S.currentIndex = 0;
   S.busy = false;
   S.gameOver = false;
+  S.round = 1;
+  S.lastTurnChangedRound = false;
 
   showScreen('gameScreen');
   renderGame();
 }
 
-/* Game helpers */
-function currentPlayerIndex() {
-  return S.currentIndex;
-}
-
+/* Turn logic */
 function currentPlayer() {
   return S.players[S.currentIndex];
 }
@@ -1269,13 +327,12 @@ function activePlayers() {
   return S.players.filter(p => !p.out && !p.stopped);
 }
 
-function hasActivePlayers() {
-  return activePlayers().length > 0;
+function firstActiveIndex() {
+  return S.players.findIndex(p => !p.out && !p.stopped);
 }
 
 function nextActiveIndex(fromIndex) {
   if (!S.players.length) return -1;
-
   for (let step = 1; step <= S.players.length; step++) {
     const idx = (fromIndex + step) % S.players.length;
     const p = S.players[idx];
@@ -1284,92 +341,57 @@ function nextActiveIndex(fromIndex) {
   return -1;
 }
 
-function advanceTurn() {
-  const next = nextActiveIndex(S.currentIndex);
-
-  if (next === -1) {
-    endGame();
-    return;
-  }
-
-  S.currentIndex = next;
-  renderGame();
+function hasRoundWinner() {
+  return S.players.some(p => p.score > S.maxScore);
 }
 
-function markPlayerDone(kind) {
+function renderCardFace(card) {
+  const suit = SUITS[Math.floor(Math.random() * 4)];
+  const isRed = RED.has(suit);
+  const cc = isRed ? 'rc' : 'bc';
+  $('cardFace').innerHTML = `
+    <div class="cc ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
+    <div class="c-center ${cc}">${suit}</div>
+    <div class="cc bot ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
+  `;
+}
+
+function renderGame() {
   const p = currentPlayer();
   if (!p) return;
 
-  if (kind === 'stop') {
-    p.stopped = true;
-    $('lastAction').textContent = `${p.name} stopt en houdt ${p.score} punten.`;
-  }
-
-  if (kind === 'out') {
-    p.out = true;
-    p.score = 0;
-    $('lastAction').textContent = `${p.name} ging uit door een double en krijgt 0 punten.`;
-  }
-}
-
-/* Render */
-function renderGame() {
-  if (!S.players.length) return;
-
-  const p = currentPlayer();
-
-  $('scoreVal').textContent = p ? p.score : 0;
+  $('scoreVal').textContent = p.score;
   $('deckVal').textContent = S.deck.length;
-  $('cardsVal').textContent = p ? p.cards.length : 0;
+  $('cardsVal').textContent = p.cards.length;
   $('deckBadge').textContent = S.deck.length + ' over';
+  $('roundPill').textContent = 'Ronde ' + S.round;
+  $('currentPlayerName').textContent = p.name;
 
-  if (p) {
-    $('currentPlayerName').textContent = p.name;
+  if (p.out) {
+    $('turnSub').textContent = 'Deze speler is uitgeschakeld.';
+  } else if (p.stopped) {
+    $('turnSub').textContent = 'Deze speler heeft gestopt.';
+  } else {
+    $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
+  }
 
-    if (p.out) {
-      $('turnSub').textContent = 'Deze speler is uitgeschakeld.';
-    } else if (p.stopped) {
-      $('turnSub').textContent = 'Deze speler heeft gestopt.';
-    } else {
-      $('turnSub').textContent = 'Kies: kaart pakken of stoppen';
-    }
-
+  if (S.showRisk) {
+    $('riskWrap').style.display = 'block';
     const risk = calcRisk(p.cards, S.deck);
     const pct = Math.round(risk * 100);
     $('riskPct').textContent = p.cards.length === 0 ? '—' : pct + '%';
-
     const fill = $('riskFill');
     fill.style.width = pct + '%';
     fill.style.background = pct < 20 ? '#2d8a58' : pct < 45 ? '#c9a84c' : '#c0392b';
-
-    $('history').innerHTML = '';
-    if (p.cards.length) {
-      p.cards.forEach(card => {
-        const el = document.createElement('div');
-        el.className = 'hchip';
-        el.textContent = card;
-        $('history').appendChild(el);
-      });
-    } else {
-      const empty = document.createElement('div');
-      empty.style.fontSize = '12px';
-      empty.style.color = 'rgba(255,255,255,.35)';
-      empty.textContent = 'Nog geen kaarten';
-      $('history').appendChild(empty);
-    }
+  } else {
+    $('riskWrap').style.display = 'none';
   }
 
   const row = $('playersRow');
   row.innerHTML = '';
   S.players.forEach((pl, i) => {
     const d = document.createElement('div');
-    d.className =
-      'pchip' +
-      (i === S.currentIndex ? ' active' : '') +
-      (pl.out ? ' out' : '') +
-      (pl.stopped ? ' done' : '') +
-      (i === S.currentIndex ? ' me' : '');
-
+    d.className = 'pchip' + (i === S.currentIndex ? ' active' : '') + (pl.out ? ' out' : '') + (pl.stopped ? ' done' : '');
     d.innerHTML = `
       <span class="pscore">${pl.score}</span>
       <span class="pname">${pl.name}</span>
@@ -1378,95 +400,125 @@ function renderGame() {
     row.appendChild(d);
   });
 
-  const canAct = p && !p.out && !p.stopped && !S.busy && !S.gameOver && S.deck.length > 0;
-  $('drawBtn').disabled = !canAct;
-  $('stopBtn').disabled = !canAct;
-}
-
-/* Turns */
-function drawCard() {
-  if (S.busy || S.gameOver) return;
-
-  const p = currentPlayer();
-  if (!p || p.out || p.stopped) return;
-  if (!S.deck.length) {
-    endGame();
-    return;
+  $('history').innerHTML = '';
+  if (p.cards.length) {
+    p.cards.forEach(card => {
+      const el = document.createElement('div');
+      el.className = 'hchip';
+      el.textContent = card;
+      $('history').appendChild(el);
+    });
+  } else {
+    const empty = document.createElement('div');
+    empty.style.fontSize = '12px';
+    empty.style.color = 'rgba(255,255,255,.35)';
+    empty.textContent = 'Nog geen kaarten';
+    $('history').appendChild(empty);
   }
 
+  const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped && S.deck.length > 0;
+  $('drawBtn').disabled = !canAct;
+  $('stopBtn').disabled = !canAct;
+  $('nextBtn').disabled = S.gameOver || !p || (!p.out && !p.stopped && S.deck.length > 0 && p.cards.length === 0);
+}
+
+function drawCard() {
+  if (S.busy || S.gameOver) return;
+  const p = currentPlayer();
+  if (!p || p.out || p.stopped) return;
+  if (!S.deck.length) { endGame(); return; }
+
   S.busy = true;
-  renderGame();
+  $('drawBtn').disabled = true;
+  $('stopBtn').disabled = true;
 
   const fc = $('flipCard');
   fc.classList.remove('flipped');
 
   setTimeout(() => {
     const card = S.deck.shift();
-    const suit = SUITS[Math.floor(Math.random() * 4)];
-    const isRed = RED.has(suit);
-    const cc = isRed ? 'rc' : 'bc';
-
-    $('cardFace').innerHTML = `
-      <div class="cc ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-      <div class="c-center ${cc}">${suit}</div>
-      <div class="cc bot ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
-    `;
+    const isDouble = p.cards.includes(card);
+    renderCardFace(card);
     fc.classList.add('flipped');
 
     setTimeout(() => {
-      const isDouble = p.cards.includes(card);
-
       if (isDouble) {
         p.out = true;
         p.score = 0;
-        $('lastAction').textContent = `${p.name} trok een dubbele ${card}. 💥`;
+        p.cards = [];
       } else {
         p.cards.push(card);
         p.score += card;
-        $('lastAction').textContent = `${p.name} trok ${card} en heeft nu ${p.score} punten.`;
       }
 
-      $('turnSub').textContent = 'Beurt gaat door...';
       renderGame();
+      S.busy = false;
+      $('drawBtn').disabled = false;
+      $('stopBtn').disabled = false;
 
-      setTimeout(() => {
-        S.busy = false;
-        if (checkEndNow()) return;
-        advanceTurn();
-      }, 650);
+      if (checkImmediateEnd()) return;
     }, 380);
-  }, 200);
+  }, 180);
 }
 
 function stopTurn() {
   if (S.busy || S.gameOver) return;
-
   const p = currentPlayer();
   if (!p || p.out || p.stopped) return;
-
-  S.busy = true;
   p.stopped = true;
-  $('lastAction').textContent = `${p.name} stopt met ${p.score} punten.`;
   renderGame();
-
-  setTimeout(() => {
-    S.busy = false;
-    if (checkEndNow()) return;
-    advanceTurn();
-  }, 450);
+  if (checkImmediateEnd()) return;
 }
 
-function checkEndNow() {
+function nextPlayer() {
+  if (S.gameOver) return;
+  const p = currentPlayer();
+  if (!p) return;
+
+  const wasLast = isLastActivePlayer(S.currentIndex);
+  const next = nextActiveIndex(S.currentIndex);
+
+  if (next === -1) {
+    endGame();
+    return;
+  }
+
+  S.currentIndex = next;
+  if (wasLast && next === firstActiveIndex()) {
+    S.round += 1;
+    S.lastTurnChangedRound = true;
+    if (hasRoundWinner()) {
+      endGame();
+      return;
+    }
+  } else {
+    S.lastTurnChangedRound = false;
+  }
+
+  renderGame();
+}
+
+function isLastActivePlayer(index) {
+  const active = activePlayers();
+  if (!active.length) return true;
+  const current = S.players[index];
+  const stillActive = active.some(p => p === current);
+  if (!stillActive) return true;
+  const idxs = S.players
+    .map((p, i) => (!p.out && !p.stopped ? i : null))
+    .filter(v => v !== null);
+  return idxs.length ? idxs[idxs.length - 1] === index : true;
+}
+
+function checkImmediateEnd() {
   if (!S.deck.length) {
     endGame();
     return true;
   }
-
-  if (!hasActivePlayers()) {
+  if (!activePlayers().length) {
     endGame();
     return true;
   }
-
   return false;
 }
 
@@ -1479,28 +531,47 @@ function endGame() {
   const bestScore = sorted[0]?.score ?? 0;
   const winners = sorted.filter(p => p.score === bestScore);
 
-  if (winners.length === 1) {
-    $('winnerName').textContent = winners[0].name;
-    $('winnerScore').textContent = bestScore + ' punten';
-  } else {
-    $('winnerName').textContent = 'Gelijkspel';
-    $('winnerScore').textContent = bestScore + ' punten';
-  }
+  $('winnerName').textContent = winners.length === 1 ? winners[0].name : 'Gelijkspel';
+  $('winnerScore').textContent = bestScore + ' punten';
 
   const fs = $('finalScores');
   fs.innerHTML = '';
-
   sorted.forEach(p => {
     const r = document.createElement('div');
     r.className = 'fsrow';
-    r.innerHTML = `
-      <span class="fsn">${p.name}${p.out ? ' 💥' : ''}${p.stopped ? ' ⏸' : ''}</span>
-      <span class="fsp">${p.score}</span>
-    `;
+    r.innerHTML = `<span class="fsn">${p.name}${p.out ? ' 💥' : ''}${p.stopped ? ' ⏸' : ''}</span><span class="fsp">${p.score}</span>`;
     fs.appendChild(r);
   });
 
-  setTimeout(() => showScreen('winnerScreen'), 700);
+  setTimeout(() => showScreen('winnerScreen'), 500);
+}
+
+/* Settings */
+$('maxScoreInput').addEventListener('change', () => {
+  const n = parseInt($('maxScoreInput').value, 10);
+  S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200;
+  $('maxScoreInput').value = S.maxScore;
+  saveSettings();
+});
+
+$('riskToggle').addEventListener('change', () => {
+  S.showRisk = $('riskToggle').checked;
+  $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
+  saveSettings();
+  renderGame();
+});
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+}
+
+function resetGame() {
+  if (!confirm('Weet je zeker dat je het spel wilt resetten?')) return;
+  backToLobby();
 }
 
 /* Back to lobby */
@@ -1510,32 +581,43 @@ function backToLobby() {
     players: [],
     currentIndex: 0,
     busy: false,
-    seed: null,
-    gameOver: false
+    gameOver: false,
+    round: 1,
+    maxScore: 200,
+    showRisk: true,
+    lastTurnChangedRound: false,
   };
-
-  $('history').innerHTML = '';
-  $('playersRow').innerHTML = '';
-  $('lastAction').textContent = 'Nog geen actie.';
-  $('flipCard').classList.remove('flipped');
-  $('cardFace').innerHTML = '';
+  loadSettings();
+  applySettingsToUI();
   $('playerList').innerHTML = '';
   $('playerInput').value = '';
+  $('history').innerHTML = '';
+  $('playersRow').innerHTML = '';
+  $('cardFace').innerHTML = '';
+  $('flipCard').classList.remove('flipped');
   $('currentPlayerName').textContent = '—';
-  $('turnSub').textContent = 'Kies: kaart pakken of stoppen';
+  $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
+  $('roundPill').textContent = 'Ronde 1';
+  $('scoreVal').textContent = '0';
+  $('deckVal').textContent = '78';
+  $('cardsVal').textContent = '0';
+  $('deckBadge').textContent = '78 over';
   $('riskPct').textContent = '—';
   $('riskFill').style.width = '0%';
   $('riskFill').style.background = '#2d8a58';
-  $('deckBadge').textContent = '78 over';
   $('drawBtn').disabled = false;
   $('stopBtn').disabled = false;
-
+  $('nextBtn').disabled = false;
+  $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
+  hide('settingsModal');
+  hide('infoModal');
   showScreen('lobbyScreen');
   renderLobbyPlayers();
 }
 
 /* Initial */
+loadSettings();
+applySettingsToUI();
 renderLobbyPlayers();
-</script>
-</body>
+</script></body>
 </html>
