@@ -1,201 +1,2133 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-<title>Double Trouble</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root {
-  --gold: #c9a84c;
-  --gold-light: #e8c96e;
-  --cream: #f5f0e8;
-  --red: #c0392b;
-  --dark: #0d1a12;
-  --card-w: 108px;
-  --card-h: 152px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--cream); overflow: hidden; }
-button, input { font: inherit; }
-.screen { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 20px; position: absolute; inset: 0; overflow-y: auto; }
-.screen.active { display: flex; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Double Trouble</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c96e;
+      --cream: #f5f0e8;
+      --red: #c0392b;
+      --dark: #0d1a12;
+      --card-w: 108px;
+      --card-h: 152px;
+    }
 
-/* LOBBY */
-#lobbyScreen { background: radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%); gap: 10px; justify-content: flex-start; padding-top: 40px; padding-bottom: 30px; }
-#lobbyScreen::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(201,168,76,.03) 28px, rgba(201,168,76,.03) 30px); pointer-events: none; }
-.logo-wrap { text-align: center; margin-bottom: 10px; position: relative; z-index: 1; }
-.logo-wrap h1 { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 55%, var(--gold) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-.logo-wrap .tagline { font-size: 10px; letter-spacing: 5px; color: rgba(201,168,76,.45); text-transform: uppercase; margin-top: 4px; }
-.lcard { background: rgba(255,255,255,.04); border: 1px solid rgba(201,168,76,.2); border-radius: 18px; padding: 18px 20px; width: 100%; max-width: 360px; position: relative; z-index: 1; }
-.lcard h3 { font-family: 'Playfair Display', serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-.player-input-wrap { display: flex; gap: 8px; align-items: stretch; }
-.name-input { width: 100%; background: rgba(0,0,0,.4); border: 1.5px solid rgba(201,168,76,.25); border-radius: 10px; padding: 11px 13px; color: var(--cream); font-size: 15px; outline: none; }
-.name-input:focus { border-color: var(--gold); }
-.name-input::placeholder { color: rgba(255,255,255,.22); }
-.btn-g { background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold)); background-size: 200%; color: var(--dark); border: none; border-radius: 10px; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding: 11px 16px; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(201,168,76,.28); transition: transform .15s, filter .15s; }
-.btn-g:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-g:active { transform: scale(.97); }
-.btn-big { width: 100%; padding: 15px; border-radius: 13px; border: none; font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; transition: transform .15s, filter .15s; }
-.btn-big:active { transform: scale(.97); }
-.btn-big.gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--dark); box-shadow: 0 6px 20px rgba(201,168,76,.32); }
-.btn-big.gold:hover { filter: brightness(1.1); }
-.btn-big.outline { background: transparent; border: 1.5px solid rgba(201,168,76,.35); color: var(--gold); margin-top: 8px; }
-.plist { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-.pitem { background: rgba(255,255,255,.05); border: 1px solid rgba(201,168,76,.12); border-radius: 8px; padding: 8px 10px; font-size: 13px; display: flex; align-items: center; justify-content: space-between; gap: 7px; }
-.pitem-left { display: flex; align-items: center; gap: 7px; min-width: 0; }
-.pdot { width: 7px; height: 7px; border-radius: 50%; background: #2d8a58; flex-shrink: 0; }
-.pname-trim { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pdel { border: none; background: rgba(255,255,255,.07); color: rgba(255,255,255,.7); width: 26px; height: 26px; border-radius: 8px; cursor: pointer; }
-.pdel:hover { background: rgba(192,57,43,.3); color: white; }
-.small-hint { font-size: 11px; color: rgba(255,255,255,.45); text-align: center; margin-top: 4px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow: hidden;
+    }
 
-/* GAME */
-#gameScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); justify-content: flex-start; padding: 0; }
-#gameScreen::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E"); pointer-events: none; }
-#gameScreen::after { content: ''; position: fixed; inset: 10px; border: 1.5px solid rgba(201,168,76,.15); border-radius: 22px; pointer-events: none; z-index: 0; }
-.g-inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; padding: 12px 14px 16px; gap: 9px; overflow-y: auto; }
-.topbar { width: 100%; display: flex; align-items: center; justify-content: space-between; }
-.g-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; background: linear-gradient(135deg, var(--gold), var(--gold-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.icon-btn { width: 33px; height: 33px; border-radius: 50%; border: 1.5px solid rgba(201,168,76,.3); background: rgba(0,0,0,.4); color: var(--gold); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; font-family: 'Playfair Display', serif; }
-.icon-btn:hover { background: var(--gold); color: var(--dark); }
-.score-row { display: flex; gap: 8px; width: 100%; justify-content: center; flex-wrap: wrap; }
-.sbox { flex: 1; min-width: 92px; max-width: 110px; background: rgba(0,0,0,.3); border: 1px solid rgba(201,168,76,.2); border-radius: 11px; padding: 7px 8px; text-align: center; }
-.sbox .sl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.45); }
-.sbox .sv { font-family: 'Playfair Display', serif; font-size: 25px; color: var(--gold-light); line-height: 1.1; }
+    button, input { font: inherit; }
 
-/* TURN CARD \u2014 active player highlight */
-.turn-card { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px 14px; text-align: center; transition: border-color .4s, box-shadow .4s, background .4s; }
-.turn-card.player-0 { border-color: rgba(100,210,255,.45); box-shadow: 0 0 22px rgba(100,210,255,.14); background: rgba(30,80,120,.22); }
-.turn-card.player-1 { border-color: rgba(130,220,130,.45); box-shadow: 0 0 22px rgba(130,220,130,.14); background: rgba(20,90,40,.22); }
-.turn-card.player-2 { border-color: rgba(255,180,80,.45); box-shadow: 0 0 22px rgba(255,180,80,.14); background: rgba(100,50,10,.22); }
-.turn-card.player-3 { border-color: rgba(220,120,220,.45); box-shadow: 0 0 22px rgba(220,120,220,.14); background: rgba(80,20,80,.22); }
-.turn-card.player-4 { border-color: rgba(255,120,120,.45); box-shadow: 0 0 22px rgba(255,120,120,.14); background: rgba(100,10,10,.22); }
-.turn-card.player-5 { border-color: rgba(80,220,200,.45); box-shadow: 0 0 22px rgba(80,220,200,.14); background: rgba(10,70,70,.22); }
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+    }
 
-.turn-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 4px; }
-.turn-name { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold-light); line-height: 1.05; margin-bottom: 4px; }
-.turn-sub { font-size: 12px; color: rgba(255,255,255,.72); }
-.round-pill { display: inline-block; margin-top: 6px; background: rgba(201,168,76,.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,.25); border-radius: 999px; padding: 3px 10px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+    .screen.active { display: flex; }
 
-/* Countdown badge */
-.countdown-badge { display: inline-block; margin-top: 6px; margin-left: 5px; background: rgba(255,255,255,.1); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 3px 10px; font-size: 10px; letter-spacing: 1px; }
+    /* LOBBY */
+    #lobbyScreen {
+      background: radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%);
+      gap: 10px;
+      justify-content: flex-start;
+      padding-top: 40px;
+      padding-bottom: 30px;
+    }
 
-.risk-wrap { width: 100%; max-width: 360px; background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 7px 11px; }
-.risk-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.risk-top span:first-child { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.35); }
-.risk-pct { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; }
-.risk-track { height: 6px; background: rgba(255,255,255,.07); border-radius: 4px; overflow: hidden; }
-.risk-fill { height: 100%; border-radius: 4px; transition: width .5s ease, background .5s ease; }
-.card-stage { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 2px; }
-.deck-pile { position: relative; width: var(--card-w); height: var(--card-h); flex-shrink: 0; }
-.pc { position: absolute; inset: 0; border-radius: 13px; background: linear-gradient(135deg, #1a4d2e, #0d2e1a); border: 1.5px solid rgba(201,168,76,.32); box-shadow: 0 4px 12px rgba(0,0,0,.4); display: flex; align-items: center; justify-content: center; }
-.pc:nth-child(1) { transform: rotate(-3deg) translate(-2px,2px); }
-.pc:nth-child(2) { transform: rotate(-1deg) translate(-1px,1px); }
-.cbi { width: 80px; height: 118px; border: 1.5px solid rgba(201,168,76,.22); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: rgba(201,168,76,.18); }
-.dbadge { position: absolute; bottom: -10px; right: -10px; background: var(--gold); color: var(--dark); font-family: 'Playfair Display', serif; font-size: 10px; font-weight: 700; border-radius: 20px; padding: 2px 7px; z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,.4); white-space: nowrap; }
-.draw-hint { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.35); text-align: center; margin-top: 4px; }
-.flip-wrap { width: var(--card-w); height: var(--card-h); perspective: 800px; }
-.flip-card { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.4,.2,.2,1); position: relative; }
-.flip-card.flipped { transform: rotateY(180deg); }
-.fcf, .fcb { position: absolute; inset: 0; border-radius: 13px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border: 1.5px solid rgba(201,168,76,.42); box-shadow: 0 8px 26px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08); }
-.fcf { background: linear-gradient(135deg, #1a4d2e, #0d2e1a); }
-.fcb { background: linear-gradient(160deg, #fdfaf3, #ede6d2); transform: rotateY(180deg); flex-direction: column; justify-content: space-between; padding: 9px; color: #1a1a2e; font-family: 'Playfair Display', serif; }
-.cc { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-.cc .cn { font-size: 18px; font-weight: 700; }
-.cc .cs { font-size: 12px; margin-top: -1px; }
-.cc.bot { transform: rotate(180deg); }
-.c-center { font-size: 50px; line-height: 1; }
-.rc { color: var(--red); } .bc { color: #1a1a2e; }
+    #lobbyScreen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(201,168,76,.03) 28px, rgba(201,168,76,.03) 30px);
+      pointer-events: none;
+    }
 
-/* Player chips with colors */
-.player-panel { width: 100%; max-width: 420px; }
-.pnl-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; }
-.pnl-row { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
-.pchip { background: rgba(0,0,0,.3); border: 1.5px solid rgba(255,255,255,.08); border-radius: 20px; padding: 5px 11px; display: flex; align-items: center; gap: 6px; font-size: 11px; transition: border-color .3s, box-shadow .3s, background .3s; }
-.pchip.active { border-color: rgba(232,201,110,.55); box-shadow: 0 0 0 2px rgba(232,201,110,.2), 0 0 20px rgba(232,201,110,.18); background: rgba(201,168,76,.12); }
-/* Player color classes for active chip */
-.pchip.active.color-0 { border-color: rgba(100,210,255,.7); box-shadow: 0 0 0 2px rgba(100,210,255,.25), 0 0 18px rgba(100,210,255,.2); background: rgba(30,80,120,.25); }
-.pchip.active.color-1 { border-color: rgba(130,220,130,.7); box-shadow: 0 0 0 2px rgba(130,220,130,.25), 0 0 18px rgba(130,220,130,.2); background: rgba(20,90,40,.25); }
-.pchip.active.color-2 { border-color: rgba(255,180,80,.7); box-shadow: 0 0 0 2px rgba(255,180,80,.25), 0 0 18px rgba(255,180,80,.2); background: rgba(100,50,10,.25); }
-.pchip.active.color-3 { border-color: rgba(220,120,220,.7); box-shadow: 0 0 0 2px rgba(220,120,220,.25), 0 0 18px rgba(220,120,220,.2); background: rgba(80,20,80,.25); }
-.pchip.active.color-4 { border-color: rgba(255,120,120,.7); box-shadow: 0 0 0 2px rgba(255,120,120,.25), 0 0 18px rgba(255,120,120,.2); background: rgba(100,10,10,.25); }
-.pchip.active.color-5 { border-color: rgba(80,220,200,.7); box-shadow: 0 0 0 2px rgba(80,220,200,.25), 0 0 18px rgba(80,220,200,.2); background: rgba(10,70,70,.25); }
-.pchip.out { opacity: .3; text-decoration: line-through; }
-.pchip.done { opacity: .55; }
-.pscore { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold-light); }
-.pname { color: rgba(255,255,255,.65); }
-.ptag { font-size: 9px; color: var(--gold); opacity: .65; }
+    .logo-wrap {
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
 
-/* Color dot per player */
-.pcolor-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.dot-0 { background: rgb(100,210,255); }
-.dot-1 { background: rgb(130,220,130); }
-.dot-2 { background: rgb(255,180,80); }
-.dot-3 { background: rgb(220,120,220); }
-.dot-4 { background: rgb(255,120,120); }
-.dot-5 { background: rgb(80,220,200); }
+    .logo-wrap h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 55%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
 
-.player-cards { width: 100%; max-width: 420px; }
-.cards-lbl { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(201,168,76,.32); text-align: center; margin-bottom: 5px; }
-.hist-track { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; min-height: 38px; padding: 7px; background: rgba(0,0,0,.2); border-radius: 10px; border: 1px solid rgba(255,255,255,.04); }
-.hchip { width: 31px; height: 38px; background: linear-gradient(160deg, #fdfaf3, #ede6d2); border-radius: 5px; border: 1.5px solid rgba(201,168,76,.3); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #1a1a2e; box-shadow: 0 2px 5px rgba(0,0,0,.28); animation: chipIn .3s cubic-bezier(.34,1.56,.64,1); flex-shrink: 0; }
-.hchip.rc { color: var(--red); }
-.hchip.dup { border-color: rgba(192,57,43,.65); background: linear-gradient(160deg, #fde8e8, #f5c6c6); }
-@keyframes chipIn { from { transform: translateY(-10px) scale(.7); opacity: 0; } to { transform: none; opacity: 1; } }
-.draw-actions { width: 100%; max-width: 360px; display: flex; gap: 10px; }
-.draw-btn { flex: 1; padding: 15px; border-radius: 13px; border: none; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%); background-size: 200%; color: var(--dark); font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px rgba(201,168,76,.32), inset 0 1px 0 rgba(255,255,255,.22); transition: transform .15s, filter .15s, opacity .15s; }
-.draw-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.08); }
-.draw-btn:active:not(:disabled) { transform: scale(.97); }
-.draw-btn:disabled { opacity: .3; cursor: not-allowed; }
-.draw-btn.secondary { background: transparent; border: 1.5px solid rgba(201,168,76,.3); color: var(--gold); box-shadow: none; }
+    .logo-wrap .tagline {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: rgba(201,168,76,.45);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
 
-/* MODALS */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; backdrop-filter: blur(5px); }
-.overlay.show { opacity: 1; pointer-events: all; }
-.mbox { background: linear-gradient(160deg, #1a3a28, #0d1f17); border: 1.5px solid rgba(201,168,76,.32); border-radius: 20px; padding: 28px 24px; width: 90%; max-width: 360px; position: relative; transform: scale(.9); transition: transform .3s; box-shadow: 0 28px 70px rgba(0,0,0,.6); }
-.overlay.show .mbox { transform: scale(1); }
-.mbox h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 20px; margin-bottom: 12px; letter-spacing: 1px; }
-.mbox p, .mbox li { color: rgba(245,240,232,.8); font-size: 13px; line-height: 1.7; }
-.mbox ul { padding-left: 16px; margin-top: 7px; }
-.mbox li { margin-bottom: 4px; }
-.mcl { position: absolute; top: 13px; right: 14px; background: none; border: none; color: var(--gold); font-size: 19px; cursor: pointer; opacity: .55; }
-.mcl:hover { opacity: 1; }
-.rhl { display: inline-block; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.22); border-radius: 4px; padding: 1px 6px; color: var(--gold-light); font-weight: 600; }
-.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.06); }
-.setting-row:first-of-type { border-top: none; padding-top: 0; }
-.setting-row label { font-size: 13px; color: rgba(245,240,232,.82); }
-.setting-row input[type="number"] { width: 92px; background: rgba(0,0,0,.35); border: 1px solid rgba(201,168,76,.24); color: var(--cream); border-radius: 10px; padding: 10px 12px; outline: none; }
-.setting-row input[type="checkbox"] { transform: scale(1.1); accent-color: var(--gold); }
-.setting-btn { width: 100%; margin-top: 8px; border: none; border-radius: 12px; padding: 12px 14px; background: rgba(255,255,255,.06); color: var(--cream); cursor: pointer; }
-.setting-btn:hover { background: rgba(255,255,255,.09); }
+    .lcard {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 18px;
+      padding: 18px 20px;
+      width: 100%;
+      max-width: 360px;
+      position: relative;
+      z-index: 1;
+    }
 
-/* Double modal */
-.double-icon { font-size: 52px; text-align: center; margin-bottom: 8px; }
-.double-card-display { display: flex; align-items: center; justify-content: center; margin: 12px 0; gap: 14px; }
-.dcard { width: 56px; height: 78px; background: linear-gradient(160deg, #fde8e8, #f5c6c6); border-radius: 8px; border: 2px solid rgba(192,57,43,.65); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--red); box-shadow: 0 4px 14px rgba(0,0,0,.4); }
-.double-arrow { font-size: 22px; color: rgba(255,255,255,.35); }
+    .lcard h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
 
-/* WINNER */
-#winnerScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; }
-.trophy { font-size: 60px; animation: bounce .8s ease infinite alternate; }
-@keyframes bounce { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-8px) rotate(3deg); } }
-.win-title { font-family: 'Playfair Display', serif; font-size: 30px; letter-spacing: 2px; color: var(--gold-light); text-align: center; }
-.win-name { font-family: 'Playfair Display', serif; font-size: 44px; color: white; text-align: center; line-height: 1; }
-.win-score { font-size: 13px; color: rgba(201,168,76,.55); letter-spacing: 3px; text-transform: uppercase; text-align: center; }
-.fscores { background: rgba(0,0,0,.28); border: 1px solid rgba(201,168,76,.18); border-radius: 13px; padding: 14px 18px; width: 100%; max-width: 280px; }
-.fsrow { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
-.fsrow:last-child { border-bottom: none; }
-.fsn { font-size: 13px; color: rgba(255,255,255,.75); display: flex; align-items: center; gap: 6px; }
-.fsp { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold-light); }
-.fsrow.winner-row .fsn { color: white; font-weight: 600; }
-.fsrow.winner-row .fsp { color: var(--gold); }
+    .player-input-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
 
-/* ROUND OVER SCREEN */
-#roundScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; padding: 30px 20px; }
-.round-icon { font-size: 58px; }
-.round-title { font-family: 'Playfair Display', serif; font-size: 30px; letter-spacing: 2px; color: var(--gold-light); text-align: center; }
-.round-text { font-size: 13px; color: rgba(245,240,232,.82); text-align: center; max-width: 320px; line-height: 1.6; }
+    .name-input {
+      width: 100%;
+      background: rgba(0,0,0,.4);
+      border: 1.5px solid rgba(201,168,76,.25);
+      border-radius: 10px;
+      padding: 11px 13px;
+      color: var(--cream);
+      font-size: 15px;
+      outline: none;
+    }
 
-/* Round scores table */
-.round-scores { background: rgba(0,0,0,.28); border: 1px solid rgba(201,168,76,.18); border-radius: 13px; padding: 14px 18px; width: 100
+    .name-input:focus { border-color: var(--gold); }
+    .name-input::placeholder { color: rgba(255,255,255,.22); }
+
+    .btn-g {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+      background-size: 200%;
+      color: var(--dark);
+      border: none;
+      border-radius: 10px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 11px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(201,168,76,.28);
+      transition: transform .15s, filter .15s;
+    }
+
+    .btn-g:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-g:active { transform: scale(.97); }
+
+    .btn-big {
+      width: 100%;
+      padding: 15px;
+      border-radius: 13px;
+      border: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .15s, filter .15s;
+    }
+
+    .btn-big:active { transform: scale(.97); }
+
+    .btn-big.gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      color: var(--dark);
+      box-shadow: 0 6px 20px rgba(201,168,76,.32);
+    }
+
+    .btn-big.gold:hover { filter: brightness(1.1); }
+
+    .btn-big.outline {
+      background: transparent;
+      border: 1.5px solid rgba(201,168,76,.35);
+      color: var(--gold);
+      margin-top: 8px;
+    }
+
+    .plist {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pitem {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(201,168,76,.12);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
+    }
+
+    .pitem-left {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .pdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2d8a58;
+      flex-shrink: 0;
+    }
+
+    .pname-trim {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pdel {
+      border: none;
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.7);
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .pdel:hover {
+      background: rgba(192,57,43,.3);
+      color: white;
+    }
+
+    .small-hint {
+      font-size: 11px;
+      color: rgba(255,255,255,.45);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* GAME */
+    #gameScreen {
+      background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);
+      justify-content: flex-start;
+      padding: 0;
+    }
+
+    #gameScreen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    #gameScreen::after {
+      content: '';
+      position: fixed;
+      inset: 10px;
+      border: 1.5px solid rgba(201,168,76,.15);
+      border-radius: 22px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .g-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 20px 14px 16px;
+      gap: 9px;
+      overflow-y: auto;
+    }
+
+    .topbar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .g-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .icon-btn {
+      width: 33px;
+      height: 33px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(201,168,76,.3);
+      background: rgba(0,0,0,.4);
+      color: var(--gold);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .icon-btn:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .score-row {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .sbox {
+      flex: 1;
+      min-width: 92px;
+      max-width: 110px;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(201,168,76,.2);
+      border-radius: 11px;
+      padding: 7px 8px;
+      text-align: center;
+    }
+
+    .sbox .sl {
+      font-size: 8px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.45);
+    }
+
+    .sbox .sv {
+      font-family: 'Playfair Display', serif;
+      font-size: 25px;
+      color: var(--gold-light);
+      line-height: 1.1;
+    }
+
+    /* TURN CARD — active player highlight */
+    .turn-card {
+      width: 100%;
+      max-width: 360px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-align: center;
+      transition: border-color .4s, box-shadow .4s, background .4s;
+    }
+
+    .turn-card.player-0 {
+      border-color: rgba(100,210,255,.45);
+      box-shadow: 0 0 22px rgba(100,210,255,.14);
+      background: rgba(30,80,120,.22);
+    }
+
+    .turn-card.player-1 {
+      border-color: rgba(130,220,130,.45);
+      box-shadow: 0 0 22px rgba(130,220,130,.14);
+      background: rgba(20,90,40,.22);
+    }
+
+    .turn-card.player-2 {
+      border-color: rgba(255,180,80,.45);
+      box-shadow: 0 0 22px rgba(255,180,80,.14);
+      background: rgba(100,50,10,.22);
+    }
+
+    .turn-card.player-3 {
+      border-color: rgba(220,120,220,.45);
+      box-shadow: 0 0 22px rgba(220,120,220,.14);
+      background: rgba(80,20,80,.22);
+    }
+
+    .turn-card.player-4 {
+      border-color: rgba(255,120,120,.45);
+      box-shadow: 0 0 22px rgba(255,120,120,.14);
+      background: rgba(100,10,10,.22);
+    }
+
+    .turn-card.player-5 {
+      border-color: rgba(80,220,200,.45);
+      box-shadow: 0 0 22px rgba(80,220,200,.14);
+      background: rgba(10,70,70,.22);
+    }
+
+    .turn-label {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      margin-bottom: 4px;
+    }
+
+    .turn-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--gold-light);
+      line-height: 1.05;
+      margin-bottom: 4px;
+    }
+
+    .turn-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+    }
+
+    .round-pill {
+      display: inline-block;
+      margin-top: 6px;
+      background: rgba(201,168,76,.12);
+      color: var(--gold-light);
+      border: 1px solid rgba(201,168,76,.25);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Countdown badge */
+    .countdown-badge {
+      display: inline-block;
+      margin-top: 6px;
+      margin-left: 5px;
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.6);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    .risk-wrap {
+      width: 100%;
+      max-width: 360px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px;
+      padding: 7px 11px;
+    }
+
+    .risk-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .risk-top span:first-child {
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+    }
+
+    .risk-pct {
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .risk-track {
+      height: 6px;
+      background: rgba(255,255,255,.07);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .risk-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .5s ease, background .5s ease;
+    }
+
+    .card-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 2px;
+    }
+
+    .deck-pile {
+      position: relative;
+      width: var(--card-w);
+      height: var(--card-h);
+      flex-shrink: 0;
+    }
+
+    .pc {
+      position: absolute;
+      inset: 0;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #1a4d2e, #0d2e1a);
+      border: 1.5px solid rgba(201,168,76,.32);
+      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pc:nth-child(1) { transform: rotate(-3deg) translate(-2px,2px); }
+    .pc:nth-child(2) { transform: rotate(-1deg) translate(-1px,1px); }
+
+    .cbi {
+      width: 80px;
+      height: 118px;
+      border: 1.5px solid rgba(201,168,76,.22);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: rgba(201,168,76,.18);
+    }
+
+    .dbadge {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      background: var(--gold);
+      color: var(--dark);
+      font-family: 'Playfair Display', serif;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 2px 7px;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+      white-space: nowrap;
+    }
+
+    .flip-wrap {
+      width: var(--card-w);
+      height: var(--card-h);
+      perspective: 800px;
+    }
+
+    .flip-card {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform .55s cubic-bezier(.4,.2,.2,1);
+      position: relative;
+    }
+
+    .flip-card.flipped { transform: rotateY(180deg); }
+
+    .fcf, .fcb {
+      position: absolute;
+      inset: 0;
+      border-radius: 13px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid rgba(201,168,76,.42);
+      box-shadow: 0 8px 26px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .fcf { background: linear-gradient(135deg, #1a4d2e, #0d2e1a); }
+
+    .fcb {
+      background: linear-gradient(160deg, #fdfaf3, #ede6d2);
+      transform: rotateY(180deg);
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 9px;
+      color: #1a1a2e;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .cc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .cc .cn {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .cc .cs {
+      font-size: 12px;
+      margin-top: -1px;
+    }
+
+    .cc.bot { transform: rotate(180deg); }
+    .c-center { font-size: 50px; line-height: 1; }
+    .rc { color: var(--red); }
+    .bc { color: #1a1a2e; }
+
+    /* Player chips with colors */
+    .player-panel { width: 100%; max-width: 420px; }
+
+    .pnl-lbl {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.32);
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .pnl-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pchip {
+      background: rgba(0,0,0,.3);
+      border: 1.5px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 5px 11px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      transition: border-color .3s, box-shadow .3s, background .3s;
+    }
+
+    .pchip.active {
+      border-color: rgba(232,201,110,.55);
+      box-shadow: 0 0 0 2px rgba(232,201,110,.2), 0 0 20px rgba(232,201,110,.18);
+      background: rgba(201,168,76,.12);
+    }
+
+    .pchip.active.color-0 {
+      border-color: rgba(100,210,255,.7);
+      box-shadow: 0 0 0 2px rgba(100,210,255,.25), 0 0 18px rgba(100,210,255,.2);
+      background: rgba(30,80,120,.25);
+    }
+
+    .pchip.active.color-1 {
+      border-color: rgba(130,220,130,.7);
+      box-shadow: 0 0 0 2px rgba(130,220,130,.25), 0 0 18px rgba(130,220,130,.2);
+      background: rgba(20,90,40,.25);
+    }
+
+    .pchip.active.color-2 {
+      border-color: rgba(255,180,80,.7);
+      box-shadow: 0 0 0 2px rgba(255,180,80,.25), 0 0 18px rgba(255,180,80,.2);
+      background: rgba(100,50,10,.25);
+    }
+
+    .pchip.active.color-3 {
+      border-color: rgba(220,120,220,.7);
+      box-shadow: 0 0 0 2px rgba(220,120,220,.25), 0 0 18px rgba(220,120,220,.2);
+      background: rgba(80,20,80,.25);
+    }
+
+    .pchip.active.color-4 {
+      border-color: rgba(255,120,120,.7);
+      box-shadow: 0 0 0 2px rgba(255,120,120,.25), 0 0 18px rgba(255,120,120,.2);
+      background: rgba(100,10,10,.25);
+    }
+
+    .pchip.active.color-5 {
+      border-color: rgba(80,220,200,.7);
+      box-shadow: 0 0 0 2px rgba(80,220,200,.25), 0 0 18px rgba(80,220,200,.2);
+      background: rgba(10,70,70,.25);
+    }
+
+    .pchip.out { opacity: .3; text-decoration: line-through; }
+    .pchip.done { opacity: .55; }
+
+    .pscore {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: var(--gold-light);
+    }
+
+    .pname { color: rgba(255,255,255,.65); }
+    .ptag { font-size: 9px; color: var(--gold); opacity: .65; }
+
+    /* Color dot per player */
+    .pcolor-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-0 { background: rgb(100,210,255); }
+    .dot-1 { background: rgb(130,220,130); }
+    .dot-2 { background: rgb(255,180,80); }
+    .dot-3 { background: rgb(220,120,220); }
+    .dot-4 { background: rgb(255,120,120); }
+    .dot-5 { background: rgb(80,220,200); }
+
+    .player-cards { width: 100%; max-width: 420px; }
+
+    .cards-lbl {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.32);
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .hist-track {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 38px;
+      padding: 7px;
+      background: rgba(0,0,0,.2);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.04);
+    }
+
+    .hchip {
+      width: 31px;
+      height: 38px;
+      background: linear-gradient(160deg, #fdfaf3, #ede6d2);
+      border-radius: 5px;
+      border: 1.5px solid rgba(201,168,76,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a2e;
+      box-shadow: 0 2px 5px rgba(0,0,0,.28);
+      animation: chipIn .3s cubic-bezier(.34,1.56,.64,1);
+      flex-shrink: 0;
+    }
+
+    .hchip.rc { color: var(--red); }
+
+    .hchip.dup {
+      border-color: rgba(192,57,43,.65);
+      background: linear-gradient(160deg, #fde8e8, #f5c6c6);
+    }
+
+    @keyframes chipIn {
+      from { transform: translateY(-10px) scale(.7); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+
+    .draw-actions {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .draw-btn {
+      flex: 1;
+      padding: 15px;
+      border-radius: 13px;
+      border: none;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+      background-size: 200%;
+      color: var(--dark);
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(201,168,76,.32), inset 0 1px 0 rgba(255,255,255,.22);
+      transition: transform .15s, filter .15s, opacity .15s;
+    }
+
+    .draw-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+
+    .draw-btn:active:not(:disabled) { transform: scale(.97); }
+
+    .draw-btn:disabled {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
+    .draw-btn.secondary {
+      background: transparent;
+      border: 1.5px solid rgba(201,168,76,.3);
+      color: var(--gold);
+      box-shadow: none;
+    }
+
+    /* MODALS */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+      backdrop-filter: blur(5px);
+    }
+
+    .overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mbox {
+      background: linear-gradient(160deg, #1a3a28, #0d1f17);
+      border: 1.5px solid rgba(201,168,76,.32);
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 90%;
+      max-width: 360px;
+      position: relative;
+      transform: scale(.9);
+      transition: transform .3s;
+      box-shadow: 0 28px 70px rgba(0,0,0,.6);
+    }
+
+    .overlay.show .mbox { transform: scale(1); }
+
+    .mbox h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 20px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .mbox p, .mbox li {
+      color: rgba(245,240,232,.8);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .mbox ul {
+      padding-left: 16px;
+      margin-top: 7px;
+    }
+
+    .mbox li { margin-bottom: 4px; }
+
+    .mcl {
+      position: absolute;
+      top: 13px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--gold);
+      font-size: 19px;
+      cursor: pointer;
+      opacity: .55;
+    }
+
+    .mcl:hover { opacity: 1; }
+
+    .rhl {
+      display: inline-block;
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.22);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .setting-row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .setting-row label {
+      font-size: 13px;
+      color: rgba(245,240,232,.82);
+    }
+
+    .setting-row input[type="number"] {
+      width: 92px;
+      background: rgba(0,0,0,.35);
+      border: 1px solid rgba(201,168,76,.24);
+      color: var(--cream);
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .setting-row input[type="checkbox"] {
+      transform: scale(1.1);
+      accent-color: var(--gold);
+    }
+
+    .setting-btn {
+      width: 100%;
+      margin-top: 8px;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.06);
+      color: var(--cream);
+      cursor: pointer;
+    }
+
+    .setting-btn:hover { background: rgba(255,255,255,.09); }
+
+    /* Double modal */
+    .double-icon {
+      font-size: 52px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .double-card-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0;
+      gap: 14px;
+    }
+
+    .dcard {
+      width: 56px;
+      height: 78px;
+      background: linear-gradient(160deg, #fde8e8, #f5c6c6);
+      border-radius: 8px;
+      border: 2px solid rgba(192,57,43,.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--red);
+      box-shadow: 0 4px 14px rgba(0,0,0,.4);
+    }
+
+    .double-arrow {
+      font-size: 22px;
+      color: rgba(255,255,255,.35);
+    }
+
+    /* WINNER */
+    #winnerScreen {
+      background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);
+      gap: 14px;
+    }
+
+    .trophy {
+      font-size: 60px;
+      animation: bounce .8s ease infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0) rotate(-3deg); }
+      to { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    .win-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-align: center;
+    }
+
+    .win-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      color: white;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .win-score {
+      font-size: 13px;
+      color: rgba(201,168,76,.55);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .fscores {
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(201,168,76,.18);
+      border-radius: 13px;
+      padding: 14px 18px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .fsrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+    }
+
+    .fsrow:last-child { border-bottom: none; }
+
+    .fsn {
+      font-size: 13px;
+      color: rgba(255,255,255,.75);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fsp {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--gold-light);
+    }
+
+    .fsrow.winner-row .fsn { color: white; font-weight: 600; }
+    .fsrow.winner-row .fsp { color: var(--gold); }
+
+    /* ROUND OVER SCREEN */
+    #roundScreen {
+      background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);
+      gap: 14px;
+      padding: 30px 20px;
+    }
+
+    .round-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      letter-spacing: 2px;
+      color: var(--gold-light);
+      text-align: center;
+    }
+
+    .round-text {
+      font-size: 13px;
+      color: rgba(245,240,232,.82);
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    /* Round scores table */
+    .round-scores {
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(201,168,76,.18);
+      border-radius: 13px;
+      padding: 14px 18px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .round-scores-title {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(201,168,76,.45);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .rsrow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      gap: 8px;
+    }
+
+    .rsrow:last-child { border-bottom: none; }
+
+    .rsn {
+      font-size: 13px;
+      color: rgba(255,255,255,.75);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rs-round {
+      font-size: 12px;
+      color: rgba(255,255,255,.4);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .rs-total {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      color: var(--gold-light);
+      text-align: right;
+      white-space: nowrap;
+      min-width: 36px;
+    }
+
+    .rsrow.best-row .rsn { color: white; font-weight: 600; }
+    .rsrow.best-row .rs-total { color: var(--gold); }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: rgba(201,168,76,.2); border-radius: 3px; }
+
+    @media (max-height: 620px) {
+      :root { --card-w: 88px; --card-h: 124px; }
+      .c-center { font-size: 40px; }
+      .turn-name { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen active" id="lobbyScreen">
+    <div class="logo-wrap">
+      <h1>Double Trouble</h1>
+      <div class="tagline">Kaartspel</div>
+    </div>
+
+    <div class="lcard">
+      <h3>Spelers toevoegen</h3>
+      <div class="player-input-wrap">
+        <input class="name-input" id="playerInput" placeholder="Naam speler…" maxlength="18" />
+        <button class="btn-g" onclick="addPlayer()">Voeg toe</button>
+      </div>
+      <div class="small-hint">Voeg spelers toe in de volgorde waarin zij straks aan de beurt zijn.</div>
+      <div class="plist" id="playerList"></div>
+    </div>
+
+    <div class="lcard">
+      <h3>Start spel</h3>
+      <button class="btn-big gold" onclick="startGame()">Nieuw spel</button>
+    </div>
+
+    <div class="lcard" id="resumeCard" style="display: none; margin-top: 10px;">
+      <h3>Spel Hervatten</h3>
+      <button class="btn-big outline" onclick="resumeGame()">Hervat vorig spel</button>
+    </div>
+  </div>
+
+  <div class="screen" id="gameScreen">
+    <div class="g-inner">
+      <div class="topbar">
+        <div class="g-title">Double Trouble</div>
+        <button class="icon-btn" onclick="openSettings()">⚙</button>
+      </div>
+
+      <div class="score-row">
+        <div class="sbox"><div class="sl">Punten</div><div class="sv" id="scoreVal">0</div></div>
+        <div class="sbox"><div class="sl">Deck</div><div class="sv" id="deckVal">78</div></div>
+        <div class="sbox"><div class="sl">Kaarten</div><div class="sv" id="cardsVal">0</div></div>
+      </div>
+
+      <div class="turn-card" id="turnCard">
+        <div class="turn-label">Aan de beurt</div>
+        <div class="turn-name" id="currentPlayerName">—</div>
+        <div class="turn-sub" id="turnSub">Kies: kaarten pakken of stoppen</div>
+        <div>
+          <div class="round-pill" id="roundPill">Ronde 1</div>
+          <span class="countdown-badge" id="countdownBadge" style="display:none;"></span>
+        </div>
+      </div>
+
+      <div class="risk-wrap" id="riskWrap">
+        <div class="risk-top">
+          <span>Kans op double</span>
+          <span class="risk-pct" id="riskPct">—</span>
+        </div>
+        <div class="risk-track"><div class="risk-fill" id="riskFill" style="width:0%;background:#2d8a58;"></div></div>
+      </div>
+
+      <div class="card-stage">
+        <div>
+          <div class="deck-pile">
+            <div class="pc"><div class="cbi">♠</div></div>
+            <div class="pc"><div class="cbi">♠</div></div>
+            <div class="pc"><div class="cbi">♠</div></div>
+            <div class="dbadge" id="deckBadge">78 over</div>
+          </div>
+        </div>
+
+        <div class="flip-wrap">
+          <div class="flip-card" id="flipCard">
+            <div class="fcf"><div class="cbi">♠</div></div>
+            <div class="fcb" id="cardFace"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="player-panel">
+        <div class="pnl-lbl">Spelers</div>
+        <div class="pnl-row" id="playersRow"></div>
+      </div>
+
+      <div class="player-cards">
+        <div class="cards-lbl">Kaarten van huidige speler</div>
+        <div class="hist-track" id="history"></div>
+      </div>
+
+      <div class="draw-actions">
+        <button class="draw-btn" id="drawBtn" onclick="drawCard()">Kaart pakken</button>
+        <button class="draw-btn secondary" id="stopBtn" onclick="stopTurn()">Stoppen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen" id="roundScreen">
+    <div class="round-title" id="roundTitle">Ronde klaar</div>
+    <div class="round-text" id="roundText"></div>
+    <div class="round-scores" id="roundScores"></div>
+    <button class="btn-big gold" id="roundBtn" style="max-width:260px;" onclick="nextRound()">Volgende ronde</button>
+  </div>
+
+  <div class="screen" id="winnerScreen">
+    <div class="trophy">🏆</div>
+    <div class="win-title">Winnaar</div>
+    <div class="win-name" id="winnerName">—</div>
+    <div class="win-score" id="winnerScore"></div>
+    <div class="fscores" id="finalScores"></div>
+    <button class="btn-big gold" style="max-width:240px;margin-top:4px;" onclick="backToLobby()">Opnieuw spelen</button>
+  </div>
+
+  <!-- Double alert modal -->
+  <div class="overlay" id="doubleModal">
+    <div class="mbox" style="text-align:center;">
+      <div class="double-icon">💥</div>
+      <h2 style="text-align:center;">Double!</h2>
+      <p id="doubleModalText" style="text-align:center;"></p>
+      <div class="double-card-display" id="doubleCardDisplay"></div>
+      <button class="btn-big gold" style="margin-top:14px;" id="doubleOkBtn">OK, begrepen</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="settingsModal" onclick="closeOvl(event,'settingsModal')">
+    <div class="mbox">
+      <button class="mcl" onclick="hide('settingsModal')">✕</button>
+      <h2>Instellingen</h2>
+      <button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
+      <button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
+      <div class="setting-row">
+        <label for="maxScoreInput">Max score voor eindspel</label>
+        <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
+      </div>
+      <div class="setting-row">
+        <label for="riskToggle">Toon kansenbalk</label>
+        <input type="checkbox" id="riskToggle" checked />
+      </div>
+      <div class="setting-row">
+        <label for="soundToggle">Geluidseffecten</label>
+        <input type="checkbox" id="soundToggle" checked />
+      </div>
+      <button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="infoModal" onclick="closeOvl(event,'infoModal')">
+    <div class="mbox">
+      <button class="mcl" onclick="hide('infoModal')">✕</button>
+      <h2>Spelregels</h2>
+      <p>Iedere speler speelt om de beurt. In je beurt pak je precies één kaart of stop je. Daarna gaat het spel automatisch door naar de volgende speler.</p>
+      <ul>
+        <li>Het deck bevat <span class="rhl">78 kaarten</span>: 1× kaart 1, 2× kaart 2, … 12× kaart 12.</li>
+        <li>Pak je een kaart die je al had in deze ronde? <span class="rhl">💥 Double!</span> Dan val je uit voor deze ronde.</li>
+        <li>Als je stopt, bank je je punten voor deze ronde.</li>
+        <li>Na elke kaart of stop gaat de beurt na 3 seconden door.</li>
+        <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
+        <li>De hele game stopt zodra iemand aan het einde van een ronde <span class="rhl">de ingestelde max score haalt of overschrijdt</span>.</li>
+        <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // ── Player colours (6 slots, cycles) ──────────────────────────────────────
+    const PLAYER_COLORS = [
+      { cls: 'player-0', chipCls: 'color-0', dotCls: 'dot-0' },
+      { cls: 'player-1', chipCls: 'color-1', dotCls: 'dot-1' },
+      { cls: 'player-2', chipCls: 'color-2', dotCls: 'dot-2' },
+      { cls: 'player-3', chipCls: 'color-3', dotCls: 'dot-3' },
+      { cls: 'player-4', chipCls: 'color-4', dotCls: 'dot-4' },
+      { cls: 'player-5', chipCls: 'color-5', dotCls: 'dot-5' },
+    ];
+    function colorOf(idx) { return PLAYER_COLORS[idx % PLAYER_COLORS.length]; }
+
+    function mulberry32(seed) {
+      return function() {
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function buildDeck(rng) {
+      let d = [];
+      for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) d.push(n);
+      for (let i = d.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [d[i], d[j]] = [d[j], d[i]];
+      }
+      return d;
+    }
+
+    function calcRisk(myCards, deckRemaining) {
+      if (!deckRemaining.length) return 0;
+      let danger = 0;
+      for (const c of deckRemaining) if (myCards.includes(c)) danger++;
+      return danger / deckRemaining.length;
+    }
+
+    const $ = id => document.getElementById(id);
+    const SUITS = ['♠','♣','♥','♦'];
+    const RED = new Set(['♥','♦']);
+
+    let audioCtx = null;
+
+    let S = {
+      players: [],
+      deck: [],
+      currentIndex: 0,
+      round: 1,
+      roundActive: false,
+      busy: false,
+      gameOver: false,
+      maxScore: 200,
+      showRisk: true,
+      soundEnabled: true,
+      pendingAfterTurn: null, // 'next' | 'round'
+      turnDeadline: null,
+      autoTimer: null,
+      roundTimer: null,
+      countdownInterval: null,
+      doubleTimer: null,
+    };
+
+    // ── Sound ────────────────────────────────────────────────────────────────
+    function getAudioCtx() {
+      if (!S.soundEnabled) return null;
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return null;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+      return audioCtx;
+    }
+
+    function tone(ctx, frequency, start, duration, type = 'sine', gainValue = 0.04) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(frequency, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(gainValue, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + duration + 0.03);
+    }
+
+    function playSound(kind) {
+      const ctx = getAudioCtx();
+      if (!ctx) return;
+      const now = ctx.currentTime + 0.01;
+
+      if (kind === 'draw') {
+        tone(ctx, 520, now, 0.07, 'triangle', 0.045);
+        tone(ctx, 760, now + 0.05, 0.08, 'sine', 0.03);
+      } else if (kind === 'stop') {
+        tone(ctx, 330, now, 0.12, 'sine', 0.045);
+        tone(ctx, 220, now + 0.08, 0.16, 'triangle', 0.03);
+      } else if (kind === 'double') {
+        tone(ctx, 180, now, 0.12, 'sawtooth', 0.05);
+        tone(ctx, 130, now + 0.08, 0.16, 'square', 0.03);
+        tone(ctx, 90, now + 0.14, 0.18, 'sawtooth', 0.02);
+      } else if (kind === 'roundEnd') {
+        tone(ctx, 392, now, 0.12, 'triangle', 0.04);
+        tone(ctx, 523.25, now + 0.10, 0.14, 'triangle', 0.04);
+        tone(ctx, 659.25, now + 0.22, 0.16, 'triangle', 0.04);
+      } else if (kind === 'win') {
+        tone(ctx, 523.25, now, 0.12, 'triangle', 0.05);
+        tone(ctx, 659.25, now + 0.11, 0.14, 'triangle', 0.05);
+        tone(ctx, 783.99, now + 0.24, 0.18, 'triangle', 0.05);
+        tone(ctx, 1046.5, now + 0.39, 0.22, 'sine', 0.04);
+      }
+    }
+
+    // ── Persistence ───────────────────────────────────────────────────────────
+    function saveGame() { localStorage.setItem('dt_save', JSON.stringify(S)); }
+
+    function loadGame() {
+      try {
+        const saved = localStorage.getItem('dt_save');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.players && parsed.players.length > 0) return parsed;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function clearSavedGame() { localStorage.removeItem('dt_save'); }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      $(id).classList.add('active');
+    }
+
+    function showInfo() { $('infoModal').classList.add('show'); }
+    function openSettings() { $('settingsModal').classList.add('show'); }
+    function hide(id) { $(id).classList.remove('show'); }
+    function closeOvl(e, id) { if (e.target === $(id)) hide(id); }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem('dt_settings');
+        if (!raw) return;
+        const d = JSON.parse(raw);
+        if (typeof d.maxScore === 'number') S.maxScore = d.maxScore;
+        if (typeof d.showRisk === 'boolean') S.showRisk = d.showRisk;
+        if (typeof d.soundEnabled === 'boolean') S.soundEnabled = d.soundEnabled;
+      } catch (e) {}
+    }
+
+    function saveSettings() {
+      localStorage.setItem('dt_settings', JSON.stringify({
+        maxScore: S.maxScore,
+        showRisk: S.showRisk,
+        soundEnabled: S.soundEnabled
+      }));
+    }
+
+    function applySettingsToUI() {
+      if ($('maxScoreInput')) $('maxScoreInput').value = S.maxScore;
+      if ($('riskToggle')) $('riskToggle').checked = S.showRisk;
+      if ($('soundToggle')) $('soundToggle').checked = S.soundEnabled;
+      if ($('riskWrap')) $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
+    }
+
+    // ── Lobby ─────────────────────────────────────────────────────────────────
+    function getPlayerName() { return $('playerInput').value.trim(); }
+
+    function addPlayer() {
+      const name = getPlayerName();
+      if (!name) return;
+      S.players.push({ name, bankedScore: 0, roundScore: 0, cards: [], stopped: false, out: false });
+      $('playerInput').value = '';
+      renderLobbyPlayers();
+    }
+
+    $('playerInput').addEventListener('keydown', e => { if (e.key === 'Enter') addPlayer(); });
+
+    function removePlayer(idx) {
+      if (S.players.length <= 1) return;
+      S.players.splice(idx, 1);
+      renderLobbyPlayers();
+    }
+
+    function renderLobbyPlayers() {
+      const el = $('playerList');
+      el.innerHTML = '';
+      const savedState = loadGame();
+      $('resumeCard').style.display = (savedState && !savedState.gameOver) ? 'block' : 'none';
+
+      if (!S.players.length) {
+        const empty = document.createElement('div');
+        empty.className = 'pitem';
+        empty.textContent = 'Nog geen spelers toegevoegd.';
+        el.appendChild(empty);
+        return;
+      }
+
+      S.players.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = 'pitem';
+        item.innerHTML = `<div class="pitem-left"><div class="pdot"></div><div class="pname-trim">${p.name}</div></div><button class="pdel" title="Verwijderen">×</button>`;
+        item.querySelector('.pdel').onclick = () => removePlayer(idx);
+        el.appendChild(item);
+      });
+    }
+
+    function shuffleDeck(deck) {
+      const rng = mulberry32(Date.now() % 1000000000);
+      for (let i = deck.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+      return deck;
+    }
+
+    function fullFreshDeckExcludingCurrentHands() {
+      const fresh = [];
+      for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) fresh.push(n);
+
+      const counts = {};
+      for (const p of S.players) for (const c of p.cards) counts[c] = (counts[c] || 0) + 1;
+
+      for (const key of Object.keys(counts)) {
+        const num = parseInt(key, 10);
+        let toRemove = counts[key];
+        for (let i = fresh.length - 1; i >= 0 && toRemove > 0; i--) {
+          if (fresh[i] === num) {
+            fresh.splice(i, 1);
+            toRemove--;
+          }
+        }
+      }
+
+      return shuffleDeck(fresh);
+    }
+
+    function buildNextDeckIfNeeded() {
+      if (S.deck.length === 0) S.deck = fullFreshDeckExcludingCurrentHands();
+    }
+
+    function startGame() {
+      if (S.players.length < 1) {
+        alert('Voeg eerst minstens één speler toe.');
+        return;
+      }
+      loadSettings();
+      S.maxScore = parseInt($('maxScoreInput')?.value || S.maxScore, 10) || 200;
+      S.showRisk = $('riskToggle') ? $('riskToggle').checked : true;
+      S.soundEnabled = $('soundToggle') ? $('soundToggle').checked : true;
+      saveSettings();
+      applySettingsToUI();
+
+      S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
+      S.round = 1;
+      S.gameOver = false;
+      S.roundActive = false;
+      S.currentIndex = 0;
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+
+      S.players = S.players.map(p => ({
+        name: p.name,
+        bankedScore: 0,
+        roundScore: 0,
+        cards: [],
+        stopped: false,
+        out: false
+      }));
+
+      showScreen('gameScreen');
+      startRound();
+      saveGame();
+    }
+
+    function resumeGame() {
+      const savedState = loadGame();
+      if (savedState) {
+        S = savedState;
+        S.autoTimer = null;
+        S.roundTimer = null;
+        S.countdownInterval = null;
+        S.doubleTimer = null;
+        loadSettings();
+        applySettingsToUI();
+
+        if (S.gameOver) {
+          endGame();
+          return;
+        }
+
+        showScreen('gameScreen');
+        renderGame();
+
+        if (S.roundActive && S.busy && S.turnDeadline && S.pendingAfterTurn) {
+          const remaining = Math.max(0, S.turnDeadline - Date.now());
+          if (remaining <= 0) {
+            if (S.pendingAfterTurn === 'round') endRound();
+            else advanceTurn();
+          } else {
+            scheduleAfterTurn(S.pendingAfterTurn, remaining);
+          }
+        } else if (S.roundActive) {
+          const p = currentPlayer();
+          if (p && (p.out || p.stopped)) scheduleAfterTurn('next', 3000);
+        } else {
+          showRoundEndScreen();
+        }
+      }
+    }
+
+    function resetRoundState() {
+      S.players.forEach(p => {
+        p.roundScore = 0;
+        p.cards = [];
+        p.stopped = false;
+        p.out = false;
+      });
+      S.currentIndex = 0;
+      while (S.currentIndex < S.players.length && (S.players[S.currentIndex].stopped || S.players[S.currentIndex].out)) S.currentIndex++;
+      if (S.currentIndex >= S.players.length) S.currentIndex = 0;
+    }
+
+    function startRound() {
+      if (S.gameOver) return;
+      if (!S.deck.length) S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
+      resetRoundState();
+      S.roundActive = true;
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+      clearTimers();
+      renderGame();
+      saveGame();
+    }
+
+    function clearTimers() {
+      if (S.autoTimer) { clearTimeout(S.autoTimer); S.autoTimer = null; }
+      if (S.roundTimer) { clearTimeout(S.roundTimer); S.roundTimer = null; }
+      if (S.countdownInterval) { clearInterval(S.countdownInterval); S.countdownInterval = null; }
+      if (S.doubleTimer) { clearTimeout(S.doubleTimer); S.doubleTimer = null; }
+      $('countdownBadge').style.display = 'none';
+    }
+
+    function currentPlayer() { return S.players[S.currentIndex]; }
+    function activePlayers() { return S.players.filter(p => !p.stopped && !p.out); }
+
+    function nextActiveIndex(fromIndex) {
+      if (!S.players.length) return -1;
+      for (let step = 1; step <= S.players.length; step++) {
+        const idx = (fromIndex + step) % S.players.length;
+        const p = S.players[idx];
+        if (!p.stopped && !p.out) return idx;
+      }
+      return -1;
+    }
+
+    function renderCardFace(card) {
+      const suit = SUITS[Math.floor(Math.random() * 4)];
+      const isRed = RED.has(suit);
+      const cc = isRed ? 'rc' : 'bc';
+      $('cardFace').innerHTML = `
+        <div class="cc ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
+        <div class="c-center ${cc}">${suit}</div>
+        <div class="cc bot ${cc}"><div class="cn">${card}</div><div class="cs">${suit}</div></div>
+      `;
+    }
+
+    function displayScore(p) { return p.bankedScore + p.roundScore; }
+
+    function renderGame() {
+      const p = currentPlayer();
+      if (!p) return;
+
+      $('scoreVal').textContent = displayScore(p);
+      $('deckVal').textContent = S.deck.length;
+      $('cardsVal').textContent = p.cards.length;
+      $('deckBadge').textContent = S.deck.length + ' over';
+      $('roundPill').textContent = 'Ronde ' + S.round;
+      $('currentPlayerName').textContent = p.name;
+
+      if (p.out) {
+        $('turnSub').textContent = 'Deze speler is uit voor deze ronde.';
+      } else if (p.stopped) {
+        $('turnSub').textContent = 'Deze speler heeft gestopt.';
+      } else if (S.busy) {
+        $('turnSub').textContent = S.pendingAfterTurn === 'round'
+          ? 'Ronde wordt afgerond...'
+          : 'Beurt afgerond. Volgende speler komt eraan.';
+      } else {
+        $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
+      }
+
+      const tc = $('turnCard');
+      tc.className = 'turn-card ' + colorOf(S.currentIndex).cls;
+
+      if (S.showRisk) {
+        $('riskWrap').style.display = 'block';
+        const risk = calcRisk(p.cards, S.deck);
+        const pct = Math.round(risk * 100);
+        $('riskPct').textContent = p.cards.length === 0 ? '—' : pct + '%';
+        const fill = $('riskFill');
+        fill.style.width = pct + '%';
+        fill.style.background = pct < 20 ? '#2d8a58' : pct < 45 ? '#c9a84c' : '#c0392b';
+      } else {
+        $('riskWrap').style.display = 'none';
+      }
+
+      const row = $('playersRow');
+      row.innerHTML = '';
+      S.players.forEach((pl, i) => {
+        const col = colorOf(i);
+        const isActive = i === S.currentIndex;
+        const d = document.createElement('div');
+        d.className = 'pchip' +
+          (isActive ? ' active ' + col.chipCls : '') +
+          (pl.out ? ' out' : '') +
+          (pl.stopped ? ' done' : '');
+        d.innerHTML = `<div class="pcolor-dot ${col.dotCls}"></div><span class="pscore">${pl.bankedScore + pl.roundScore}</span><span class="pname">${pl.name}</span>${isActive ? '<span class="ptag">▶</span>' : ''}`;
+        row.appendChild(d);
+      });
+
+      $('history').innerHTML = '';
+      if (p.cards.length) {
+        p.cards.forEach(card => {
+          const el = document.createElement('div');
+          el.className = 'hchip';
+          el.textContent = card;
+          $('history').appendChild(el);
+        });
+      } else {
+        const empty = document.createElement('div');
+        empty.style.fontSize = '12px';
+        empty.style.color = 'rgba(255,255,255,.35)';
+        empty.textContent = 'Nog geen kaarten';
+        $('history').appendChild(empty);
+      }
+
+      const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped;
+      $('drawBtn').disabled = !canAct;
+      $('stopBtn').disabled = !canAct;
+    }
+
+    function ensureDeck() {
+      if (S.deck.length === 0) buildNextDeckIfNeeded();
+    }
+
+    // ── After turn handling ──────────────────────────────────────────────────
+    function scheduleAfterTurn(mode = 'next', delay = 3000) {
+      clearTimers();
+      S.busy = true;
+      S.pendingAfterTurn = mode;
+      S.turnDeadline = Date.now() + delay;
+
+      const badge = $('countdownBadge');
+      let secs = Math.max(1, Math.ceil(delay / 1000));
+
+      badge.textContent = mode === 'round'
+        ? `Ronde eindigt over ${secs}s`
+        : `Volgende speler over ${secs}s`;
+      badge.style.display = 'inline-block';
+
+      S.countdownInterval = setInterval(() => {
+        secs--;
+        if (secs > 0) {
+          badge.textContent = mode === 'round'
+            ? `Ronde eindigt over ${secs}s`
+            : `Volgende speler over ${secs}s`;
+        } else {
+          clearInterval(S.countdownInterval);
+          S.countdownInterval = null;
+          badge.style.display = 'none';
+        }
+      }, 1000);
+
+      S.autoTimer = setTimeout(() => {
+        S.turnDeadline = null;
+        if (mode === 'round') endRound();
+        else advanceTurn();
+      }, delay);
+
+      saveGame();
+      renderGame();
+    }
+
+    // ── Double modal ──────────────────────────────────────────────────────────
+    function showDoubleModal(playerName, card, onDone) {
+      $('doubleModalText').textContent = `${playerName} trok kaart ${card}, maar had die al! 💥 Alle punten van deze ronde zijn weg.`;
+
+      const disp = $('doubleCardDisplay');
+      disp.innerHTML = `
+        <div class="dcard">${card}</div>
+        <div class="double-arrow">↔</div>
+        <div class="dcard">${card}</div>
+      `;
+
+      const modal = $('doubleModal');
+      modal.classList.add('show');
+
+      const proceed = () => {
+        if (S.doubleTimer) {
+          clearTimeout(S.doubleTimer);
+          S.doubleTimer = null;
+        }
+        modal.classList.remove('show');
+        onDone();
+      };
+
+      $('doubleOkBtn').onclick = proceed;
+
+      S.doubleTimer = setTimeout(() => {
+        modal.classList.remove('show');
+        S.doubleTimer = null;
+        onDone();
+      }, 3000);
+    }
+
+    // ── Draw card ─────────────────────────────────────────────────────────────
+    function drawCard() {
+      if (S.busy || S.gameOver) return;
+      const p = currentPlayer();
+      if (!p || p.out || p.stopped) return;
+
+      clearTimers();
+      ensureDeck();
+      if (!S.deck.length) {
+        endRound();
+        return;
+      }
+
+      S.busy = true;
+      $('drawBtn').disabled = true;
+      $('stopBtn').disabled = true;
+
+      const fc = $('flipCard');
+      fc.classList.remove('flipped');
+
+      setTimeout(() => {
+        const card = S.deck.shift();
+        const isDouble = p.cards.includes(card);
+        renderCardFace(card);
+        fc.classList.add('flipped');
+
+        setTimeout(() => {
+          if (isDouble) {
+            const roundFinished = true; // after double this player leaves the round
+            p.out = true;
+            p.roundScore = 0;
+            p.cards = [];
+            renderGame();
+            saveGame();
+            playSound('double');
+
+            showDoubleModal(p.name, card, () => {
+              if (checkRoundFinished()) return;
+              if (activePlayers().length === 0 || roundFinished) {
+                scheduleAfterTurn('round', 3000);
+              } else {
+                scheduleAfterTurn('next', 3000);
+              }
+            });
+          } else {
+            p.cards.push(card);
+            p.roundScore += card;
+            renderGame();
+            saveGame();
+            playSound('draw');
+            if (checkRoundFinished()) return;
+            scheduleAfterTurn('next', 3000);
+          }
+        }, 380);
+      }, 180);
+    }
+
+    // ── Stop turn ─────────────────────────────────────────────────────────────
+    function stopTurn() {
+      if (S.busy || S.gameOver) return;
+      const p = currentPlayer();
+      if (!p || p.out || p.stopped) return;
+
+      clearTimers();
+      p.stopped = true;
+      renderGame();
+      saveGame();
+      playSound('stop');
+
+      if (checkRoundFinished()) {
+        scheduleAfterTurn('round', 3000);
+        return;
+      }
+
+      scheduleAfterTurn('next', 3000);
+    }
+
+    function advanceTurn() {
+      clearTimers();
+      if (S.gameOver) return;
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+
+      const next = nextActiveIndex(S.currentIndex);
+      if (next === -1) {
+        endRound();
+        return;
+      }
+
+      S.currentIndex = next;
+      renderGame();
+      saveGame();
+    }
+
+    function checkRoundFinished() {
+      if (activePlayers().length === 0) {
+        return true;
+      }
+      return false;
+    }
+
+    function bankRoundScores() {
+      for (const p of S.players) if (!p.out) p.bankedScore += p.roundScore;
+    }
+
+    function bestRoundScore() {
+      let best = -1;
+      for (const p of S.players) if (p.roundScore > best) best = p.roundScore;
+      return best;
+    }
+
+    // ── Round end screen with all player scores ───────────────────────────────
+    function showRoundEndScreen() {
+      const best = bestRoundScore();
+      const title = `Ronde ${S.round} klaar`;
+      $('roundTitle').textContent = title;
+
+      const winners = S.players.filter(p => p.roundScore === best && best > 0);
+      let subtitle = '';
+      if (winners.length === 1) {
+        subtitle = `${winners[0].name} won deze ronde met ${best} punten.`;
+      } else if (winners.length > 1) {
+        subtitle = `Gelijkspel! Meerdere spelers scoorden ${best} punten.`;
+      } else {
+        subtitle = 'Niemand scoorde punten deze ronde.';
+      }
+      $('roundText').textContent = subtitle;
+
+      const container = $('roundScores');
+      container.innerHTML = `<div class="round-scores-title">Scores na ronde ${S.round}</div>`;
+      const sorted = [...S.players].sort((a, b) => b.bankedScore - a.bankedScore);
+
+      sorted.forEach(p => {
+        const isBest = p.roundScore === best && best > 0;
+        const row = document.createElement('div');
+        row.className = 'rsrow' + (isBest ? ' best-row' : '');
+        row.innerHTML = `
+          <span class="rsn">${p.name}</span>
+          <span class="rs-round">+${p.roundScore}</span>
+          <span class="rs-total">${p.bankedScore}</span>
+        `;
+        container.appendChild(row);
+      });
+
+      showScreen('roundScreen');
+    }
+
+    function endRound() {
+      if (S.gameOver) return;
+      clearTimers();
+      S.roundActive = false;
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+
+      bankRoundScores();
+      saveGame();
+      playSound('roundEnd');
+
+      const overLimit = S.players.filter(p => p.bankedScore >= S.maxScore);
+
+      if (overLimit.length > 0) {
+        showRoundEndScreen();
+        $('roundTitle').textContent = 'Einde spel!';
+        $('roundText').textContent = `${overLimit[0].name} heeft ${S.maxScore} of meer punten bereikt.`;
+        $('roundBtn').textContent = 'Bekijk winnaar';
+        $('roundBtn').onclick = () => endGame();
+        return;
+      }
+
+      $('roundBtn').textContent = 'Volgende ronde';
+      $('roundBtn').onclick = nextRound;
+      showRoundEndScreen();
+    }
+
+    function nextRound() {
+      $('roundBtn').onclick = nextRound;
+      S.round += 1;
+      showScreen('gameScreen');
+      startRound();
+      saveGame();
+    }
+
+    function endGame() {
+      if (S.gameOver) return;
+      S.gameOver = true;
+      clearTimers();
+      S.busy = false;
+      S.pendingAfterTurn = null;
+      S.turnDeadline = null;
+
+      const sorted = [...S.players].sort((a, b) => b.bankedScore - a.bankedScore);
+      const bestScore = sorted[0]?.bankedScore ?? 0;
+      const winners = sorted.filter(p => p.bankedScore === bestScore);
+
+      $('winnerName').textContent = winners.length === 1 ? winners[0].name : 'Gelijkspel';
+      $('winnerScore').textContent = bestScore + ' punten';
+
+      const fs = $('finalScores');
+      fs.innerHTML = '';
+      sorted.forEach(p => {
+        const isWinner = p.bankedScore === bestScore;
+        const r = document.createElement('div');
+        r.className = 'fsrow' + (isWinner ? ' winner-row' : '');
+        const col = colorOf(S.players.indexOf(p));
+        r.innerHTML = `<span class="fsn"><div class="pcolor-dot ${col.dotCls}"></div>${p.name}</span><span class="fsp">${p.bankedScore}</span>`;
+        fs.appendChild(r);
+      });
+
+      showScreen('winnerScreen');
+      playSound('win');
+      clearSavedGame();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+
+    function resetGame() {
+      if (!confirm('Weet je zeker dat je het spel wilt resetten?')) return;
+      clearSavedGame();
+      backToLobby();
+    }
+
+    $('maxScoreInput').addEventListener('change', () => {
+      const n = parseInt($('maxScoreInput').value, 10);
+      S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200;
+      $('maxScoreInput').value = S.maxScore;
+      saveSettings();
+    });
+
+    $('riskToggle').addEventListener('change', () => {
+      S.showRisk = $('riskToggle').checked;
+      $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
+      saveSettings();
+      renderGame();
+    });
+
+    $('soundToggle').addEventListener('change', () => {
+      S.soundEnabled = $('soundToggle').checked;
+      saveSettings();
+    });
+
+    function backToLobby() {
+      clearTimers();
+      hide('doubleModal');
+
+      S = {
+        players: [],
+        deck: [],
+        currentIndex: 0,
+        round: 1,
+        roundActive: false,
+        busy: false,
+        gameOver: false,
+        maxScore: 200,
+        showRisk: true,
+        soundEnabled: true,
+        pendingAfterTurn: null,
+        turnDeadline: null,
+        autoTimer: null,
+        roundTimer: null,
+        countdownInterval: null,
+        doubleTimer: null,
+      };
+
+      loadSettings();
+      applySettingsToUI();
+      $('playerList').innerHTML = '';
+      $('playerInput').value = '';
+      $('history').innerHTML = '';
+      $('playersRow').innerHTML = '';
+      $('cardFace').innerHTML = '';
+      $('flipCard').classList.remove('flipped');
+      $('currentPlayerName').textContent = '—';
+      $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
+      $('roundPill').textContent = 'Ronde 1';
+      $('countdownBadge').style.display = 'none';
+      $('scoreVal').textContent = '0';
+      $('deckVal').textContent = '78';
+      $('cardsVal').textContent = '0';
+      $('deckBadge').textContent = '78 over';
+      $('riskPct').textContent = '—';
+      $('riskFill').style.width = '0%';
+      $('riskFill').style.background = '#2d8a58';
+      $('drawBtn').disabled = false;
+      $('stopBtn').disabled = false;
+      $('turnCard').className = 'turn-card';
+      hide('settingsModal');
+      hide('infoModal');
+      showScreen('lobbyScreen');
+      renderLobbyPlayers();
+    }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    loadSettings();
+    applySettingsToUI();
+    $('roundBtn').onclick = nextRound;
+    renderLobbyPlayers();
+  </script>
+</body>
+</html>
