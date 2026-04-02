@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0d1a12"/>
+  <rect x="96" y="84" width="320" height="344" rx="28" fill="#f5f0e8" stroke="#c9a84c" stroke-width="12"/>
+  <text x="256" y="210" text-anchor="middle" font-size="124" font-family="Georgia, serif" fill="#c0392b" font-weight="700">2x</text>
+  <text x="256" y="310" text-anchor="middle" font-size="76" font-family="Georgia, serif" fill="#0d1a12" font-weight="700">↺</text>
+</svg>
