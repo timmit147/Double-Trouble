@@ -17,9 +17,9 @@
       --card-h:152px;
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    html,body{height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--dark);color:var(--cream);overflow:hidden}
-    button,input{font:inherit}
-    .screen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:20px;position:absolute;inset:0;overflow-y:auto}
+    html,body{height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--dark);color:var(--cream);overflow:hidden;-webkit-user-select:none;user-select:none;}
+    button,input{font:inherit;-webkit-user-select:none;user-select:none}
+    .screen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:20px;position:absolute;inset:0;overflow-y:auto;overscroll-behavior:none}
     .screen.active{display:flex}
 
     /* Lobby */
@@ -31,7 +31,7 @@
     .lcard{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.2);border-radius:18px;padding:18px 20px;width:100%;max-width:360px;position:relative;z-index:1}
     .lcard h3{font-family:Georgia,serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
     .player-input-wrap{display:flex;gap:8px;align-items:stretch}
-    .name-input{width:100%;background:rgba(0,0,0,.4);border:1.5px solid rgba(201,168,76,.25);border-radius:10px;padding:11px 13px;color:var(--cream);font-size:15px;outline:none}
+    .name-input{width:100%;background:rgba(0,0,0,.4);border:1.5px solid rgba(201,168,76,.25);border-radius:10px;padding:11px 13px;color:var(--cream);font-size:15px;outline:none;-webkit-user-select:text;user-select:text}
     .name-input:focus{border-color:var(--gold)}
     .name-input::placeholder{color:rgba(255,255,255,.22)}
     .btn-g{background:linear-gradient(135deg,var(--gold),var(--gold-light),var(--gold));background-size:200%;color:var(--dark);border:none;border-radius:10px;font-family:Georgia,serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;padding:11px 16px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(201,168,76,.28);transition:transform .15s,filter .15s}
@@ -52,12 +52,12 @@
     .small-hint{font-size:11px;color:rgba(255,255,255,.45);text-align:center;margin-top:4px}
 
     /* Game */
-    #gameScreen{background:radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);justify-content:flex-start;padding:0}
+    #gameScreen{background:radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);justify-content:flex-start;padding:0;overscroll-behavior:none}
     #gameScreen::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E");pointer-events:none}
-    .g-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;height:100%;padding:24px 14px 16px;gap:12px;overflow-y:auto}
-    .topbar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 4px;margin-top:2px}
-    .g-title{font-family:Georgia,serif;font-size:19px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .icon-btn{width:33px;height:33px;border-radius:50%;border:1.5px solid rgba(201,168,76,.3);background:rgba(0,0,0,.4);color:var(--gold);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:Georgia,serif}
+    .g-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;height:100%;padding:20px 14px 12px;gap:10px;overflow-y:auto}
+    .topbar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 6px;margin-top:2px}
+    .g-title{font-family:Georgia,serif;font-size:19px;font-weight:900;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;padding-top:2px}
+    .icon-btn{width:33px;height:33px;border-radius:50%;border:1.5px solid rgba(201,168,76,.3);background:rgba(0,0,0,.4);color:var(--gold);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:Georgia,serif;margin-right:2px}
     .icon-btn:hover{background:var(--gold);color:var(--dark)}
     .score-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;padding:0 4px}
     .sbox{background:rgba(0,0,0,.3);border:1px solid rgba(201,168,76,.2);border-radius:11px;padding:7px 8px;text-align:center;min-width:0}
@@ -107,7 +107,7 @@
     .special-bottom{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.8}
     .special-x2 .special-main{color:var(--red)}
     .special-sc .special-main{color:var(--gold)}
-    .player-panel{width:100%;max-width:420px;margin-top:14px}
+    .player-panel{width:100%;max-width:420px;margin-top:10px}
     .pnl-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
     .pnl-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
     .pchip{background:rgba(0,0,0,.3);border:1.5px solid rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;display:flex;align-items:center;gap:6px;font-size:11px;transition:border-color .3s,box-shadow .3s,background .3s}
@@ -130,16 +130,16 @@
     .dot-3{background:rgb(220,120,220)}
     .dot-4{background:rgb(255,120,120)}
     .dot-5{background:rgb(80,220,200)}
-    .player-cards{width:100%;max-width:420px;margin-top:14px}
+    .player-cards{width:100%;max-width:420px;margin-top:10px}
     .cards-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
-    .hist-track{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:38px;padding:7px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04)}
+    .hist-track{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:92px;align-content:flex-start;padding:7px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04)}
     .hchip{width:31px;height:38px;background:linear-gradient(160deg,#fdfaf3,#ede6d2);border-radius:5px;border:1.5px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:14px;font-weight:700;color:#1a1a2e;box-shadow:0 2px 5px rgba(0,0,0,.28);animation:chipIn .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
     .hchip.rc{color:var(--red)}
     .hchip.bonus{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#1a1a2e}
     .hchip.x2{border-color:rgba(192,57,43,.65);background:linear-gradient(160deg,#fde8e8,#f5c6c6)}
     .hchip.sc{border-color:rgba(201,168,76,.7);background:linear-gradient(160deg,#fff6d6,#f5e4a2)}
     @keyframes chipIn{from{transform:translateY(-10px) scale(.7);opacity:0}to{transform:none;opacity:1}}
-    .draw-actions{width:100%;max-width:360px;display:flex;gap:10px;margin-top:12px;padding-bottom:8px}
+    .draw-actions{width:100%;max-width:360px;display:flex;gap:10px;margin-top:8px;padding-bottom:4px}
     .draw-btn{flex:1;padding:15px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);background-size:200%;color:var(--dark);font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(201,168,76,.32),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .15s,filter .15s,opacity .15s}
     .draw-btn:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.08)}
     .draw-btn:active:not(:disabled){transform:scale(.97)}
@@ -161,7 +161,7 @@
     .setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
     .setting-row:first-of-type{border-top:none;padding-top:0}
     .setting-row label{font-size:13px;color:rgba(245,240,232,.82)}
-    .setting-row input[type="number"]{width:104px;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.24);color:var(--cream);border-radius:10px;padding:10px 12px;outline:none}
+    .setting-row input[type="number"]{width:104px;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.24);color:var(--cream);border-radius:10px;padding:10px 12px;outline:none;-webkit-user-select:text;user-select:text}
     .setting-btn{width:100%;margin-top:8px;border:none;border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.06);color:var(--cream);cursor:pointer}
     .setting-btn:hover{background:rgba(255,255,255,.09)}
 
@@ -249,17 +249,13 @@
       <div class="score-row">
         <div class="sbox"><div class="sl">Totaal punten</div><div class="sv" id="scoreVal">0</div></div>
         <div class="sbox"><div class="sl">Deck</div><div class="sv" id="deckVal">78</div></div>
-        <div class="sbox"><div class="sl">Kaarten</div><div class="sv" id="cardsVal">0</div></div>
+        <div class="sbox"><div class="sl">Ronde</div><div class="sv" id="roundVal">1</div></div>
       </div>
 
       <div class="turn-card" id="turnCard">
         <div class="turn-label">Aan de beurt</div>
         <div class="turn-name" id="currentPlayerName">—</div>
-        <div class="turn-sub" id="turnSub">Kies: kaarten pakken of stoppen</div>
-        <div>
-          <div class="round-pill" id="roundPill">Ronde 1</div>
-          <span class="countdown-badge" id="countdownBadge" style="display:none;"></span>
-        </div>
+        <div class="turn-sub" id="turnSub" style="display:none;"></div>
       </div>
 
       <div class="risk-wrap" id="riskWrap">
@@ -753,7 +749,6 @@
       if(S.autoTimer){ clearTimeout(S.autoTimer); S.autoTimer = null; }
       if(S.countdownInterval){ clearInterval(S.countdownInterval); S.countdownInterval = null; }
       if(S.doubleTimer){ clearTimeout(S.doubleTimer); S.doubleTimer = null; }
-      $('countdownBadge').style.display = 'none';
     }
 
     function currentPlayer(){ return S.players[S.currentIndex]; }
@@ -816,15 +811,9 @@
 
       $('scoreVal').textContent = displayScore(p);
       $('deckVal').textContent = S.deck.length;
-      $('cardsVal').textContent = p.cards.length;
+      $('roundVal').textContent = S.round;
       $('deckBadge').textContent = S.deck.length + ' over';
-      $('roundPill').textContent = 'Ronde ' + S.round;
       $('currentPlayerName').textContent = p.name;
-
-      if(p.out) $('turnSub').textContent = 'Deze speler is uit voor deze ronde.';
-      else if(p.stopped) $('turnSub').textContent = 'Deze speler heeft gestopt.';
-      else if(S.busy) $('turnSub').textContent = 'Beurt afgerond. Volgende stap komt eraan.';
-      else $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
 
       const tc = $('turnCard');
       tc.className = 'turn-card ' + colorOf(S.currentIndex).cls;
@@ -882,21 +871,6 @@
       S.pendingAfterTurn = mode;
       S.turnDeadline = Date.now() + delay;
 
-      const badge = $('countdownBadge');
-      let secs = Math.max(1, Math.ceil(delay / 1000));
-      badge.textContent = mode === 'round' ? `Ronde eindigt over ${secs}s` : `Volgende speler over ${secs}s`;
-      badge.style.display = 'inline-block';
-
-      S.countdownInterval = setInterval(() => {
-        secs--;
-        if(secs > 0){
-          badge.textContent = mode === 'round' ? `Ronde eindigt over ${secs}s` : `Volgende speler over ${secs}s`;
-        } else {
-          clearInterval(S.countdownInterval);
-          S.countdownInterval = null;
-          badge.style.display = 'none';
-        }
-      }, 1000);
 
       S.autoTimer = setTimeout(() => {
         S.turnDeadline = null;
@@ -1255,12 +1229,9 @@
       $('cardFace').innerHTML = '';
       $('flipCard').classList.remove('flipped');
       $('currentPlayerName').textContent = '—';
-      $('turnSub').textContent = 'Kies: kaarten pakken of stoppen';
-      $('roundPill').textContent = 'Ronde 1';
-      $('countdownBadge').style.display = 'none';
       $('scoreVal').textContent = '0';
       $('deckVal').textContent = '78';
-      $('cardsVal').textContent = '0';
+      $('roundVal').textContent = '1';
       $('deckBadge').textContent = '78 over';
       $('riskPct').textContent = '—';
       $('riskFill').style.width = '0%';
