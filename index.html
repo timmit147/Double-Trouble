@@ -1,3 +1,10 @@
+Hier is de volledig herziene code met alle verbeteringen die je hebt gevraagd!
+Wat ik heb aangepast:
+ * Crash opgelost: De game liep vast bij 'Volgende ronde' omdat er een onbekende functie (hideRoundToast) in de code stond. Deze is nu verwijderd.
+ * Opslaan in browser (Caching/Local Storage): De game slaat nu na elke zet de status op. Als je de pagina herlaadt, zie je in het startscherm een knop met "Hervat vorig spel".
+ * Langer wachten: De timer om de beurt automatisch door te geven na een zet is verhoogd van 2 naar 4 seconden.
+ * Dubbelklik / spam-klik bug gefixt: Zodra je een actie doet (zoals 'Kaart pakken' of 'Stoppen'), worden achterliggende timers direct gereset en wordt de input tijdelijk geblokkeerd (S.busy). Hierdoor is het niet meer mogelijk om per ongeluk meerdere kaarten in één keer te trekken of een kaart voor de volgende persoon te pakken.
+Hier is de volledige, werkende code:
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -138,11 +145,6 @@ button, input { font: inherit; }
 .setting-row input[type="checkbox"] { transform: scale(1.1); accent-color: var(--gold); }
 .setting-btn { width: 100%; margin-top: 8px; border: none; border-radius: 12px; padding: 12px 14px; background: rgba(255,255,255,.06); color: var(--cream); cursor: pointer; }
 .setting-btn:hover { background: rgba(255,255,255,.09); }
-.round-toast { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.85); opacity: 0; pointer-events: none; z-index: 800; background: linear-gradient(160deg, #1a3a28, #0d1f17); border: 1.5px solid rgba(201,168,76,.35); border-radius: 18px; padding: 18px 22px; box-shadow: 0 28px 70px rgba(0,0,0,.6); transition: opacity .25s, transform .25s; text-align: center; width: min(92vw, 320px); }
-.round-toast.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-.round-toast .rt-emoji { font-size: 34px; margin-bottom: 6px; }
-.round-toast .rt-title { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 20px; margin-bottom: 6px; }
-.round-toast .rt-text { font-size: 13px; color: rgba(245,240,232,.82); line-height: 1.6; }
 
 /* WINNER */
 #winnerScreen { background: radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%); gap: 14px; }
@@ -192,7 +194,12 @@ button, input { font: inherit; }
 
   <div class="lcard">
     <h3>Start spel</h3>
-    <button class="btn-big gold" onclick="startGame()">Speel</button>
+    <button class="btn-big gold" onclick="startGame()">Nieuw spel</button>
+  </div>
+  
+  <div class="lcard" id="resumeCard" style="display: none; margin-top: 10px;">
+    <h3>Spel Hervatten</h3>
+    <button class="btn-big outline" onclick="resumeGame()">Hervat vorig spel</button>
   </div>
 </div>
 
@@ -303,18 +310,12 @@ button, input { font: inherit; }
       <li>Het deck bevat <span class="rhl">78 kaarten</span>: 1× kaart 1, 2× kaart 2, … 12× kaart 12.</li>
       <li>Pak je een kaart die je al had in deze ronde? <span class="rhl">💥 Double!</span> Dan val je uit voor deze ronde.</li>
       <li>Als je stopt, bank je je punten voor deze ronde.</li>
-      <li>Na 2 seconden gaat de beurt automatisch naar de volgende speler.</li>
+      <li>Na 4 seconden gaat de beurt automatisch naar de volgende speler.</li>
       <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
       <li>De hele game stopt pas als iemand boven de ingestelde max score komt aan het einde van een ronde.</li>
       <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
     </ul>
   </div>
-</div>
-
-<div class="round-toast" id="roundToast">
-  <div class="rt-emoji">🎴</div>
-  <div class="rt-title" id="roundToastTitle">Ronde klaar</div>
-  <div class="rt-text" id="roundToastText">De volgende ronde begint zo meteen.</div>
 </div>
 
 <script>
@@ -363,6 +364,28 @@ let S = {
   roundTimer: null,
 };
 
+// Caching / Local Storage Functions
+function saveGame() {
+  localStorage.setItem('dt_save', JSON.stringify(S));
+}
+
+function loadGame() {
+  try {
+    const saved = localStorage.getItem('dt_save');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.players && parsed.players.length > 0) {
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+function clearSavedGame() {
+  localStorage.removeItem('dt_save');
+}
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   $(id).classList.add('active');
@@ -385,9 +408,9 @@ function saveSettings() {
   localStorage.setItem('dt_settings', JSON.stringify({ maxScore: S.maxScore, showRisk: S.showRisk }));
 }
 function applySettingsToUI() {
-  $('maxScoreInput').value = S.maxScore;
-  $('riskToggle').checked = S.showRisk;
-  $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
+  if($('maxScoreInput')) $('maxScoreInput').value = S.maxScore;
+  if($('riskToggle')) $('riskToggle').checked = S.showRisk;
+  if($('riskWrap')) $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
 }
 
 function getPlayerName() { return $('playerInput').value.trim(); }
@@ -403,6 +426,14 @@ function removePlayer(idx) { if (S.players.length <= 1) return; S.players.splice
 function renderLobbyPlayers() {
   const el = $('playerList');
   el.innerHTML = '';
+  
+  const savedState = loadGame();
+  if (savedState && !savedState.gameOver) {
+    $('resumeCard').style.display = 'block';
+  } else {
+    $('resumeCard').style.display = 'none';
+  }
+
   if (!S.players.length) {
     const empty = document.createElement('div');
     empty.className = 'pitem';
@@ -427,6 +458,7 @@ function shuffleDeck(deck) {
   }
   return deck;
 }
+
 function fullFreshDeckExcludingCurrentHands() {
   const fresh = [];
   for (let n = 1; n <= 12; n++) for (let i = 0; i < n; i++) fresh.push(n);
@@ -461,6 +493,32 @@ function startGame() {
   S.players = S.players.map(p => ({ name: p.name, bankedScore: 0, roundScore: 0, cards: [], stopped: false, out: false }));
   showScreen('gameScreen');
   startRound();
+  saveGame();
+}
+
+function resumeGame() {
+  const savedState = loadGame();
+  if (savedState) {
+    S = savedState;
+    S.busy = false; // Reset busy state just in case it was saved mid-animation
+    S.autoTimer = null;
+    S.roundTimer = null;
+    loadSettings();
+    applySettingsToUI();
+
+    if (S.gameOver) {
+      endGame();
+    } else if (!S.roundActive) {
+      showRoundScreen(`Ronde klaar`, `Klik op Volgende ronde om door te gaan.`, 'Volgende ronde');
+    } else {
+      showScreen('gameScreen');
+      renderGame();
+      const p = currentPlayer();
+      if (p && (p.out || p.stopped)) {
+        scheduleNextTurn();
+      }
+    }
+  }
 }
 
 function resetRoundState() {
@@ -485,10 +543,8 @@ function startRound() {
 }
 
 function clearTimers() {
-  if (S.autoTimer) clearTimeout(S.autoTimer);
-  if (S.roundTimer) clearTimeout(S.roundTimer);
-  S.autoTimer = null;
-  S.roundTimer = null;
+  if (S.autoTimer) { clearTimeout(S.autoTimer); S.autoTimer = null; }
+  if (S.roundTimer) { clearTimeout(S.roundTimer); S.roundTimer = null; }
 }
 
 function currentPlayer() { return S.players[S.currentIndex]; }
@@ -502,7 +558,6 @@ function nextActiveIndex(fromIndex) {
   }
   return -1;
 }
-function firstActiveIndex() { return S.players.findIndex(p => !p.stopped && !p.out); }
 
 function renderCardFace(card) {
   const suit = SUITS[Math.floor(Math.random() * 4)];
@@ -526,6 +581,7 @@ function renderGame() {
   $('roundPill').textContent = 'Ronde ' + S.round;
   $('currentPlayerName').textContent = p.name;
   $('turnSub').textContent = p.out ? 'Deze speler is uit voor deze ronde.' : p.stopped ? 'Deze speler heeft gestopt.' : 'Kies: kaarten pakken of stoppen';
+  
   if (S.showRisk) {
     $('riskWrap').style.display = 'block';
     const risk = calcRisk(p.cards, S.deck);
@@ -537,6 +593,7 @@ function renderGame() {
   } else {
     $('riskWrap').style.display = 'none';
   }
+
   const row = $('playersRow');
   row.innerHTML = '';
   S.players.forEach((pl, i) => {
@@ -545,6 +602,7 @@ function renderGame() {
     d.innerHTML = `<span class="pscore">${pl.bankedScore + pl.roundScore}</span><span class="pname">${pl.name}</span>${i === S.currentIndex ? '<span class="ptag">nu</span>' : ''}`;
     row.appendChild(d);
   });
+
   $('history').innerHTML = '';
   if (p.cards.length) {
     p.cards.forEach(card => {
@@ -560,6 +618,7 @@ function renderGame() {
     empty.textContent = 'Nog geen kaarten';
     $('history').appendChild(empty);
   }
+
   const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped;
   $('drawBtn').disabled = !canAct;
   $('stopBtn').disabled = !canAct;
@@ -570,13 +629,20 @@ function ensureDeck() {
 }
 
 function drawCard() {
+  // Voorkom dubbelklikken / spamming
   if (S.busy || S.gameOver) return;
   const p = currentPlayer();
   if (!p || p.out || p.stopped) return;
+  
+  // Timer clearen zodat automatische zet niet afgaat terwijl je zelf klikt
+  clearTimers();
+  
   ensureDeck();
   if (!S.deck.length) { endRound(); return; }
-  S.busy = true;
+  
+  S.busy = true; // Blokkeer input
   renderGame();
+  
   const fc = $('flipCard');
   fc.classList.remove('flipped');
   setTimeout(() => {
@@ -593,8 +659,9 @@ function drawCard() {
         p.cards.push(card);
         p.roundScore += card;
       }
-      S.busy = false;
+      S.busy = false; // Input weer vrijgeven
       renderGame();
+      saveGame();
       if (checkRoundFinished()) return;
       scheduleNextTurn();
     }, 380);
@@ -605,16 +672,22 @@ function stopTurn() {
   if (S.busy || S.gameOver) return;
   const p = currentPlayer();
   if (!p || p.out || p.stopped) return;
+  
+  // Timer clearen zodat automatische zet niet door actie heen loopt
+  clearTimers();
+
   p.stopped = true;
   S.busy = false;
   renderGame();
+  saveGame();
   if (checkRoundFinished()) return;
   scheduleNextTurn();
 }
 
 function scheduleNextTurn() {
-  if (S.autoTimer) clearTimeout(S.autoTimer);
-  S.autoTimer = setTimeout(() => { advanceTurn(); }, 2000);
+  clearTimers();
+  // Timer langer gemaakt (van 2000 naar 4000)
+  S.autoTimer = setTimeout(() => { advanceTurn(); }, 4000);
 }
 
 function advanceTurn() {
@@ -623,6 +696,7 @@ function advanceTurn() {
   if (next === -1) { endRound(); return; }
   S.currentIndex = next;
   renderGame();
+  saveGame();
 }
 
 function checkRoundFinished() {
@@ -638,11 +712,13 @@ function bankRoundScores() {
     if (!p.out) p.bankedScore += p.roundScore;
   }
 }
+
 function bestRoundPlayers() {
   let best = -1;
   for (const p of S.players) if (p.roundScore > best) best = p.roundScore;
   return S.players.filter(p => p.roundScore === best);
 }
+
 function showRoundScreen(title, text, buttonLabel) {
   $('roundTitle').textContent = title;
   $('roundText').textContent = text;
@@ -656,10 +732,13 @@ function endRound() {
   S.roundActive = false;
   S.busy = false;
   bankRoundScores();
+  saveGame();
+  
   const winners = bestRoundPlayers();
   const winnerText = winners.length === 1 ? winners[0].name : 'Gelijkspel';
   const winnerScore = winners[0] ? winners[0].roundScore : 0;
   const overLimit = S.players.filter(p => p.bankedScore > S.maxScore);
+  
   if (overLimit.length > 0) {
     const overName = overLimit[0].name;
     showScreen('roundScreen');
@@ -674,22 +753,11 @@ function endRound() {
 }
 
 function nextRound() {
-  hideRoundToast();
   $('roundBtn').onclick = nextRound;
   S.round += 1;
-  if (!S.deck.length) {
-    S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
-  }
-  // keep bankedScore, clear round-only data
-  S.players.forEach(p => {
-    p.roundScore = 0;
-    p.cards = [];
-    p.stopped = false;
-    p.out = false;
-  });
-  S.currentIndex = 0;
   showScreen('gameScreen');
-  renderGame();
+  startRound();
+  saveGame();
 }
 
 function endGame() {
@@ -699,8 +767,10 @@ function endGame() {
   const sorted = [...S.players].sort((a, b) => b.bankedScore - a.bankedScore);
   const bestScore = sorted[0]?.bankedScore ?? 0;
   const winners = sorted.filter(p => p.bankedScore === bestScore);
+  
   $('winnerName').textContent = winners.length === 1 ? winners[0].name : 'Gelijkspel';
   $('winnerScore').textContent = bestScore + ' punten';
+  
   const fs = $('finalScores');
   fs.innerHTML = '';
   sorted.forEach(p => {
@@ -709,23 +779,29 @@ function endGame() {
     r.innerHTML = `<span class="fsn">${p.name}${p.out ? ' 💥' : ''}${p.stopped ? ' ⏸' : ''}</span><span class="fsp">${p.bankedScore}</span>`;
     fs.appendChild(r);
   });
+  
   showScreen('winnerScreen');
+  clearSavedGame(); // Game afgerond, verwijder cache data
 }
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
   else document.exitFullscreen?.();
 }
+
 function resetGame() {
   if (!confirm('Weet je zeker dat je het spel wilt resetten?')) return;
+  clearSavedGame();
   backToLobby();
 }
+
 $('maxScoreInput').addEventListener('change', () => {
   const n = parseInt($('maxScoreInput').value, 10);
   S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200;
   $('maxScoreInput').value = S.maxScore;
   saveSettings();
 });
+
 $('riskToggle').addEventListener('change', () => {
   S.showRisk = $('riskToggle').checked;
   $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
@@ -738,6 +814,7 @@ function backToLobby() {
   S = { players: [], deck: [], currentIndex: 0, round: 1, roundActive: false, busy: false, gameOver: false, maxScore: 200, showRisk: true, autoTimer: null, roundTimer: null };
   loadSettings();
   applySettingsToUI();
+  
   $('playerList').innerHTML = '';
   $('playerInput').value = '';
   $('history').innerHTML = '';
@@ -756,6 +833,7 @@ function backToLobby() {
   $('riskFill').style.background = '#2d8a58';
   $('drawBtn').disabled = false;
   $('stopBtn').disabled = false;
+  
   hide('settingsModal');
   hide('infoModal');
   hide('roundScreen');
@@ -763,6 +841,7 @@ function backToLobby() {
   renderLobbyPlayers();
 }
 
+// Initialisatie bij het laden van de pagina
 loadSettings();
 applySettingsToUI();
 $('roundBtn').onclick = nextRound;
@@ -770,3 +849,4 @@ renderLobbyPlayers();
 </script>
 </body>
 </html>
+
