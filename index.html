@@ -19,8 +19,7 @@
     html,body{height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--dark);color:var(--cream);overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:manipulation}
     button,input{font:inherit;-webkit-user-select:none;user-select:none}
     .screen{display:none;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;padding:20px;position:absolute;inset:0;overflow-y:auto;overscroll-behavior:none}
-    .screen.active{display:flex}/* Lobby */
-#lobbyScreen{background:radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%);gap:10px;justify-content:flex-start;padding-top:40px;padding-bottom:30px}
+    .screen.active{display:flex}#lobbyScreen{background:radial-gradient(ellipse at 40% 20%, #1e5535 0%, #0d1a12 65%);gap:10px;justify-content:flex-start;padding-top:40px;padding-bottom:30px}
 #lobbyScreen::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 28px,rgba(201,168,76,.03) 28px,rgba(201,168,76,.03) 30px);pointer-events:none}
 .logo-wrap{text-align:center;margin-bottom:10px;position:relative;z-index:1}
 .logo-wrap h1{font-family:Georgia,serif;font-size:44px;font-weight:900;letter-spacing:4px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 55%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
@@ -48,7 +47,6 @@
 .pdel:hover{background:rgba(192,57,43,.3);color:#fff}
 .small-hint{font-size:11px;color:rgba(255,255,255,.45);text-align:center;margin-top:4px}
 
-/* Game */
 #gameScreen{background:radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);justify-content:flex-start;padding:0;overscroll-behavior:none}
 #gameScreen::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%231a3a28'/%3E%3Ccircle cx='1' cy='1' r='.6' fill='%23ffffff07'/%3E%3C/svg%3E");pointer-events:none}
 .g-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;height:100%;padding:20px 14px 12px;gap:10px;overflow-y:auto}
@@ -70,8 +68,6 @@
 .turn-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:4px}
 .turn-name{font-family:Georgia,serif;font-size:28px;color:var(--gold-light);line-height:1.05;margin-bottom:4px}
 .turn-sub{font-size:12px;color:rgba(255,255,255,.72);line-height:1.35;min-height:16px}
-.round-pill{display:inline-block;margin-top:6px;background:rgba(201,168,76,.12);color:var(--gold-light);border:1px solid rgba(201,168,76,.25);border-radius:999px;padding:3px 10px;font-size:10px;letter-spacing:2px;text-transform:uppercase}
-.countdown-badge{display:inline-block;margin-top:6px;margin-left:5px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:3px 10px;font-size:10px;letter-spacing:1px}
 .risk-wrap{width:100%;max-width:360px;background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:7px 11px}
 .risk-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .risk-top span:first-child{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35)}
@@ -105,8 +101,8 @@
 .special-pack3 .special-main{color:var(--gold)}
 .special-freeze .special-main{color:#4fb7ff}
 .special-bomb .special-main{color:var(--red)}
-.player-panel{width:100%;max-width:420px;margin-top:10px}
-.pnl-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
+.player-panel,.target-panel{width:100%;max-width:420px;margin-top:10px}
+.pnl-lbl,.target-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
 .pnl-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
 .pchip{background:rgba(0,0,0,.3);border:1.5px solid rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;display:flex;align-items:center;gap:6px;font-size:11px;transition:border-color .3s,box-shadow .3s,background .3s}
 .pchip.active{border-color:rgba(232,201,110,.55);box-shadow:0 0 0 2px rgba(232,201,110,.2),0 0 20px rgba(232,201,110,.18);background:rgba(201,168,76,.12)}
@@ -128,10 +124,13 @@
 .dot-3{background:rgb(220,120,220)}
 .dot-4{background:rgb(255,120,120)}
 .dot-5{background:rgb(80,220,200)}
+.target-box{background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04);padding:10px 10px 8px}
+.target-name{font-family:Georgia,serif;font-size:20px;text-align:center;color:var(--gold-light);line-height:1.1}
+.target-sub{font-size:11px;color:rgba(255,255,255,.72);text-align:center;margin-top:4px;line-height:1.35}
 .player-cards{width:100%;max-width:420px;margin-top:10px}
 .cards-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
 .hist-track{display:flex;gap:5px;flex-wrap:nowrap;justify-content:flex-start;min-height:54px;height:54px;align-content:center;align-items:center;padding:7px 8px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
-.hchip{width:28px;height:36px;background:linear-gradient(160deg,#fdfaf3,#ede6d2);border-radius:5px;border:1.5px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:12px;font-weight:700;color:#1a1a2e;box-shadow:0 2px 5px rgba(0,0,0,.28);animation:chipIn .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
+.hchip{width:28px;height:36px;background:linear-gradient(160deg,#fdfaf3,#ede6d2);border-radius:5px;border:1.5px solid rgba(201,168,76,.3);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:12px;font-weight:700;color:#1a1a2e;box-shadow:0 2px 5px rgba(0,0,0,.28);flex-shrink:0}
 .hchip.rc{color:var(--red)}
 .hchip.bonus{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#1a1a2e}
 .hchip.x2{border-color:rgba(192,57,43,.65);background:linear-gradient(160deg,#fde8e8,#f5c6c6)}
@@ -139,7 +138,6 @@
 .hchip.p3{border-color:rgba(201,168,76,.72);background:linear-gradient(160deg,#fff5ce,#f6dd90)}
 .hchip.freeze{border-color:rgba(79,183,255,.72);background:linear-gradient(160deg,#e8f6ff,#bedfff)}
 .hchip.bomb{border-color:rgba(192,57,43,.72);background:linear-gradient(160deg,#ffe0e0,#ffb0b0)}
-.hchip.bomb, .hchip.freeze, .hchip.p3{font-size:11px}
 @keyframes chipIn{from{transform:translateY(-10px) scale(.7);opacity:0}to{transform:none;opacity:1}}
 .draw-actions{width:100%;max-width:360px;display:flex;gap:10px;margin-top:8px;padding-bottom:4px}
 .draw-btn{flex:1;padding:15px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 50%,var(--gold) 100%);background-size:200%;color:var(--dark);font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 6px 18px rgba(201,168,76,.32),inset 0 1px 0 rgba(255,255,255,.22);transition:transform .15s,filter .15s,opacity .15s}
@@ -148,7 +146,6 @@
 .draw-btn:disabled{opacity:.3;cursor:not-allowed}
 .draw-btn.secondary{background:transparent;border:1.5px solid rgba(201,168,76,.3);color:var(--gold);box-shadow:none}
 
-/* Modals */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(5px)}
 .overlay.show{opacity:1;pointer-events:all}
 .mbox{background:linear-gradient(160deg,#1a3a28,#0d1f17);border:1.5px solid rgba(201,168,76,.32);border-radius:20px;padding:28px 24px;width:90%;max-width:360px;position:relative;transform:scale(.9);transition:transform .3s;box-shadow:0 28px 70px rgba(0,0,0,.6)}
@@ -167,7 +164,6 @@
 .setting-btn{width:100%;margin-top:8px;border:none;border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.06);color:var(--cream);cursor:pointer}
 .setting-btn:hover{background:rgba(255,255,255,.09)}
 
-/* Target modal */
 .target-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .target-btn{border:1px solid rgba(201,168,76,.22);background:rgba(255,255,255,.05);color:var(--cream);border-radius:12px;padding:12px 14px;font-size:14px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
 .target-btn:hover{background:rgba(255,255,255,.09);transform:translateY(-1px)}
@@ -175,14 +171,12 @@
 .target-btn .tn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .target-btn .self-tag{font-size:11px;color:var(--gold-light);opacity:.8;white-space:nowrap}
 
-/* Double modal */
 .double-icon{font-size:52px;text-align:center;margin-bottom:8px}
 .double-card-display{display:flex;align-items:center;justify-content:center;margin:12px 0;gap:14px}
 .dcard{width:56px;height:78px;background:linear-gradient(160deg,#fde8e8,#f5c6c6);border-radius:8px;border:2px solid rgba(192,57,43,.65);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;font-weight:700;color:var(--red);box-shadow:0 4px 14px rgba(0,0,0,.4)}
 .double-arrow{font-size:22px;color:rgba(255,255,255,.35)}
 .double-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 
-/* Winner */
 #winnerScreen{background:radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);gap:14px}
 .trophy{font-size:60px;animation:bounce .8s ease infinite alternate}
 @keyframes bounce{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-8px) rotate(3deg)}}
@@ -197,7 +191,6 @@
 .fsrow.winner-row .fsn{color:#fff;font-weight:600}
 .fsrow.winner-row .fsp{color:var(--gold)}
 
-/* Round over */
 #roundScreen{background:radial-gradient(ellipse at center, #1a3d27 0%, #0d1a12 70%);gap:14px;padding:30px 20px}
 .round-title{font-family:Georgia,serif;font-size:30px;letter-spacing:2px;color:var(--gold-light);text-align:center}
 .round-text{font-size:13px;color:rgba(245,240,232,.82);text-align:center;max-width:320px;line-height:1.6}
@@ -293,6 +286,15 @@
     <div class="pnl-row" id="playersRow"></div>
   </div>
 
+  <div class="target-panel" id="targetPanel" style="display:none;">
+    <div class="target-lbl">Overzicht doelwit</div>
+    <div class="target-box">
+      <div class="target-name" id="targetName">—</div>
+      <div class="target-sub" id="targetSub"></div>
+      <div class="hist-track" id="targetHistory"></div>
+    </div>
+  </div>
+
   <div class="player-cards">
     <div class="cards-lbl">Kaarten van huidige speler</div>
     <div class="hist-track" id="history"></div>
@@ -360,6 +362,21 @@
   </div>
 
   <div class="setting-row">
+    <label for="pack3CountInput">Aantal Pak 3 kaarten</label>
+    <input type="number" id="pack3CountInput" min="0" max="20" step="1" value="6" />
+  </div>
+
+  <div class="setting-row">
+    <label for="freezeCountInput">Aantal Freeze kaarten</label>
+    <input type="number" id="freezeCountInput" min="0" max="20" step="1" value="3" />
+  </div>
+
+  <div class="setting-row">
+    <label for="bombCountInput">Aantal Bom kaarten</label>
+    <input type="number" id="bombCountInput" min="0" max="10" step="1" value="1" />
+  </div>
+
+  <div class="setting-row">
     <label for="riskToggle">Toon kansenbalk</label>
     <input type="checkbox" id="riskToggle" checked />
   </div>
@@ -381,10 +398,9 @@
         <li>Het deck bevat gewone kaarten 1 t/m 12.</li>
         <li>X2-kaarten verdubbelen je punten van die ronde. Meerdere X2-kaarten stapelen.</li>
         <li>Tweede kans-kaarten kun je gebruiken om een double één keer op te vangen.</li>
-        <li><span class="rhl">Pak 3</span>: kies jezelf of iemand anders. Die speler trekt direct 3 kaarten.</li>
-        <li><span class="rhl">Freeze</span>: kies jezelf of iemand anders. Die speler stopt direct en kan die ronde geen kaarten meer krijgen.</li>
-        <li><span class="rhl">Bom</span>: zodra de bom actief is, gaat hij alleen af wanneer iemand zelf op stop klikt. Freeze, doubles en dood gaan activeren hem niet.</li>
-        <li>Als de bom afgaat, verliest die speler 50% van zijn punten van die ronde.</li>
+        <li><span class="rhl">Pak 3</span>: kies jezelf of iemand anders. De gekozen speler moet zelf 3 kaarten pakken.</li>
+        <li><span class="rhl">Freeze</span>: kies jezelf of iemand anders. De gekozen speler stopt direct en kan die ronde geen kaarten meer krijgen.</li>
+        <li><span class="rhl">Bom</span>: de eerste persoon die na een actieve bom stopt, verliest de helft van zijn rondepunten.</li>
         <li>Als je stopt, bank je je punten voor deze ronde.</li>
         <li>Na elke kaart of stop gaat de beurt na de ingestelde wachttijd door.</li>
         <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
@@ -406,14 +422,16 @@
     const $ = id => document.getElementById(id);
     const X2_DEFAULT = 3;
     const SECOND_CHANCE_DEFAULT = 4;
-    const PACK3_COUNT = 6;
-    const FREEZE_COUNT = 3;
-    const BOMB_COUNT = 1;
+    const PACK3_DEFAULT = 6;
+    const FREEZE_DEFAULT = 3;
+    const BOMB_DEFAULT = 1;
     const SAVE_KEY = 'dt_save';
     const SETTINGS_KEY = 'dt_settings';
 
     let audioCtx = null;
     let deferredInstallPrompt = null;
+    let historyCache = { playerIndex:null, cardCount:0 };
+    let targetCache = { playerIndex:null, cardCount:0 };
 
     let S = {
       players: [],
@@ -429,9 +447,13 @@
       turnDelaySec: 2,
       x2Count: X2_DEFAULT,
       secondChanceCount: SECOND_CHANCE_DEFAULT,
+      pack3Count: PACK3_DEFAULT,
+      freezeCount: FREEZE_DEFAULT,
+      bombCount: BOMB_DEFAULT,
       bombActive: false,
       focusIndex: null,
       statusText: '',
+      forcedAction: null,
       pendingAfterTurn: null,
       turnDeadline: null,
       autoTimer: null,
@@ -497,9 +519,13 @@
         turnDelaySec: 2,
         x2Count: X2_DEFAULT,
         secondChanceCount: SECOND_CHANCE_DEFAULT,
+        pack3Count: PACK3_DEFAULT,
+        freezeCount: FREEZE_DEFAULT,
+        bombCount: BOMB_DEFAULT,
         bombActive: false,
         focusIndex: null,
         statusText: '',
+        forcedAction: null,
         pendingAfterTurn: null,
         turnDeadline: null,
         autoTimer: null,
@@ -515,6 +541,9 @@
       s.turnDelaySec = Number.isFinite(+s.turnDelaySec) && +s.turnDelaySec >= 1 ? +s.turnDelaySec : 2;
       s.x2Count = Number.isFinite(+s.x2Count) && +s.x2Count >= 0 ? +s.x2Count : X2_DEFAULT;
       s.secondChanceCount = Number.isFinite(+s.secondChanceCount) && +s.secondChanceCount >= 0 ? +s.secondChanceCount : SECOND_CHANCE_DEFAULT;
+      s.pack3Count = Number.isFinite(+s.pack3Count) && +s.pack3Count >= 0 ? +s.pack3Count : PACK3_DEFAULT;
+      s.freezeCount = Number.isFinite(+s.freezeCount) && +s.freezeCount >= 0 ? +s.freezeCount : FREEZE_DEFAULT;
+      s.bombCount = Number.isFinite(+s.bombCount) && +s.bombCount >= 0 ? +s.bombCount : BOMB_DEFAULT;
       s.showRisk = !!s.showRisk;
       s.soundEnabled = !!s.soundEnabled;
       s.roundActive = !!s.roundActive;
@@ -523,6 +552,7 @@
       s.bombActive = !!s.bombActive;
       s.focusIndex = Number.isFinite(+s.focusIndex) ? +s.focusIndex : null;
       s.statusText = typeof s.statusText === 'string' ? s.statusText : '';
+      s.forcedAction = s.forcedAction || null;
       s.pendingAfterTurn = data?.pendingAfterTurn || null;
       s.turnDeadline = Number.isFinite(+s.turnDeadline) ? +s.turnDeadline : null;
       s.autoTimer = null;
@@ -565,7 +595,7 @@
     }
 
     function initialDeckSize(){
-      return 78 + S.x2Count + S.secondChanceCount + PACK3_COUNT + FREEZE_COUNT + BOMB_COUNT;
+      return 78 + S.x2Count + S.secondChanceCount + S.pack3Count + S.freezeCount + S.bombCount;
     }
 
     function saveGame(){
@@ -573,10 +603,7 @@
       localStorage.setItem(SAVE_KEY, JSON.stringify(saveState));
     }
     function loadGame(){
-      try{
-        const saved = localStorage.getItem(SAVE_KEY);
-        if(saved) return normalizeState(JSON.parse(saved));
-      }catch(e){}
+      try{ const saved = localStorage.getItem(SAVE_KEY); if(saved) return normalizeState(JSON.parse(saved)); }catch(e){}
       return null;
     }
     function clearSavedGame(){ localStorage.removeItem(SAVE_KEY); }
@@ -598,6 +625,9 @@
         if(typeof d.turnDelaySec === 'number') S.turnDelaySec = d.turnDelaySec;
         if(typeof d.x2Count === 'number') S.x2Count = d.x2Count;
         if(typeof d.secondChanceCount === 'number') S.secondChanceCount = d.secondChanceCount;
+        if(typeof d.pack3Count === 'number') S.pack3Count = d.pack3Count;
+        if(typeof d.freezeCount === 'number') S.freezeCount = d.freezeCount;
+        if(typeof d.bombCount === 'number') S.bombCount = d.bombCount;
       }catch(e){}
     }
     function saveSettings(){
@@ -607,7 +637,10 @@
         soundEnabled: S.soundEnabled,
         turnDelaySec: S.turnDelaySec,
         x2Count: S.x2Count,
-        secondChanceCount: S.secondChanceCount
+        secondChanceCount: S.secondChanceCount,
+        pack3Count: S.pack3Count,
+        freezeCount: S.freezeCount,
+        bombCount: S.bombCount
       }));
     }
     function applySettingsToUI(){
@@ -615,6 +648,9 @@
       if($('turnDelayInput')) $('turnDelayInput').value = S.turnDelaySec;
       if($('x2CountInput')) $('x2CountInput').value = S.x2Count;
       if($('secondChanceCountInput')) $('secondChanceCountInput').value = S.secondChanceCount;
+      if($('pack3CountInput')) $('pack3CountInput').value = S.pack3Count;
+      if($('freezeCountInput')) $('freezeCountInput').value = S.freezeCount;
+      if($('bombCountInput')) $('bombCountInput').value = S.bombCount;
       if($('riskToggle')) $('riskToggle').checked = S.showRisk;
       if($('soundToggle')) $('soundToggle').checked = S.soundEnabled;
       if($('riskWrap')) $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
@@ -636,7 +672,6 @@
       el.innerHTML = '';
       const savedState = loadGame();
       $('resumeCard').style.display = (savedState && !savedState.gameOver) ? 'block' : 'none';
-
       if(!S.players.length){
         const empty = document.createElement('div');
         empty.className = 'pitem';
@@ -644,7 +679,6 @@
         el.appendChild(empty);
         return;
       }
-
       S.players.forEach((p, idx) => {
         const item = document.createElement('div');
         item.className = 'pitem';
@@ -665,19 +699,15 @@
       return '?';
     }
 
-    function buildDeck(rng){
+    function buildDeck(){
       const d = [];
       for(let n=1;n<=12;n++) for(let i=0;i<n;i++) d.push({ kind:'num', value:n });
       for(let i=0;i<S.x2Count;i++) d.push({ kind:'x2' });
       for(let i=0;i<S.secondChanceCount;i++) d.push({ kind:'secondChance' });
-      for(let i=0;i<PACK3_COUNT;i++) d.push({ kind:'pack3' });
-      for(let i=0;i<FREEZE_COUNT;i++) d.push({ kind:'freeze' });
-      for(let i=0;i<BOMB_COUNT;i++) d.push({ kind:'bomb' });
-      for(let i=d.length-1;i>0;i--){
-        const j = Math.floor(rng() * (i+1));
-        [d[i], d[j]] = [d[j], d[i]];
-      }
-      return d;
+      for(let i=0;i<S.pack3Count;i++) d.push({ kind:'pack3' });
+      for(let i=0;i<S.freezeCount;i++) d.push({ kind:'freeze' });
+      for(let i=0;i<S.bombCount;i++) d.push({ kind:'bomb' });
+      return shuffle(d);
     }
 
     function fullFreshDeckExcludingCurrentHands(){
@@ -685,9 +715,9 @@
       for(let n=1;n<=12;n++) for(let i=0;i<n;i++) fresh.push({ kind:'num', value:n });
       for(let i=0;i<S.x2Count;i++) fresh.push({ kind:'x2' });
       for(let i=0;i<S.secondChanceCount;i++) fresh.push({ kind:'secondChance' });
-      for(let i=0;i<PACK3_COUNT;i++) fresh.push({ kind:'pack3' });
-      for(let i=0;i<FREEZE_COUNT;i++) fresh.push({ kind:'freeze' });
-      for(let i=0;i<BOMB_COUNT;i++) fresh.push({ kind:'bomb' });
+      for(let i=0;i<S.pack3Count;i++) fresh.push({ kind:'pack3' });
+      for(let i=0;i<S.freezeCount;i++) fresh.push({ kind:'freeze' });
+      for(let i=0;i<S.bombCount;i++) fresh.push({ kind:'bomb' });
 
       const counts = { num:{}, x2:0, secondChance:0, pack3:0, freeze:0, bomb:0 };
       for(const p of S.players){
@@ -720,12 +750,15 @@
       S.turnDelaySec = parseInt($('turnDelayInput')?.value || S.turnDelaySec, 10) || 2;
       S.x2Count = Math.max(0, parseInt($('x2CountInput')?.value || S.x2Count, 10) || 0);
       S.secondChanceCount = Math.max(0, parseInt($('secondChanceCountInput')?.value || S.secondChanceCount, 10) || 0);
+      S.pack3Count = Math.max(0, parseInt($('pack3CountInput')?.value || S.pack3Count, 10) || 0);
+      S.freezeCount = Math.max(0, parseInt($('freezeCountInput')?.value || S.freezeCount, 10) || 0);
+      S.bombCount = Math.max(0, parseInt($('bombCountInput')?.value || S.bombCount, 10) || 0);
       S.showRisk = $('riskToggle') ? $('riskToggle').checked : true;
       S.soundEnabled = $('soundToggle') ? $('soundToggle').checked : true;
       saveSettings();
       applySettingsToUI();
 
-      S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
+      S.deck = buildDeck();
       S.round = 1;
       S.gameOver = false;
       S.roundActive = false;
@@ -735,7 +768,10 @@
       S.turnDeadline = null;
       S.focusIndex = null;
       S.statusText = '';
+      S.forcedAction = null;
       S.bombActive = false;
+      historyCache = { playerIndex:null, cardCount:0 };
+      targetCache = { playerIndex:null, cardCount:0 };
       S.players = S.players.map(p => ({ name:p.name, bankedScore:0, roundScoreBase:0, roundScoreOverride:null, multiplier:1, cards:[], stopped:false, out:false, secondChanceCount:0 }));
       showScreen('gameScreen');
       startRound();
@@ -748,6 +784,8 @@
         S = savedState;
         loadSettings();
         applySettingsToUI();
+        historyCache = { playerIndex:null, cardCount:0 };
+        targetCache = { playerIndex:null, cardCount:0 };
         if(S.gameOver){ endGame(); return; }
         showScreen('gameScreen');
         renderGame();
@@ -779,11 +817,15 @@
       if(S.currentIndex >= S.players.length) S.currentIndex = 0;
       S.focusIndex = null;
       S.statusText = '';
+      S.forcedAction = null;
+      S.bombActive = false;
+      historyCache = { playerIndex:null, cardCount:0 };
+      targetCache = { playerIndex:null, cardCount:0 };
     }
 
     function startRound(){
       if(S.gameOver) return;
-      if(!S.deck.length) S.deck = buildDeck(mulberry32(Date.now() % 1000000000));
+      if(!S.deck.length) S.deck = buildDeck();
       resetRoundState();
       S.roundActive = true;
       S.busy = false;
@@ -824,45 +866,15 @@
           <div class="cc bot ${cc}"><div class="cn">${card.value}</div><div class="cs">${suit}</div></div>
         `;
       } else if(card.kind === 'x2'){
-        $('cardFace').innerHTML = `
-          <div class="special-face special-pack3">
-            <div class="special-top">Bonus</div>
-            <div class="special-main">x2</div>
-            <div class="special-bottom">dubbel telt op</div>
-          </div>
-        `;
+        $('cardFace').innerHTML = `<div class="special-face special-pack3"><div class="special-top">Bonus</div><div class="special-main">x2</div><div class="special-bottom">dubbel telt op</div></div>`;
       } else if(card.kind === 'secondChance'){
-        $('cardFace').innerHTML = `
-          <div class="special-face special-freeze">
-            <div class="special-top">Bonus</div>
-            <div class="special-main">↺</div>
-            <div class="special-bottom">tweede kans</div>
-          </div>
-        `;
+        $('cardFace').innerHTML = `<div class="special-face special-freeze"><div class="special-top">Bonus</div><div class="special-main">↺</div><div class="special-bottom">tweede kans</div></div>`;
       } else if(card.kind === 'pack3'){
-        $('cardFace').innerHTML = `
-          <div class="special-face special-pack3">
-            <div class="special-top">Actie</div>
-            <div class="special-main">P3</div>
-            <div class="special-bottom">kies iemand</div>
-          </div>
-        `;
+        $('cardFace').innerHTML = `<div class="special-face special-pack3"><div class="special-top">Actie</div><div class="special-main">P3</div><div class="special-bottom">kies iemand</div></div>`;
       } else if(card.kind === 'freeze'){
-        $('cardFace').innerHTML = `
-          <div class="special-face special-freeze">
-            <div class="special-top">Actie</div>
-            <div class="special-main">❄</div>
-            <div class="special-bottom">stop direct</div>
-          </div>
-        `;
+        $('cardFace').innerHTML = `<div class="special-face special-freeze"><div class="special-top">Actie</div><div class="special-main">❄</div><div class="special-bottom">stop direct</div></div>`;
       } else if(card.kind === 'bomb'){
-        $('cardFace').innerHTML = `
-          <div class="special-face special-bomb">
-            <div class="special-top">Actie</div>
-            <div class="special-main">💣</div>
-            <div class="special-bottom">activeert bij stop</div>
-          </div>
-        `;
+        $('cardFace').innerHTML = `<div class="special-face special-bomb"><div class="special-top">Actie</div><div class="special-main">💣</div><div class="special-bottom">activeert bij stop</div></div>`;
       }
     }
 
@@ -881,8 +893,76 @@
       return danger / deckRemaining.length;
     }
 
-    function getViewPlayerIndex(){
-      return S.focusIndex !== null && S.focusIndex !== undefined ? S.focusIndex : S.currentIndex;
+    function makeChip(card, animate=false){
+      const el = document.createElement('div');
+      el.className = 'hchip';
+      if(card.kind === 'x2') el.classList.add('bonus','x2');
+      if(card.kind === 'secondChance') el.classList.add('bonus','sc');
+      if(card.kind === 'pack3') el.classList.add('bonus','p3');
+      if(card.kind === 'freeze') el.classList.add('bonus','freeze');
+      if(card.kind === 'bomb') el.classList.add('bonus','bomb');
+      if(card.kind === 'num' && card.value >= 10) el.classList.add('rc');
+      el.textContent = cardLabel(card);
+      el.style.animation = animate ? 'chipIn .3s cubic-bezier(.34,1.56,.64,1)' : 'none';
+      return el;
+    }
+
+    function renderCardList(containerId, playerIndex, cache, animateNew=false){
+      const container = $(containerId);
+      const p = S.players[playerIndex];
+      if(!container) return;
+      if(!p){
+        container.innerHTML = '';
+        cache.playerIndex = null;
+        cache.cardCount = 0;
+        return;
+      }
+      const count = p.cards.length;
+      const samePlayer = cache.playerIndex === playerIndex;
+      if(samePlayer && animateNew && count === cache.cardCount + 1){
+        container.appendChild(makeChip(p.cards[count - 1], true));
+        cache.cardCount = count;
+        return;
+      }
+      if(samePlayer && count === cache.cardCount) return;
+      container.innerHTML = '';
+      if(count){
+        p.cards.forEach(card => container.appendChild(makeChip(card, false)));
+      } else {
+        const empty = document.createElement('div');
+        empty.style.fontSize = '12px';
+        empty.style.color = 'rgba(255,255,255,.35)';
+        empty.textContent = 'Nog geen kaarten';
+        container.appendChild(empty);
+      }
+      cache.playerIndex = playerIndex;
+      cache.cardCount = count;
+    }
+
+    function renderTargetPanel(){
+      const panel = $('targetPanel');
+      const hasTarget = S.focusIndex !== null && S.focusIndex !== undefined && S.players[S.focusIndex];
+      if(!hasTarget){
+        panel.style.display = 'none';
+        $('targetHistory').innerHTML = '';
+        targetCache = { playerIndex:null, cardCount:0 };
+        return;
+      }
+      panel.style.display = 'block';
+      const tp = S.players[S.focusIndex];
+      $('targetName').textContent = tp.name;
+      let sub = '';
+      if(S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.focusIndex){
+        sub = `${S.forcedAction.remaining} kaarten te pakken.`;
+      } else if(tp.stopped && !tp.out){
+        sub = 'Deze speler is klaar voor deze ronde.';
+      } else if(tp.out){
+        sub = 'Deze speler is uit deze ronde.';
+      } else {
+        sub = 'Kaartenoverzicht van deze speler.';
+      }
+      $('targetSub').textContent = sub;
+      renderCardList('targetHistory', S.focusIndex, targetCache, true);
     }
 
     function renderGame(){
@@ -899,7 +979,7 @@
       tc.className = 'turn-card ' + colorOf(S.currentIndex).cls;
 
       const turnSub = $('turnSub');
-      const baseText = S.statusText || (S.bombActive ? '💣 Bom actief — alleen STOP activeert hem.' : 'Pak een kaart of stop.');
+      const baseText = S.statusText || (S.bombActive ? '💣 De eerste persoon die nu stopt verliest de helft van zijn rondepunten.' : 'Pak een kaart of stop.');
       turnSub.textContent = baseText;
       turnSub.style.display = baseText ? 'block' : 'none';
 
@@ -926,32 +1006,16 @@
         row.appendChild(d);
       });
 
-      const viewPlayer = S.players[getViewPlayerIndex()];
-      $('history').innerHTML = '';
-      if(viewPlayer && viewPlayer.cards.length){
-        viewPlayer.cards.forEach(card => {
-          const el = document.createElement('div');
-          el.className = 'hchip';
-          if(card.kind === 'x2') el.classList.add('bonus', 'x2');
-          if(card.kind === 'secondChance') el.classList.add('bonus', 'sc');
-          if(card.kind === 'pack3') el.classList.add('bonus', 'p3');
-          if(card.kind === 'freeze') el.classList.add('bonus', 'freeze');
-          if(card.kind === 'bomb') el.classList.add('bonus', 'bomb');
-          if(card.kind === 'num' && card.value >= 10) el.classList.add('rc');
-          el.textContent = cardLabel(card);
-          $('history').appendChild(el);
-        });
-      } else {
-        const empty = document.createElement('div');
-        empty.style.fontSize = '12px';
-        empty.style.color = 'rgba(255,255,255,.35)';
-        empty.textContent = 'Nog geen kaarten';
-        $('history').appendChild(empty);
-      }
+      renderCardList('history', S.currentIndex, historyCache, true);
+      renderTargetPanel();
 
-      const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped;
+      const forcedPack3 = S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex;
+      $('drawBtn').textContent = forcedPack3 ? `Pak 3 (${S.forcedAction.remaining})` : 'Kaart pakken';
+      $('stopBtn').textContent = forcedPack3 ? 'Moet trekken' : 'Stoppen';
+
+      const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped && !forcedPack3 ? true : (!S.busy && !S.gameOver && !p.out && !p.stopped && forcedPack3);
       $('drawBtn').disabled = !canAct;
-      $('stopBtn').disabled = !canAct;
+      $('stopBtn').disabled = !canAct || forcedPack3;
     }
 
     function scheduleAfterTurn(mode='next', delay=S.turnDelaySec * 1000){
@@ -1012,14 +1076,9 @@
         const textEl = $('targetText');
         const listEl = $('targetList');
         listEl.innerHTML = '';
-        S.statusText = actionKind === 'pack3'
-          ? `${actor.name} speelt Pak 3. Kies een doelwit.`
-          : `${actor.name} speelt Freeze. Kies een doelwit.`;
-        renderGame();
-
         titleEl.textContent = actionKind === 'pack3' ? 'Pak 3' : 'Freeze';
         textEl.textContent = actionKind === 'pack3'
-          ? 'Kies jezelf of iemand anders. Die speler moet 3 kaarten trekken.'
+          ? 'Kies jezelf of iemand anders. Die speler moet zelf 3 kaarten pakken.'
           : 'Kies jezelf of iemand anders. Die speler stopt direct en kan geen kaarten meer krijgen.';
 
         const activeTargets = S.players.map((p, idx) => ({ p, idx })).filter(x => !x.p.out && !x.p.stopped);
@@ -1029,14 +1088,17 @@
           btn.innerHTML = `<span class="tn"><span class="pcolor-dot ${colorOf(idx).dotCls}"></span><span>${p.name}${idx === actorIndex ? ' (jij)' : ''}</span></span><span class="self-tag">Kies</span>`;
           btn.onclick = () => {
             $('targetModal').classList.remove('show');
-            S.statusText = '';
-            renderGame();
             resolve(idx);
           };
           listEl.appendChild(btn);
         });
         $('targetModal').classList.add('show');
       });
+    }
+
+    function clearForcedAction(){
+      S.forcedAction = null;
+      S.focusIndex = null;
     }
 
     function endPlayerCardAction(){
@@ -1051,17 +1113,9 @@
       const actor = S.players[actorIndex];
       const target = S.players[targetIndex];
       S.focusIndex = targetIndex;
-      S.statusText = `${actor.name} speelt Pak 3 op ${target.name}.`;
-      renderGame();
-      saveGame();
-      await sleep(180);
-      for(let i=0;i<3;i++){
-        if(!target || target.out || target.stopped) break;
-        const result = await drawSingleCardToPlayer(targetIndex, { forced:true, actorIndex });
-        if(result?.bust) break;
-      }
-      S.focusIndex = null;
-      S.statusText = '';
+      S.forcedAction = { type:'pack3', targetIndex, remaining:3, sourceIndex:actorIndex };
+      S.currentIndex = targetIndex;
+      S.statusText = `${actor.name} kiest ${target.name}. ${target.name} moet zelf 3 kaarten pakken.`;
       renderGame();
       saveGame();
     }
@@ -1076,7 +1130,6 @@
       saveGame();
       playSound('stop');
       await sleep(120);
-      S.focusIndex = null;
     }
 
     async function handleSpecialCard(actorIndex, card){
@@ -1084,16 +1137,16 @@
       if(card.kind === 'pack3'){
         const targetIndex = await showTargetModal('pack3', actorIndex);
         await resolvePack3(actorIndex, targetIndex);
-        return { continue:true };
+        return { turnTransferred:true };
       }
       if(card.kind === 'freeze'){
         const targetIndex = await showTargetModal('freeze', actorIndex);
         await resolveFreeze(actorIndex, targetIndex);
-        return { continue:true };
+        return { endTurn:true };
       }
       if(card.kind === 'bomb'){
         S.bombActive = true;
-        S.statusText = `💣 Bom is nu actief. Hij blijft bestaan tot iemand zelf op STOP klikt.`;
+        S.statusText = '💣 De bom is nu actief. De eerste persoon die stopt verliest de helft van zijn rondepunten.';
         renderGame();
         saveGame();
         return { continue:true };
@@ -1101,7 +1154,7 @@
       return { continue:true };
     }
 
-    async function drawSingleCardToPlayer(playerIndex, { forced=false, actorIndex=null } = {}){
+    async function drawSingleCardToPlayer(playerIndex){
       buildNextDeckIfNeeded();
       if(!S.deck.length){
         endRound();
@@ -1120,12 +1173,7 @@
         const isDouble = p.cards.some(c => c.kind === 'num' && c.value === card.value);
         if(isDouble){
           if(p.secondChanceCount > 0){
-            const result = await openDoubleModal(
-              'Double!',
-              `${p.name} trok kaart ${cardLabel(card)}, maar had die al. Je hebt een tweede kans.`,
-              card,
-              true
-            );
+            const result = await openDoubleModal('Double!', `${p.name} trok kaart ${cardLabel(card)}, maar had die al. Je hebt een tweede kans.`, card, true);
             removeOneSecondChanceFromPlayer(p);
             if(result === 'continue'){
               S.statusText = `${p.name} gebruikt een tweede kans.`;
@@ -1134,12 +1182,7 @@
               return { continue:true };
             }
           } else {
-            await openDoubleModal(
-              'Double!',
-              `${p.name} trok kaart ${cardLabel(card)}, maar had die al. Alle punten van deze ronde zijn weg.`,
-              card,
-              false
-            );
+            await openDoubleModal('Double!', `${p.name} trok kaart ${cardLabel(card)}, maar had die al. Alle punten van deze ronde zijn weg.`, card, false);
           }
           p.out = true;
           p.roundScoreBase = 0;
@@ -1159,7 +1202,7 @@
         renderGame();
         saveGame();
         playSound('draw');
-        return { continue:true };
+        return { continue:true, cardAdded:true };
       }
 
       if(card.kind === 'x2'){
@@ -1169,7 +1212,7 @@
         renderGame();
         saveGame();
         playSound('draw');
-        return { continue:true };
+        return { continue:true, cardAdded:true };
       }
 
       if(card.kind === 'secondChance'){
@@ -1179,7 +1222,7 @@
         renderGame();
         saveGame();
         playSound('draw');
-        return { continue:true };
+        return { continue:true, cardAdded:true };
       }
 
       if(card.kind === 'pack3' || card.kind === 'freeze' || card.kind === 'bomb'){
@@ -1188,8 +1231,7 @@
         renderGame();
         saveGame();
         playSound('draw');
-        await handleSpecialCard(actorIndex ?? playerIndex, card);
-        return { continue:true };
+        return await handleSpecialCard(playerIndex, card);
       }
 
       return { continue:true };
@@ -1208,18 +1250,64 @@
       $('drawBtn').disabled = true;
       $('stopBtn').disabled = true;
 
+      const forcedPack3 = S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex;
       try{
-        const result = await drawSingleCardToPlayer(S.currentIndex, { forced:false, actorIndex:S.currentIndex });
+        const result = await drawSingleCardToPlayer(S.currentIndex);
         if(result?.roundEnd) return;
-      } finally {
-        if(!S.gameOver && S.roundActive){
-          if(checkRoundFinished()) return;
-          endPlayerCardAction();
-          scheduleAfterTurn('next', S.turnDelaySec * 1000);
-        } else {
+
+        if(result?.turnTransferred){
           S.busy = false;
+          S.pendingAfterTurn = null;
+          S.turnDeadline = null;
+          S.statusText = `${S.players[S.currentIndex].name} moet nu zelf 3 kaarten pakken.`;
           renderGame();
+          saveGame();
+          return;
         }
+
+        if(forcedPack3){
+          S.forcedAction.remaining -= 1;
+          if(S.forcedAction.remaining > 0 && !p.out && !p.stopped){
+            S.busy = false;
+            S.statusText = `${p.name} moet nog ${S.forcedAction.remaining} kaart(en) pakken.`;
+            renderGame();
+            saveGame();
+            return;
+          }
+          clearForcedAction();
+          S.busy = false;
+          S.statusText = '';
+          renderGame();
+          saveGame();
+          if(checkRoundFinished()) return;
+          scheduleAfterTurn('next', S.turnDelaySec * 1000);
+          return;
+        }
+
+        if(result?.endTurn){
+          S.busy = false;
+          if(checkRoundFinished()) return;
+          scheduleAfterTurn('next', S.turnDelaySec * 1000);
+          return;
+        }
+
+        if(result?.bust){
+          S.busy = false;
+          if(checkRoundFinished()) return;
+          scheduleAfterTurn('next', S.turnDelaySec * 1000);
+          return;
+        }
+
+        S.busy = false;
+        renderGame();
+        saveGame();
+        if(checkRoundFinished()) return;
+        scheduleAfterTurn('next', S.turnDelaySec * 1000);
+      } catch(err){
+        S.busy = false;
+        renderGame();
+        saveGame();
+        console.error(err);
       }
     }
 
@@ -1227,10 +1315,11 @@
       if(S.busy || S.gameOver) return;
       const p = currentPlayer();
       if(!p || p.out || p.stopped) return;
+      if(S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex) return;
       clearTimers();
       if(S.bombActive){
         applyBombToPlayer(p);
-        S.statusText = `💣 ${p.name} activeerde de bom en verliest de helft van deze ronde.`;
+        S.statusText = `💣 De eerste persoon die stopt verliest de helft van zijn rondepunten.`;
       } else {
         S.statusText = `${p.name} stopt.`;
       }
@@ -1306,6 +1395,7 @@
       S.turnDeadline = null;
       S.focusIndex = null;
       S.statusText = '';
+      S.forcedAction = null;
       bankRoundScores();
       saveGame();
       playSound('roundEnd');
@@ -1342,6 +1432,7 @@
       S.turnDeadline = null;
       S.focusIndex = null;
       S.statusText = '';
+      S.forcedAction = null;
 
       const sorted = [...S.players].sort((a,b) => b.bankedScore - a.bankedScore);
       const bestScore = sorted[0]?.bankedScore ?? 0;
@@ -1410,6 +1501,24 @@
       $('secondChanceCountInput').value = S.secondChanceCount;
       saveSettings();
     });
+    $('pack3CountInput').addEventListener('change', () => {
+      const n = parseInt($('pack3CountInput').value, 10);
+      S.pack3Count = Number.isFinite(n) && n >= 0 ? n : PACK3_DEFAULT;
+      $('pack3CountInput').value = S.pack3Count;
+      saveSettings();
+    });
+    $('freezeCountInput').addEventListener('change', () => {
+      const n = parseInt($('freezeCountInput').value, 10);
+      S.freezeCount = Number.isFinite(n) && n >= 0 ? n : FREEZE_DEFAULT;
+      $('freezeCountInput').value = S.freezeCount;
+      saveSettings();
+    });
+    $('bombCountInput').addEventListener('change', () => {
+      const n = parseInt($('bombCountInput').value, 10);
+      S.bombCount = Number.isFinite(n) && n >= 0 ? n : BOMB_DEFAULT;
+      $('bombCountInput').value = S.bombCount;
+      saveSettings();
+    });
     $('riskToggle').addEventListener('change', () => {
       S.showRisk = $('riskToggle').checked;
       $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
@@ -1427,6 +1536,8 @@
       hide('targetModal');
       hide('settingsModal');
       hide('infoModal');
+      historyCache = { playerIndex:null, cardCount:0 };
+      targetCache = { playerIndex:null, cardCount:0 };
       S = {
         players: [],
         deck: [],
@@ -1441,9 +1552,13 @@
         turnDelaySec: 2,
         x2Count: X2_DEFAULT,
         secondChanceCount: SECOND_CHANCE_DEFAULT,
+        pack3Count: PACK3_DEFAULT,
+        freezeCount: FREEZE_DEFAULT,
+        bombCount: BOMB_DEFAULT,
         bombActive: false,
         focusIndex: null,
         statusText: '',
+        forcedAction: null,
         pendingAfterTurn: null,
         turnDeadline: null,
         autoTimer: null,
@@ -1455,6 +1570,7 @@
       $('playerList').innerHTML = '';
       $('playerInput').value = '';
       $('history').innerHTML = '';
+      $('targetHistory').innerHTML = '';
       $('playersRow').innerHTML = '';
       $('cardFace').innerHTML = '';
       $('flipCard').classList.remove('flipped');
@@ -1471,11 +1587,11 @@
       $('turnCard').className = 'turn-card';
       $('turnSub').textContent = '';
       $('turnSub').style.display = 'none';
+      $('targetPanel').style.display = 'none';
       showScreen('lobbyScreen');
       renderLobbyPlayers();
     }
 
-    // PWA
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredInstallPrompt = e;
