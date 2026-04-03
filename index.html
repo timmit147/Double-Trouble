@@ -101,8 +101,8 @@
 .special-pack3 .special-main{color:var(--gold)}
 .special-freeze .special-main{color:#4fb7ff}
 .special-bomb .special-main{color:var(--red)}
-.player-panel,.target-panel{width:100%;max-width:420px;margin-top:10px}
-.pnl-lbl,.target-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
+.player-panel{width:100%;max-width:420px;margin-top:10px}
+.pnl-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
 .pnl-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}
 .pchip{background:rgba(0,0,0,.3);border:1.5px solid rgba(255,255,255,.08);border-radius:20px;padding:5px 11px;display:flex;align-items:center;gap:6px;font-size:11px;transition:border-color .3s,box-shadow .3s,background .3s}
 .pchip.active{border-color:rgba(232,201,110,.55);box-shadow:0 0 0 2px rgba(232,201,110,.2),0 0 20px rgba(232,201,110,.18);background:rgba(201,168,76,.12)}
@@ -124,9 +124,6 @@
 .dot-3{background:rgb(220,120,220)}
 .dot-4{background:rgb(255,120,120)}
 .dot-5{background:rgb(80,220,200)}
-.target-box{background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04);padding:10px 10px 8px}
-.target-name{font-family:Georgia,serif;font-size:20px;text-align:center;color:var(--gold-light);line-height:1.1}
-.target-sub{font-size:11px;color:rgba(255,255,255,.72);text-align:center;margin-top:4px;line-height:1.35}
 .player-cards{width:100%;max-width:420px;margin-top:10px}
 .cards-lbl{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.32);text-align:center;margin-bottom:8px}
 .hist-track{display:flex;gap:5px;flex-wrap:nowrap;justify-content:flex-start;min-height:54px;height:54px;align-content:center;align-items:center;padding:7px 8px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid rgba(255,255,255,.04);overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
@@ -157,19 +154,34 @@
 .mcl{position:absolute;top:13px;right:14px;background:none;border:none;color:var(--gold);font-size:19px;cursor:pointer;opacity:.55}
 .mcl:hover{opacity:1}
 .rhl{display:inline-block;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);border-radius:4px;padding:1px 6px;color:var(--gold-light);font-weight:600}
+.setting-btn{width:100%;margin-top:8px;border:none;border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.06);color:var(--cream);cursor:pointer}
+.setting-btn:hover{background:rgba(255,255,255,.09)}
+
+.modal-scroll{max-height:min(78vh,760px);overflow-y:auto;overflow-x:hidden;padding-right:4px}
+.modal-section{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.modal-section:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,.5);margin-bottom:8px}
 .setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
 .setting-row:first-of-type{border-top:none;padding-top:0}
 .setting-row label{font-size:13px;color:rgba(245,240,232,.82)}
 .setting-row input[type="number"]{width:104px;background:rgba(0,0,0,.35);border:1px solid rgba(201,168,76,.24);color:var(--cream);border-radius:10px;padding:10px 12px;outline:none;-webkit-user-select:text;user-select:text}
-.setting-btn{width:100%;margin-top:8px;border:none;border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.06);color:var(--cream);cursor:pointer}
-.setting-btn:hover{background:rgba(255,255,255,.09)}
+.setting-row input[type="checkbox"]{transform:scale(1.08)}
 
 .target-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
-.target-btn{border:1px solid rgba(201,168,76,.22);background:rgba(255,255,255,.05);color:var(--cream);border-radius:12px;padding:12px 14px;font-size:14px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+.target-btn{border:1px solid rgba(201,168,76,.22);background:rgba(255,255,255,.05);color:var(--cream);border-radius:12px;padding:10px 12px;font-size:14px;text-align:left;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
 .target-btn:hover{background:rgba(255,255,255,.09);transform:translateY(-1px)}
-.target-btn .tn{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
-.target-btn .tn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.target-btn .self-tag{font-size:11px;color:var(--gold-light);opacity:.8;white-space:nowrap}
+.target-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.target-name-line{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden}
+.target-name-line span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.target-self{font-size:11px;color:var(--gold-light);opacity:.8;white-space:nowrap}
+.mini-cards{display:flex;gap:4px;flex-wrap:wrap;min-height:22px}
+.mini-card{width:22px;height:28px;border-radius:5px;border:1px solid rgba(201,168,76,.25);background:linear-gradient(160deg,#fdfaf3,#ede6d2);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:10px;font-weight:700;color:#1a1a2e;flex-shrink:0}
+.mini-card.rc{color:var(--red)}
+.mini-card.x2{border-color:rgba(192,57,43,.65);background:linear-gradient(160deg,#fde8e8,#f5c6c6)}
+.mini-card.sc{border-color:rgba(201,168,76,.7);background:linear-gradient(160deg,#fff6d6,#f5e4a2)}
+.mini-card.p3{border-color:rgba(201,168,76,.72);background:linear-gradient(160deg,#fff5ce,#f6dd90)}
+.mini-card.freeze{border-color:rgba(79,183,255,.72);background:linear-gradient(160deg,#e8f6ff,#bedfff)}
+.mini-card.bomb{border-color:rgba(192,57,43,.72);background:linear-gradient(160deg,#ffe0e0,#ffb0b0)}
 
 .double-icon{font-size:52px;text-align:center;margin-bottom:8px}
 .double-card-display{display:flex;align-items:center;justify-content:center;margin:12px 0;gap:14px}
@@ -286,15 +298,6 @@
     <div class="pnl-row" id="playersRow"></div>
   </div>
 
-  <div class="target-panel" id="targetPanel" style="display:none;">
-    <div class="target-lbl">Overzicht doelwit</div>
-    <div class="target-box">
-      <div class="target-name" id="targetName">—</div>
-      <div class="target-sub" id="targetSub"></div>
-      <div class="hist-track" id="targetHistory"></div>
-    </div>
-  </div>
-
   <div class="player-cards">
     <div class="cards-lbl">Kaarten van huidige speler</div>
     <div class="hist-track" id="history"></div>
@@ -339,74 +342,83 @@
     <div class="mbox">
       <button class="mcl" onclick="hide('settingsModal')">✕</button>
       <h2>Instellingen</h2>
-      <button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
-      <button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
-      <button class="setting-btn" onclick="installApp()">Zet op bureaublad</button><div class="setting-row">
-    <label for="maxScoreInput">Max score voor eindspel</label>
-    <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
-  </div>
+      <div class="modal-scroll">
+        <div class="modal-section">
+          <div class="section-title">Algemeen</div>
+          <button class="setting-btn" onclick="showInfo()">Info / spelregels</button>
+          <button class="setting-btn" onclick="toggleFullscreen()">Fullscreen aan/uit</button>
+          <button class="setting-btn" onclick="installApp()">Zet op bureaublad</button>
+        </div><div class="modal-section">
+      <div class="section-title">Spel</div>
+      <div class="setting-row">
+        <label for="maxScoreInput">Max score voor eindspel</label>
+        <input type="number" id="maxScoreInput" min="50" max="9999" step="10" value="200" />
+      </div>
+      <div class="setting-row">
+        <label for="turnDelayInput">Wachttijd volgende speler (sec)</label>
+        <input type="number" id="turnDelayInput" min="1" max="10" step="1" value="2" />
+      </div>
+      <div class="setting-row">
+        <label for="riskToggle">Toon kansenbalk</label>
+        <input type="checkbox" id="riskToggle" checked />
+      </div>
+      <div class="setting-row">
+        <label for="soundToggle">Geluidseffecten</label>
+        <input type="checkbox" id="soundToggle" checked />
+      </div>
+    </div>
 
-  <div class="setting-row">
-    <label for="turnDelayInput">Wachttijd volgende speler (sec)</label>
-    <input type="number" id="turnDelayInput" min="1" max="10" step="1" value="2" />
-  </div>
+    <div class="modal-section">
+      <div class="section-title">Kaarten</div>
+      <div class="setting-row">
+        <label for="x2CountInput">Aantal x2 kaarten</label>
+        <input type="number" id="x2CountInput" min="0" max="20" step="1" value="3" />
+      </div>
+      <div class="setting-row">
+        <label for="secondChanceCountInput">Aantal tweede kans kaarten</label>
+        <input type="number" id="secondChanceCountInput" min="0" max="20" step="1" value="4" />
+      </div>
+      <div class="setting-row">
+        <label for="pack3CountInput">Aantal Pak 3 kaarten</label>
+        <input type="number" id="pack3CountInput" min="0" max="20" step="1" value="6" />
+      </div>
+      <div class="setting-row">
+        <label for="freezeCountInput">Aantal Freeze kaarten</label>
+        <input type="number" id="freezeCountInput" min="0" max="20" step="1" value="3" />
+      </div>
+      <div class="setting-row">
+        <label for="bombCountInput">Aantal Bom kaarten</label>
+        <input type="number" id="bombCountInput" min="0" max="10" step="1" value="1" />
+      </div>
+    </div>
 
-  <div class="setting-row">
-    <label for="x2CountInput">Aantal x2 kaarten</label>
-    <input type="number" id="x2CountInput" min="0" max="20" step="1" value="3" />
+    <div class="modal-section">
+      <div class="section-title">Reset</div>
+      <button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
+    </div>
   </div>
-
-  <div class="setting-row">
-    <label for="secondChanceCountInput">Aantal tweede kans kaarten</label>
-    <input type="number" id="secondChanceCountInput" min="0" max="20" step="1" value="4" />
-  </div>
-
-  <div class="setting-row">
-    <label for="pack3CountInput">Aantal Pak 3 kaarten</label>
-    <input type="number" id="pack3CountInput" min="0" max="20" step="1" value="6" />
-  </div>
-
-  <div class="setting-row">
-    <label for="freezeCountInput">Aantal Freeze kaarten</label>
-    <input type="number" id="freezeCountInput" min="0" max="20" step="1" value="3" />
-  </div>
-
-  <div class="setting-row">
-    <label for="bombCountInput">Aantal Bom kaarten</label>
-    <input type="number" id="bombCountInput" min="0" max="10" step="1" value="1" />
-  </div>
-
-  <div class="setting-row">
-    <label for="riskToggle">Toon kansenbalk</label>
-    <input type="checkbox" id="riskToggle" checked />
-  </div>
-
-  <div class="setting-row">
-    <label for="soundToggle">Geluidseffecten</label>
-    <input type="checkbox" id="soundToggle" checked />
-  </div>
-
-  <button class="setting-btn" onclick="resetGame()">Spel opnieuw instellen</button>
 </div>
 
   </div>  <div class="overlay" id="infoModal" onclick="closeOvl(event,'infoModal')">
     <div class="mbox">
       <button class="mcl" onclick="hide('infoModal')">✕</button>
       <h2>Spelregels</h2>
-      <p>Iedere speler speelt om de beurt. In je beurt pak je precies één kaart of je klikt op stop. Daarna gaat het spel automatisch door naar de volgende speler.</p>
-      <ul>
-        <li>Het deck bevat gewone kaarten 1 t/m 12.</li>
-        <li>X2-kaarten verdubbelen je punten van die ronde. Meerdere X2-kaarten stapelen.</li>
-        <li>Tweede kans-kaarten kun je gebruiken om een double één keer op te vangen.</li>
-        <li><span class="rhl">Pak 3</span>: kies jezelf of iemand anders. De gekozen speler moet zelf 3 kaarten pakken.</li>
-        <li><span class="rhl">Freeze</span>: kies jezelf of iemand anders. De gekozen speler stopt direct en kan die ronde geen kaarten meer krijgen.</li>
-        <li><span class="rhl">Bom</span>: de eerste persoon die na een actieve bom stopt, verliest de helft van zijn rondepunten.</li>
-        <li>Als je stopt, bank je je punten voor deze ronde.</li>
-        <li>Na elke kaart of stop gaat de beurt na de ingestelde wachttijd door.</li>
-        <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
-        <li>De hele game stopt zodra iemand aan het einde van een ronde de ingestelde max score haalt of overschrijdt.</li>
-        <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
-      </ul>
+      <div class="modal-scroll">
+        <p>Iedere speler speelt om de beurt. In je beurt pak je precies één kaart of je klikt op stop. Daarna gaat het spel automatisch door naar de volgende speler.</p>
+        <ul>
+          <li>Het deck bevat gewone kaarten 1 t/m 12.</li>
+          <li>X2-kaarten verdubbelen je punten van die ronde. Meerdere X2-kaarten stapelen.</li>
+          <li>Tweede kans-kaarten kun je gebruiken om een double één keer op te vangen.</li>
+          <li><span class="rhl">Pak 3</span>: kies jezelf of iemand anders. De gekozen speler moet zelf 3 kaarten pakken.</li>
+          <li><span class="rhl">Freeze</span>: kies jezelf of iemand anders. De gekozen speler stopt direct en kan die ronde geen kaarten meer krijgen.</li>
+          <li><span class="rhl">Bom</span>: de eerste persoon die na een actieve bom stopt, verliest de helft van zijn rondepunten.</li>
+          <li>Als je stopt, bank je je punten voor deze ronde.</li>
+          <li>Na elke kaart of stop gaat de beurt na de ingestelde wachttijd door.</li>
+          <li>Een ronde eindigt als iedereen gestopt of uit is.</li>
+          <li>De hele game stopt zodra iemand aan het einde van een ronde de ingestelde max score haalt of overschrijdt.</li>
+          <li>Als het deck leeg is, worden de kaarten opnieuw gemixt zodat je door kunt spelen.</li>
+        </ul>
+      </div>
     </div>
   </div>  <script>
     const PLAYER_COLORS = [
@@ -431,7 +443,6 @@
     let audioCtx = null;
     let deferredInstallPrompt = null;
     let historyCache = { playerIndex:null, cardCount:0 };
-    let targetCache = { playerIndex:null, cardCount:0 };
 
     let S = {
       players: [],
@@ -451,7 +462,6 @@
       freezeCount: FREEZE_DEFAULT,
       bombCount: BOMB_DEFAULT,
       bombActive: false,
-      focusIndex: null,
       statusText: '',
       forcedAction: null,
       pendingAfterTurn: null,
@@ -523,7 +533,6 @@
         freezeCount: FREEZE_DEFAULT,
         bombCount: BOMB_DEFAULT,
         bombActive: false,
-        focusIndex: null,
         statusText: '',
         forcedAction: null,
         pendingAfterTurn: null,
@@ -550,7 +559,6 @@
       s.busy = !!s.busy;
       s.gameOver = !!s.gameOver;
       s.bombActive = !!s.bombActive;
-      s.focusIndex = Number.isFinite(+s.focusIndex) ? +s.focusIndex : null;
       s.statusText = typeof s.statusText === 'string' ? s.statusText : '';
       s.forcedAction = s.forcedAction || null;
       s.pendingAfterTurn = data?.pendingAfterTurn || null;
@@ -560,7 +568,6 @@
       s.doubleTimer = null;
       if(!s.players.length) s.currentIndex = 0;
       if(s.currentIndex < 0 || s.currentIndex >= s.players.length) s.currentIndex = 0;
-      if(s.focusIndex !== null && (s.focusIndex < 0 || s.focusIndex >= s.players.length)) s.focusIndex = null;
       return s;
     }
 
@@ -594,18 +601,10 @@
       else if(kind === 'win'){ tone(ctx, 523.25, now, 0.12, 'triangle', 0.05); tone(ctx, 659.25, now + 0.11, 0.14, 'triangle', 0.05); tone(ctx, 783.99, now + 0.24, 0.18, 'triangle', 0.05); tone(ctx, 1046.5, now + 0.39, 0.22, 'sine', 0.04); }
     }
 
-    function initialDeckSize(){
-      return 78 + S.x2Count + S.secondChanceCount + S.pack3Count + S.freezeCount + S.bombCount;
-    }
+    function initialDeckSize(){ return 78 + S.x2Count + S.secondChanceCount + S.pack3Count + S.freezeCount + S.bombCount; }
 
-    function saveGame(){
-      const { autoTimer, countdownInterval, doubleTimer, ...saveState } = S;
-      localStorage.setItem(SAVE_KEY, JSON.stringify(saveState));
-    }
-    function loadGame(){
-      try{ const saved = localStorage.getItem(SAVE_KEY); if(saved) return normalizeState(JSON.parse(saved)); }catch(e){}
-      return null;
-    }
+    function saveGame(){ const { autoTimer, countdownInterval, doubleTimer, ...saveState } = S; localStorage.setItem(SAVE_KEY, JSON.stringify(saveState)); }
+    function loadGame(){ try{ const saved = localStorage.getItem(SAVE_KEY); if(saved) return normalizeState(JSON.parse(saved)); }catch(e){} return null; }
     function clearSavedGame(){ localStorage.removeItem(SAVE_KEY); }
 
     function showScreen(id){ document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); }
@@ -766,12 +765,10 @@
       S.busy = false;
       S.pendingAfterTurn = null;
       S.turnDeadline = null;
-      S.focusIndex = null;
       S.statusText = '';
       S.forcedAction = null;
       S.bombActive = false;
       historyCache = { playerIndex:null, cardCount:0 };
-      targetCache = { playerIndex:null, cardCount:0 };
       S.players = S.players.map(p => ({ name:p.name, bankedScore:0, roundScoreBase:0, roundScoreOverride:null, multiplier:1, cards:[], stopped:false, out:false, secondChanceCount:0 }));
       showScreen('gameScreen');
       startRound();
@@ -785,7 +782,6 @@
         loadSettings();
         applySettingsToUI();
         historyCache = { playerIndex:null, cardCount:0 };
-        targetCache = { playerIndex:null, cardCount:0 };
         if(S.gameOver){ endGame(); return; }
         showScreen('gameScreen');
         renderGame();
@@ -815,12 +811,10 @@
       S.currentIndex = 0;
       while(S.currentIndex < S.players.length && (S.players[S.currentIndex].stopped || S.players[S.currentIndex].out)) S.currentIndex++;
       if(S.currentIndex >= S.players.length) S.currentIndex = 0;
-      S.focusIndex = null;
       S.statusText = '';
       S.forcedAction = null;
       S.bombActive = false;
       historyCache = { playerIndex:null, cardCount:0 };
-      targetCache = { playerIndex:null, cardCount:0 };
     }
 
     function startRound(){
@@ -878,10 +872,7 @@
       }
     }
 
-    function roundPoints(p){
-      if(p.roundScoreOverride !== null && p.roundScoreOverride !== undefined) return Math.max(0, Math.floor(p.roundScoreOverride));
-      return Math.max(0, p.roundScoreBase) * Math.max(1, p.multiplier);
-    }
+    function roundPoints(p){ return p.roundScoreOverride !== null && p.roundScoreOverride !== undefined ? Math.max(0, Math.floor(p.roundScoreOverride)) : Math.max(0, p.roundScoreBase) * Math.max(1, p.multiplier); }
     function displayScore(p){ return p.bankedScore + roundPoints(p); }
     function playerHasNumberCards(p){ return p.cards.some(c => c.kind === 'num'); }
     function calcRisk(p, deckRemaining){
@@ -928,94 +919,72 @@
       container.innerHTML = '';
       if(count){
         p.cards.forEach(card => container.appendChild(makeChip(card, false)));
-      } else {
-        const empty = document.createElement('div');
-        empty.style.fontSize = '12px';
-        empty.style.color = 'rgba(255,255,255,.35)';
-        empty.textContent = 'Nog geen kaarten';
-        container.appendChild(empty);
       }
       cache.playerIndex = playerIndex;
       cache.cardCount = count;
     }
 
-    function renderTargetPanel(){
-      const panel = $('targetPanel');
-      const hasTarget = S.focusIndex !== null && S.focusIndex !== undefined && S.players[S.focusIndex];
-      if(!hasTarget){
-        panel.style.display = 'none';
-        $('targetHistory').innerHTML = '';
-        targetCache = { playerIndex:null, cardCount:0 };
-        return;
-      }
-      panel.style.display = 'block';
-      const tp = S.players[S.focusIndex];
-      $('targetName').textContent = tp.name;
-      let sub = '';
-      if(S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.focusIndex){
-        sub = `${S.forcedAction.remaining} kaarten te pakken.`;
-      } else if(tp.stopped && !tp.out){
-        sub = 'Deze speler is klaar voor deze ronde.';
-      } else if(tp.out){
-        sub = 'Deze speler is uit deze ronde.';
-      } else {
-        sub = 'Kaartenoverzicht van deze speler.';
-      }
-      $('targetSub').textContent = sub;
-      renderCardList('targetHistory', S.focusIndex, targetCache, true);
+    function miniCard(card){
+      const el = document.createElement('div');
+      el.className = 'mini-card';
+      if(card.kind === 'x2') el.classList.add('x2');
+      if(card.kind === 'secondChance') el.classList.add('sc');
+      if(card.kind === 'pack3') el.classList.add('p3');
+      if(card.kind === 'freeze') el.classList.add('freeze');
+      if(card.kind === 'bomb') el.classList.add('bomb');
+      if(card.kind === 'num' && card.value >= 10) el.classList.add('rc');
+      el.textContent = cardLabel(card);
+      return el;
     }
 
-    function renderGame(){
-      const p = currentPlayer();
-      if(!p) return;
+    function renderTargetModal(actionKind, actorIndex){
+      const actor = S.players[actorIndex];
+      const titleEl = $('targetTitle');
+      const textEl = $('targetText');
+      const listEl = $('targetList');
+      listEl.innerHTML = '';
+      titleEl.textContent = actionKind === 'pack3' ? 'Pak 3' : 'Freeze';
+      textEl.textContent = actionKind === 'pack3'
+        ? 'Kies jezelf of iemand anders. Je ziet meteen de kaarten van elke speler.'
+        : 'Kies jezelf of iemand anders. Je ziet meteen de kaarten van elke speler.';
 
-      $('scoreVal').textContent = displayScore(p);
-      $('deckVal').textContent = S.deck.length;
-      $('roundVal').textContent = S.round;
-      $('deckBadge').textContent = S.deck.length + ' over';
-      $('currentPlayerName').textContent = p.name;
-
-      const tc = $('turnCard');
-      tc.className = 'turn-card ' + colorOf(S.currentIndex).cls;
-
-      const turnSub = $('turnSub');
-      const baseText = S.statusText || (S.bombActive ? '💣 De eerste persoon die nu stopt verliest de helft van zijn rondepunten.' : 'Pak een kaart of stop.');
-      turnSub.textContent = baseText;
-      turnSub.style.display = baseText ? 'block' : 'none';
-
-      if(S.showRisk){
-        $('riskWrap').style.display = 'block';
-        const risk = calcRisk(p, S.deck);
-        const pct = Math.round(risk * 100);
-        $('riskPct').textContent = !playerHasNumberCards(p) ? '—' : pct + '%';
-        const fill = $('riskFill');
-        fill.style.width = pct + '%';
-        fill.style.background = pct < 20 ? '#2d8a58' : pct < 45 ? '#c9a84c' : '#c0392b';
-      } else {
-        $('riskWrap').style.display = 'none';
-      }
-
-      const row = $('playersRow');
-      row.innerHTML = '';
-      S.players.forEach((pl, i) => {
-        const col = colorOf(i);
-        const isActive = i === S.currentIndex;
-        const d = document.createElement('div');
-        d.className = 'pchip' + (isActive ? ' active ' + col.chipCls : '') + (pl.out ? ' out' : '') + (pl.stopped ? ' done' : '');
-        d.innerHTML = `<div class="pcolor-dot ${col.dotCls}"></div><span class="pscore">${roundPoints(pl)}</span><span class="pname">${pl.name}</span>${isActive ? '<span class="ptag">▶</span>' : ''}`;
-        row.appendChild(d);
+      S.players.forEach((p, idx) => {
+        if(p.out || p.stopped) return;
+        const btn = document.createElement('button');
+        btn.className = 'target-btn';
+        const cardsWrap = document.createElement('div');
+        cardsWrap.className = 'mini-cards';
+        if(p.cards.length){
+          p.cards.forEach(card => cardsWrap.appendChild(miniCard(card)));
+        }
+        const top = document.createElement('div');
+        top.className = 'target-top';
+        top.innerHTML = `<div class="target-name-line"><span class="pcolor-dot ${colorOf(idx).dotCls}"></span><span>${p.name}${idx === actorIndex ? ' (jij)' : ''}</span></div><span class="target-self">Kies</span>`;
+        btn.appendChild(top);
+        btn.appendChild(cardsWrap);
+        btn.onclick = () => {
+          $('targetModal').classList.remove('show');
+          resolveTargetSelection(actionKind, idx);
+        };
+        listEl.appendChild(btn);
       });
+      $('targetModal').classList.add('show');
+    }
 
-      renderCardList('history', S.currentIndex, historyCache, true);
-      renderTargetPanel();
+    let pendingTargetResolve = null;
+    function resolveTargetSelection(actionKind, idx){
+      if(pendingTargetResolve){
+        const fn = pendingTargetResolve;
+        pendingTargetResolve = null;
+        fn(idx);
+      }
+    }
 
-      const forcedPack3 = S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex;
-      $('drawBtn').textContent = forcedPack3 ? `Pak 3 (${S.forcedAction.remaining})` : 'Kaart pakken';
-      $('stopBtn').textContent = forcedPack3 ? 'Moet trekken' : 'Stoppen';
-
-      const canAct = !S.busy && !S.gameOver && !p.out && !p.stopped && !forcedPack3 ? true : (!S.busy && !S.gameOver && !p.out && !p.stopped && forcedPack3);
-      $('drawBtn').disabled = !canAct;
-      $('stopBtn').disabled = !canAct || forcedPack3;
+    function askTarget(actionKind, actorIndex){
+      return new Promise(resolve => {
+        pendingTargetResolve = resolve;
+        renderTargetModal(actionKind, actorIndex);
+      });
     }
 
     function scheduleAfterTurn(mode='next', delay=S.turnDelaySec * 1000){
@@ -1032,11 +1001,7 @@
       renderGame();
     }
 
-    function hideDoubleModal(){
-      $('doubleModal').classList.remove('show');
-      if(S.doubleTimer){ clearTimeout(S.doubleTimer); S.doubleTimer = null; }
-    }
-
+    function hideDoubleModal(){ $('doubleModal').classList.remove('show'); if(S.doubleTimer){ clearTimeout(S.doubleTimer); S.doubleTimer = null; } }
     function openDoubleModal(title, text, card, showSecondChance){
       return new Promise(resolve => {
         $('doubleTitle').textContent = title;
@@ -1045,12 +1010,7 @@
         $('useSecondChanceBtn').style.display = showSecondChance ? 'block' : 'none';
         $('doubleOkBtn').style.display = showSecondChance ? 'none' : 'block';
         $('doubleModal').classList.add('show');
-
-        const finish = (value) => {
-          hideDoubleModal();
-          resolve(value);
-        };
-
+        const finish = (value) => { hideDoubleModal(); resolve(value); };
         $('doubleOkBtn').onclick = () => finish('fail');
         $('useSecondChanceBtn').onclick = () => finish('continue');
         S.doubleTimer = setTimeout(() => finish(showSecondChance ? 'continue' : 'fail'), showSecondChance ? 1800 : S.turnDelaySec * 1000);
@@ -1069,50 +1029,11 @@
       S.bombActive = false;
     }
 
-    function showTargetModal(actionKind, actorIndex){
-      return new Promise(resolve => {
-        const actor = S.players[actorIndex];
-        const titleEl = $('targetTitle');
-        const textEl = $('targetText');
-        const listEl = $('targetList');
-        listEl.innerHTML = '';
-        titleEl.textContent = actionKind === 'pack3' ? 'Pak 3' : 'Freeze';
-        textEl.textContent = actionKind === 'pack3'
-          ? 'Kies jezelf of iemand anders. Die speler moet zelf 3 kaarten pakken.'
-          : 'Kies jezelf of iemand anders. Die speler stopt direct en kan geen kaarten meer krijgen.';
-
-        const activeTargets = S.players.map((p, idx) => ({ p, idx })).filter(x => !x.p.out && !x.p.stopped);
-        activeTargets.forEach(({ p, idx }) => {
-          const btn = document.createElement('button');
-          btn.className = 'target-btn';
-          btn.innerHTML = `<span class="tn"><span class="pcolor-dot ${colorOf(idx).dotCls}"></span><span>${p.name}${idx === actorIndex ? ' (jij)' : ''}</span></span><span class="self-tag">Kies</span>`;
-          btn.onclick = () => {
-            $('targetModal').classList.remove('show');
-            resolve(idx);
-          };
-          listEl.appendChild(btn);
-        });
-        $('targetModal').classList.add('show');
-      });
-    }
-
-    function clearForcedAction(){
-      S.forcedAction = null;
-      S.focusIndex = null;
-    }
-
-    function endPlayerCardAction(){
-      S.busy = false;
-      S.pendingAfterTurn = null;
-      S.turnDeadline = null;
-      saveGame();
-      renderGame();
-    }
+    function clearForcedAction(){ S.forcedAction = null; }
 
     async function resolvePack3(actorIndex, targetIndex){
       const actor = S.players[actorIndex];
       const target = S.players[targetIndex];
-      S.focusIndex = targetIndex;
       S.forcedAction = { type:'pack3', targetIndex, remaining:3, sourceIndex:actorIndex };
       S.currentIndex = targetIndex;
       S.statusText = `${actor.name} kiest ${target.name}. ${target.name} moet zelf 3 kaarten pakken.`;
@@ -1123,7 +1044,6 @@
     async function resolveFreeze(actorIndex, targetIndex){
       const actor = S.players[actorIndex];
       const target = S.players[targetIndex];
-      S.focusIndex = targetIndex;
       target.stopped = true;
       S.statusText = `${actor.name} freeze't ${target.name}. ${target.name} is klaar voor deze ronde.`;
       renderGame();
@@ -1133,14 +1053,13 @@
     }
 
     async function handleSpecialCard(actorIndex, card){
-      const actor = S.players[actorIndex];
       if(card.kind === 'pack3'){
-        const targetIndex = await showTargetModal('pack3', actorIndex);
+        const targetIndex = await askTarget('pack3', actorIndex);
         await resolvePack3(actorIndex, targetIndex);
         return { turnTransferred:true };
       }
       if(card.kind === 'freeze'){
-        const targetIndex = await showTargetModal('freeze', actorIndex);
+        const targetIndex = await askTarget('freeze', actorIndex);
         await resolveFreeze(actorIndex, targetIndex);
         return { endTurn:true };
       }
@@ -1156,10 +1075,7 @@
 
     async function drawSingleCardToPlayer(playerIndex){
       buildNextDeckIfNeeded();
-      if(!S.deck.length){
-        endRound();
-        return { roundEnd:true };
-      }
+      if(!S.deck.length){ endRound(); return { roundEnd:true }; }
       const p = S.players[playerIndex];
       const card = S.deck.shift();
       renderCardFace(card);
@@ -1199,6 +1115,7 @@
         p.cards.push(card);
         p.roundScoreBase += card.value;
         S.statusText = '';
+        renderCardList('history', playerIndex, historyCache, true);
         renderGame();
         saveGame();
         playSound('draw');
@@ -1209,6 +1126,7 @@
         p.cards.push(card);
         p.multiplier *= 2;
         S.statusText = '';
+        renderCardList('history', playerIndex, historyCache, true);
         renderGame();
         saveGame();
         playSound('draw');
@@ -1219,6 +1137,7 @@
         p.cards.push(card);
         p.secondChanceCount += 1;
         S.statusText = '';
+        renderCardList('history', playerIndex, historyCache, true);
         renderGame();
         saveGame();
         playSound('draw');
@@ -1228,6 +1147,7 @@
       if(card.kind === 'pack3' || card.kind === 'freeze' || card.kind === 'bomb'){
         p.cards.push(card);
         S.statusText = '';
+        renderCardList('history', playerIndex, historyCache, true);
         renderGame();
         saveGame();
         playSound('draw');
@@ -1241,6 +1161,7 @@
       if(S.busy || S.gameOver) return;
       const p = currentPlayer();
       if(!p || p.out || p.stopped) return;
+      if(S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex !== S.currentIndex) return;
 
       clearTimers();
       buildNextDeckIfNeeded();
@@ -1250,7 +1171,6 @@
       $('drawBtn').disabled = true;
       $('stopBtn').disabled = true;
 
-      const forcedPack3 = S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex;
       try{
         const result = await drawSingleCardToPlayer(S.currentIndex);
         if(result?.roundEnd) return;
@@ -1259,14 +1179,16 @@
           S.busy = false;
           S.pendingAfterTurn = null;
           S.turnDeadline = null;
-          S.statusText = `${S.players[S.currentIndex].name} moet nu zelf 3 kaarten pakken.`;
           renderGame();
           saveGame();
           return;
         }
 
+        const forcedPack3 = S.forcedAction && S.forcedAction.type === 'pack3' && S.forcedAction.targetIndex === S.currentIndex;
         if(forcedPack3){
           S.forcedAction.remaining -= 1;
+          renderGame();
+          saveGame();
           if(S.forcedAction.remaining > 0 && !p.out && !p.stopped){
             S.busy = false;
             S.statusText = `${p.name} moet nog ${S.forcedAction.remaining} kaart(en) pakken.`;
@@ -1346,22 +1268,9 @@
       saveGame();
     }
 
-    function checkRoundFinished(){
-      if(activePlayers().length === 0){ endRound(); return true; }
-      return false;
-    }
-
-    function bankRoundScores(){
-      for(const p of S.players) if(!p.out) p.bankedScore += roundPoints(p);
-    }
-    function bestRoundScore(){
-      let best = -1;
-      for(const p of S.players){
-        const score = roundPoints(p);
-        if(score > best) best = score;
-      }
-      return best;
-    }
+    function checkRoundFinished(){ if(activePlayers().length === 0){ endRound(); return true; } return false; }
+    function bankRoundScores(){ for(const p of S.players) if(!p.out) p.bankedScore += roundPoints(p); }
+    function bestRoundScore(){ let best = -1; for(const p of S.players){ const score = roundPoints(p); if(score > best) best = score; } return best; }
 
     function showRoundEndScreen(){
       const best = bestRoundScore();
@@ -1393,7 +1302,6 @@
       S.busy = false;
       S.pendingAfterTurn = null;
       S.turnDeadline = null;
-      S.focusIndex = null;
       S.statusText = '';
       S.forcedAction = null;
       bankRoundScores();
@@ -1415,13 +1323,7 @@
       showRoundEndScreen();
     }
 
-    function nextRound(){
-      $('roundBtn').onclick = nextRound;
-      S.round += 1;
-      showScreen('gameScreen');
-      startRound();
-      saveGame();
-    }
+    function nextRound(){ $('roundBtn').onclick = nextRound; S.round += 1; showScreen('gameScreen'); startRound(); saveGame(); }
 
     function endGame(){
       if(S.gameOver) return;
@@ -1430,17 +1332,13 @@
       S.busy = false;
       S.pendingAfterTurn = null;
       S.turnDeadline = null;
-      S.focusIndex = null;
       S.statusText = '';
       S.forcedAction = null;
-
       const sorted = [...S.players].sort((a,b) => b.bankedScore - a.bankedScore);
       const bestScore = sorted[0]?.bankedScore ?? 0;
       const winners = sorted.filter(p => p.bankedScore === bestScore);
-
       $('winnerName').textContent = winners.length === 1 ? winners[0].name : 'Gelijkspel';
       $('winnerScore').textContent = bestScore + ' punten';
-
       const fs = $('finalScores');
       fs.innerHTML = '';
       sorted.forEach(p => {
@@ -1451,84 +1349,25 @@
         r.innerHTML = `<span class="fsn"><div class="pcolor-dot ${col.dotCls}"></div>${p.name}</span><span class="fsp">${p.bankedScore}</span>`;
         fs.appendChild(r);
       });
-
       showScreen('winnerScreen');
       playSound('win');
       clearSavedGame();
     }
 
-    function toggleFullscreen(){
-      if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-      else document.exitFullscreen?.();
-    }
+    function toggleFullscreen(){ if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.(); }
+    function installApp(){ if(deferredInstallPrompt){ deferredInstallPrompt.prompt(); deferredInstallPrompt.userChoice.finally(() => { deferredInstallPrompt = null; }); } else { alert('Installeren kan via de browseropties of zodra je de app kunt toevoegen aan het startscherm.'); } }
 
-    function installApp(){
-      if(deferredInstallPrompt){
-        deferredInstallPrompt.prompt();
-        deferredInstallPrompt.userChoice.finally(() => { deferredInstallPrompt = null; });
-      } else {
-        alert('Installeren kan via de browseropties of zodra je de app kunt toevoegen aan het startscherm.');
-      }
-    }
+    function resetGame(){ if(!confirm('Weet je zeker dat je het spel wilt resetten?')) return; clearSavedGame(); backToLobby(); }
 
-    function resetGame(){
-      if(!confirm('Weet je zeker dat je het spel wilt resetten?')) return;
-      clearSavedGame();
-      backToLobby();
-    }
-
-    $('maxScoreInput').addEventListener('change', () => {
-      const n = parseInt($('maxScoreInput').value, 10);
-      S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200;
-      $('maxScoreInput').value = S.maxScore;
-      saveSettings();
-    });
-    $('turnDelayInput').addEventListener('change', () => {
-      const n = parseInt($('turnDelayInput').value, 10);
-      S.turnDelaySec = Number.isFinite(n) && n >= 1 ? n : 2;
-      $('turnDelayInput').value = S.turnDelaySec;
-      saveSettings();
-    });
-    $('x2CountInput').addEventListener('change', () => {
-      const n = parseInt($('x2CountInput').value, 10);
-      S.x2Count = Number.isFinite(n) && n >= 0 ? n : X2_DEFAULT;
-      $('x2CountInput').value = S.x2Count;
-      saveSettings();
-    });
-    $('secondChanceCountInput').addEventListener('change', () => {
-      const n = parseInt($('secondChanceCountInput').value, 10);
-      S.secondChanceCount = Number.isFinite(n) && n >= 0 ? n : SECOND_CHANCE_DEFAULT;
-      $('secondChanceCountInput').value = S.secondChanceCount;
-      saveSettings();
-    });
-    $('pack3CountInput').addEventListener('change', () => {
-      const n = parseInt($('pack3CountInput').value, 10);
-      S.pack3Count = Number.isFinite(n) && n >= 0 ? n : PACK3_DEFAULT;
-      $('pack3CountInput').value = S.pack3Count;
-      saveSettings();
-    });
-    $('freezeCountInput').addEventListener('change', () => {
-      const n = parseInt($('freezeCountInput').value, 10);
-      S.freezeCount = Number.isFinite(n) && n >= 0 ? n : FREEZE_DEFAULT;
-      $('freezeCountInput').value = S.freezeCount;
-      saveSettings();
-    });
-    $('bombCountInput').addEventListener('change', () => {
-      const n = parseInt($('bombCountInput').value, 10);
-      S.bombCount = Number.isFinite(n) && n >= 0 ? n : BOMB_DEFAULT;
-      $('bombCountInput').value = S.bombCount;
-      saveSettings();
-    });
-    $('riskToggle').addEventListener('change', () => {
-      S.showRisk = $('riskToggle').checked;
-      $('riskWrap').style.display = S.showRisk ? 'block' : 'none';
-      saveSettings();
-      renderGame();
-    });
-    $('soundToggle').addEventListener('change', () => {
-      S.soundEnabled = $('soundToggle').checked;
-      saveSettings();
-    });
+    $('maxScoreInput').addEventListener('change', () => { const n = parseInt($('maxScoreInput').value, 10); S.maxScore = Number.isFinite(n) && n >= 50 ? n : 200; $('maxScoreInput').value = S.maxScore; saveSettings(); });
+    $('turnDelayInput').addEventListener('change', () => { const n = parseInt($('turnDelayInput').value, 10); S.turnDelaySec = Number.isFinite(n) && n >= 1 ? n : 2; $('turnDelayInput').value = S.turnDelaySec; saveSettings(); });
+    $('x2CountInput').addEventListener('change', () => { const n = parseInt($('x2CountInput').value, 10); S.x2Count = Number.isFinite(n) && n >= 0 ? n : X2_DEFAULT; $('x2CountInput').value = S.x2Count; saveSettings(); });
+    $('secondChanceCountInput').addEventListener('change', () => { const n = parseInt($('secondChanceCountInput').value, 10); S.secondChanceCount = Number.isFinite(n) && n >= 0 ? n : SECOND_CHANCE_DEFAULT; $('secondChanceCountInput').value = S.secondChanceCount; saveSettings(); });
+    $('pack3CountInput').addEventListener('change', () => { const n = parseInt($('pack3CountInput').value, 10); S.pack3Count = Number.isFinite(n) && n >= 0 ? n : PACK3_DEFAULT; $('pack3CountInput').value = S.pack3Count; saveSettings(); });
+    $('freezeCountInput').addEventListener('change', () => { const n = parseInt($('freezeCountInput').value, 10); S.freezeCount = Number.isFinite(n) && n >= 0 ? n : FREEZE_DEFAULT; $('freezeCountInput').value = S.freezeCount; saveSettings(); });
+    $('bombCountInput').addEventListener('change', () => { const n = parseInt($('bombCountInput').value, 10); S.bombCount = Number.isFinite(n) && n >= 0 ? n : BOMB_DEFAULT; $('bombCountInput').value = S.bombCount; saveSettings(); });
+    $('riskToggle').addEventListener('change', () => { S.showRisk = $('riskToggle').checked; $('riskWrap').style.display = S.showRisk ? 'block' : 'none'; saveSettings(); renderGame(); });
+    $('soundToggle').addEventListener('change', () => { S.soundEnabled = $('soundToggle').checked; saveSettings(); });
 
     function backToLobby(){
       clearTimers();
@@ -1537,7 +1376,6 @@
       hide('settingsModal');
       hide('infoModal');
       historyCache = { playerIndex:null, cardCount:0 };
-      targetCache = { playerIndex:null, cardCount:0 };
       S = {
         players: [],
         deck: [],
@@ -1556,7 +1394,6 @@
         freezeCount: FREEZE_DEFAULT,
         bombCount: BOMB_DEFAULT,
         bombActive: false,
-        focusIndex: null,
         statusText: '',
         forcedAction: null,
         pendingAfterTurn: null,
@@ -1570,7 +1407,6 @@
       $('playerList').innerHTML = '';
       $('playerInput').value = '';
       $('history').innerHTML = '';
-      $('targetHistory').innerHTML = '';
       $('playersRow').innerHTML = '';
       $('cardFace').innerHTML = '';
       $('flipCard').classList.remove('flipped');
@@ -1587,21 +1423,12 @@
       $('turnCard').className = 'turn-card';
       $('turnSub').textContent = '';
       $('turnSub').style.display = 'none';
-      $('targetPanel').style.display = 'none';
       showScreen('lobbyScreen');
       renderLobbyPlayers();
     }
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredInstallPrompt = e;
-    });
-
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
-    }
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstallPrompt = e; });
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); }); }
 
     loadSettings();
     applySettingsToUI();
